@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.22)
 project(chess)
-
-set(CMAKE_CXX_STANDARD 17)
-target_link_libraries(SDL2, SDL2_image)
-add_executable(chess main.cpp headers/Board.h headers/Game.h headers/MTexture.h headers/Piece.h headers/SharedData.h sources/Game.cpp)
+set(CMAKE_CXX_STANDARD 14)
+set(HEADERS "headers/Board.h" "headers/Game.h" "headers/MTexture.h" "headers/Piece.h" "headers/SharedData.h")
+set(SOURCES "sources/Game.cpp" "sources/MTexture.cpp")
+find_package(SDL2 REQUIRED SDL2)
+add_executable(chess.out main.cpp ${HEADERS} ${SOURCES})
+target_link_libraries(chess.out PRIVATE SDL2 SDL2_image)

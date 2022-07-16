@@ -52,11 +52,12 @@ public:
             }
         }
 
+        initialized = success;
         return success;
     }
 
     const int SCREEN_WIDTH = 640;
-    const int SCREEN_HEIGHT = 480;
+    const int SCREEN_HEIGHT = 512;
 
     SDL_Window *getWindow() const { return m_window; }
 

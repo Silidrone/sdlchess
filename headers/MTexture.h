@@ -6,6 +6,8 @@
 
 class Position {
 public:
+    Position() : m_x(0), m_y(0) {}
+
     Position(int x, int y) : m_x(x), m_y(y) {}
 
     void setX(int x) { m_x = x; }
@@ -22,7 +24,9 @@ protected:
 
 class MTexture {
 public:
-    explicit MTexture(SDL_Renderer *, Position = Position(0, 0));
+    explicit MTexture(SDL_Renderer *);
+
+    MTexture(const MTexture &);
 
     ~MTexture();
 
@@ -32,20 +36,17 @@ public:
 
     void setColor(Uint8, Uint8, Uint8);
 
-    void render(SDL_Rect *clip = NULL);
+    void render(SDL_Rect *clip = nullptr);
 
-    int getWidth() const;
+    void setDestinationRect(SDL_Rect r) { m_destination_rect = r; }
 
-    int getHeight() const;
-
-    void setPosition(Position position) { m_position = position; }
-    Position getPosition() const { return m_position; }
+    SDL_Rect getDestinationRect() const { return m_destination_rect; }
 
 private:
     SDL_Texture *m_texture;
     SDL_Renderer *m_renderer;
-    int m_width, m_height;
-    Position m_position;
+    SDL_Rect m_destination_rect;
+    int *m_instance_count;
 };
 
 #endif //CHESS_MTEXTURE_H
