@@ -28,6 +28,8 @@ public:
 
     MTexture(const MTexture &);
 
+    MTexture& operator=(const MTexture&);
+
     ~MTexture();
 
     bool loadFromFile(std::string);

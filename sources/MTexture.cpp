@@ -1,13 +1,26 @@
 #include "../headers/MTexture.h"
 #include <SDL2/SDL_image.h>
+#include <iostream>
 
 MTexture::MTexture(SDL_Renderer *renderer) : m_destination_rect({0, 0, 0, 0}) {
+    std::cout << "ctor" << std::endl;
     m_texture = nullptr;
     m_renderer = renderer;
     m_instance_count = new int(1);
 }
 
 MTexture::MTexture(const MTexture &other) : m_destination_rect(other.m_destination_rect) {
+    std::cout << "copy ctor" << std::endl;
+    m_texture = other.m_texture;
+    m_renderer = other.m_renderer;
+    m_instance_count = other.m_instance_count;
+    (*m_instance_count)++;
+}
+
+MTexture& MTexture::operator=(const MTexture &other) {
+    if(this == &other) return *this;
+
+    std::cout << "assignment operator" << std::endl;
     m_texture = other.m_texture;
     m_renderer = other.m_renderer;
     m_instance_count = other.m_instance_count;
@@ -15,10 +28,13 @@ MTexture::MTexture(const MTexture &other) : m_destination_rect(other.m_destinati
 }
 
 MTexture::~MTexture() {
+    std::cout << "dtor" << std::endl;
     free();
     m_renderer = nullptr;
-    if (m_instance_count != nullptr) {
-        (*m_instance_count)--;
+    (*m_instance_count)--;
+    if(*m_instance_count == 0) {
+        delete m_instance_count;
+        m_instance_count = nullptr;
     }
 }
 
@@ -49,9 +65,6 @@ void MTexture::free() {
     if (m_texture != nullptr && *m_instance_count == 1) {
         SDL_DestroyTexture(m_texture);
         m_texture = nullptr;
-        m_destination_rect = SDL_Rect();
-        delete m_instance_count;
-        m_instance_count = nullptr;
     }
 }
 
