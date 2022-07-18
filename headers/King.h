@@ -5,12 +5,13 @@
 
 class King : public Piece {
 public:
-    King(ChessColor c, Board *b) : Piece(c, b, MTexture(SharedData::instance().getRenderer(),
-                                                        c == ChessColor::WHITE ? "w_king.png" : "b_king.png")) {
+    King(ChessColor c, Square *square, Board *b) : Piece(c, square, b, MTexture(SharedData::instance().getRenderer(),
+                                                                                c == ChessColor::WHITE ? "../resources/w_king.png"
+                                                                                                       : "../resources/b_king.png")) {
 
     }
 
-    bool move() override {
+    void move() override {
 
     }
 };

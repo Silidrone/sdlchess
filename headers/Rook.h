@@ -5,12 +5,13 @@
 
 class Rook : public Piece {
 public:
-    Rook(ChessColor c, Board *b) : Piece(c, b, MTexture(SharedData::instance().getRenderer(),
-                                                        c == ChessColor::WHITE ? "w_rook.png" : "b_rook.png")) {
+    Rook(ChessColor c, Square *square, Board *b) : Piece(c, square, b, MTexture(SharedData::instance().getRenderer(),
+                                                                 c == ChessColor::WHITE ? "../resources/w_rook.png"
+                                                                                        : "../resources/b_rook.png")) {
 
     }
 
-    bool move() override {
+    void move() override {
         
     }
 };

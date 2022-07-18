@@ -2,19 +2,16 @@
 #define CHESS_SQUARE_H
 
 #include "MTexture.h"
-#include "Piece.h"
+
+class Piece;
 
 class Square : public ChessColored {
 public:
-    Square(std::string name, ChessColor c, const MTexture &t, SDL_Rect dest, Piece *p = nullptr) : m_name(
-            std::move(name)), ChessColored(c), m_texture(t), m_destination(dest), m_piece(p), m_attacked(false) {}
+    Square(std::string name, ChessColor c, const MTexture &t, SDL_Rect dest) : m_name(
+            std::move(name)), ChessColored(c), m_texture(t), m_destination(dest), m_piece(nullptr), m_attacked(false) {}
 
     void render() {
-        if (m_piece) {
-            m_piece->render(m_destination);
-        } else {
-            m_texture.render(m_destination);
-        }
+        m_texture.render(m_destination);
     }
 
     MTexture getTexture() const { return m_texture; }
@@ -29,6 +26,8 @@ public:
 
     bool is_attacked() { return m_attacked; }
 
+    SDL_Rect getDestination() const { return m_destination; }
+    
 protected:
     MTexture m_texture;
     Piece *m_piece;

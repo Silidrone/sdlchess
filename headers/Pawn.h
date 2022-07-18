@@ -5,12 +5,13 @@
 
 class Pawn : public Piece {
 public:
-    Pawn(ChessColor c, Board *b) : Piece(c, b, MTexture(SharedData::instance().getRenderer(),
-                                                        c == ChessColor::WHITE ? "w_pawn.png" : "b_pawn.png")) {
+    Pawn(ChessColor c, Square *square, Board *b) : Piece(c, square, b, MTexture(SharedData::instance().getRenderer(),
+                                                                 c == ChessColor::WHITE ? "../resources/w_pawn.png"
+                                                                                        : "../resources/b_pawn.png")) {
 
     }
 
-    bool move() override {
+    void move() override {
         
     }
 };

@@ -6,25 +6,27 @@
 #include "MTexture.h"
 #include "SharedData.h"
 #include "ChessColored.h"
+#include "Square.h"
 
 class Board;
 
 class Piece : public ChessColored {
 public:
-    Piece(ChessColor c, Board *board, const MTexture &texture)
-            : ChessColored(c), m_board(board), m_texture(texture) {}
+    Piece(ChessColor c, Square *square, Board *board, const MTexture &texture)
+            : ChessColored(c), m_square(square), m_board(board), m_texture(texture) {}
     Piece(const Piece& other) = default;
     virtual ~Piece() = default;
 
     Piece& operator=(const Piece &) = default;
 
-    virtual bool move() = 0;
+    virtual void move() = 0;
 
-    void render(SDL_Rect destination) {
-        m_texture.render(destination);
+    void render() {
+        m_texture.render(m_square->getDestination());
     }
 
 protected:
+    Square *m_square;
     Board *m_board;
     MTexture m_texture;
 };

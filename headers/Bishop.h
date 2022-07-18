@@ -5,12 +5,13 @@
 
 class Bishop : public Piece {
 public:
-    Bishop(ChessColor c, Board *b) : Piece(c, b, MTexture(SharedData::instance().getRenderer(),
-                                                        c == ChessColor::WHITE ? "w_bishop.png" : "b_bishop.png")) {
+    Bishop(ChessColor c, Square *square, Board *b) : Piece(c, square, b, MTexture(SharedData::instance().getRenderer(),
+                                                                   c == ChessColor::WHITE ? "../resources/w_bishop.png"
+                                                                                          : "../resources/b_bishop.png")) {
 
     }
 
-    bool move() override {
+    void move() override {
         
     }
 };

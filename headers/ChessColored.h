@@ -2,15 +2,15 @@
 #define CHESS_CHESSCOLORED_H
 
 enum class ChessColor {
-    BLACK,
-    WHITE
+    BLACK = 0,
+    WHITE = 1
 };
 
 class ChessColored {
 public:
     explicit ChessColored(ChessColor color) : m_color(color) {}
 
-    virtual ~ChessColored() = 0;
+    virtual ~ChessColored() = default;;
 
     ChessColored(const ChessColored &other) = default;
 
@@ -21,7 +21,5 @@ public:
 protected:
     ChessColor m_color;
 };
-
-ChessColored::~ChessColored() = default;
 
 #endif //CHESS_CHESSCOLORED_H
