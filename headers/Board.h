@@ -32,7 +32,7 @@ public:
 
         bool square_white = static_cast<bool>(initializationSide);
         for (int i = 0; i < ROW_SQUARE_COUNT; i++) {
-            for (int j = 0; j < COLUMN_SQUARE_COUNT; j++) {
+            for (int j = 0; j < COLUMN_SQUARE_COUNT; j++, square_white = !square_white) {
                 MTexture square_texture(renderer);
                 if (i > 0 && j == 0) {
                     square_texture = m_squares.back()->getTexture();
