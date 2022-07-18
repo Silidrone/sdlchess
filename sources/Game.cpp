@@ -16,7 +16,7 @@ Game::~Game() {
 }
 
 void Game::init() {
-    m_board = new Board("../resources/square_gray_light_1x_ns.png", "../resources/square_gray_dark_1x_ns.png");
+    m_board = new Board("../resources/w_square_gray.png", "../resources/b_square_gray.png");
 }
 
 void Game::run() {

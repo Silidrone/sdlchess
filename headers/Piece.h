@@ -5,39 +5,28 @@
 #include <utility>
 #include "MTexture.h"
 #include "SharedData.h"
-
-enum class Color {
-    WHITE,
-    BLACK
-};
+#include "ChessColored.h"
 
 class Board;
 
-class Piece {
+class Piece : public ChessColored {
 public:
-    Piece(Board *board, Color c, std::string texture_path, std::string position) : m_board(board), m_color(c),
-                                                                                   m_texture(
-                                                                                           SharedData::instance().getRenderer()),
-                                                                                   m_position(std::move(position)) {
-        m_texture.loadFromFile(std::move(texture_path));
-    }
-
+    Piece(ChessColor c, Board *board, const MTexture &texture)
+            : ChessColored(c), m_board(board), m_texture(texture) {}
+    Piece(const Piece& other) = default;
     virtual ~Piece() = default;
+
+    Piece& operator=(const Piece &) = default;
 
     virtual bool move() = 0;
 
-    std::string getPosition() const { return m_position; }
-
-    Color getColor() const { return m_color; }
-
-    void render() {
-        m_texture.render();
+    void render(SDL_Rect destination) {
+        m_texture.render(destination);
     }
+
 protected:
     Board *m_board;
     MTexture m_texture;
-    std::string m_position;
-    Color m_color;
 };
 
 #endif //CHESS_PIECE_H

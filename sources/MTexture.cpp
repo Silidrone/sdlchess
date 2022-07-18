@@ -1,15 +1,24 @@
 #include "../headers/MTexture.h"
 #include <SDL2/SDL_image.h>
 #include <iostream>
+#include <utility>
 
-MTexture::MTexture(SDL_Renderer *renderer) : m_destination_rect({0, 0, 0, 0}) {
+MTexture::MTexture(SDL_Renderer *renderer) {
     std::cout << "ctor" << std::endl;
     m_texture = nullptr;
     m_renderer = renderer;
     m_instance_count = new int(1);
 }
 
-MTexture::MTexture(const MTexture &other) : m_destination_rect(other.m_destination_rect) {
+MTexture::MTexture(SDL_Renderer *renderer, std::string path) {
+    std::cout << "ctor2" << std::endl;
+    m_texture = nullptr;
+    m_renderer = renderer;
+    m_instance_count = new int(1);
+    loadFromFile(std::move(path));
+}
+
+MTexture::MTexture(const MTexture &other) {
     std::cout << "copy ctor" << std::endl;
     m_texture = other.m_texture;
     m_renderer = other.m_renderer;
@@ -50,8 +59,8 @@ bool MTexture::loadFromFile(std::string path) {
         if (new_texture == nullptr) {
             printf("Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
         } else {
-            m_destination_rect.w = loaded_surface->w;
-            m_destination_rect.h = loaded_surface->h;
+            m_width = loaded_surface->w;
+            m_height = loaded_surface->h;
         }
 
         SDL_FreeSurface(loaded_surface);
@@ -68,17 +77,25 @@ void MTexture::free() {
     }
 }
 
-void MTexture::setColor(Uint8 r, Uint8 g, Uint8 b) {
+void MTexture::modulate(Uint8 r, Uint8 g, Uint8 b) {
     SDL_SetTextureColorMod(m_texture, r, g, b);
 }
 
-void MTexture::render(SDL_Rect *clip) {
-    SDL_Rect render_quad = m_destination_rect;
+void MTexture::render(int x, int y, int w, int h, SDL_Rect *clip) {
+    if(w == -1) w = m_width;
+    if(h == -1) h = m_height;
+
+    SDL_Rect render_quad({x, y, w, h});
 
     if (clip != nullptr) {
         render_quad.w = clip->w;
         render_quad.h = clip->h;
     }
 
+
     SDL_RenderCopy(m_renderer, m_texture, clip, &render_quad);
+}
+
+void MTexture::render(SDL_Rect dest, SDL_Rect *clip) {
+    render(dest.x, dest.y, dest.w, dest.h, clip);
 }
