@@ -2,9 +2,11 @@
 #include <SDL2/SDL_image.h>
 #include <iostream>
 #include <utility>
+#include "../headers/SharedData.h"
 
 MTexture::MTexture(SDL_Renderer *renderer) {
     std::cout << "ctor" << std::endl;
+    m_width = m_height = 0;
     m_texture = nullptr;
     m_renderer = renderer;
     m_instance_count = new int(1);
@@ -12,24 +14,38 @@ MTexture::MTexture(SDL_Renderer *renderer) {
 
 MTexture::MTexture(SDL_Renderer *renderer, std::string path) {
     std::cout << "ctor2" << std::endl;
+    m_width = m_height = 0;
     m_texture = nullptr;
     m_renderer = renderer;
     m_instance_count = new int(1);
     loadFromFile(std::move(path));
 }
 
+MTexture::MTexture(SDL_Renderer *renderer, std::string text, SDL_Color color) {
+    std::cout << "ctor3" << std::endl;
+    m_width = m_height = 0;
+    m_texture = nullptr;
+    m_renderer = renderer;
+    m_instance_count = new int(1);
+    loadFromText(std::move(text), color);
+}
+
 MTexture::MTexture(const MTexture &other) {
     std::cout << "copy ctor" << std::endl;
+    m_width = other.m_width;
+    m_height = other.m_height;
     m_texture = other.m_texture;
     m_renderer = other.m_renderer;
     m_instance_count = other.m_instance_count;
     (*m_instance_count)++;
 }
 
-MTexture& MTexture::operator=(const MTexture &other) {
-    if(this == &other) return *this;
+MTexture &MTexture::operator=(const MTexture &other) {
+    if (this == &other) return *this;
 
     std::cout << "assignment operator" << std::endl;
+    m_width = other.m_width;
+    m_height = other.m_height;
     m_texture = other.m_texture;
     m_renderer = other.m_renderer;
     m_instance_count = other.m_instance_count;
@@ -41,10 +57,33 @@ MTexture::~MTexture() {
     free();
     m_renderer = nullptr;
     (*m_instance_count)--;
-    if(*m_instance_count == 0) {
+    if (*m_instance_count == 0) {
         delete m_instance_count;
         m_instance_count = nullptr;
     }
+}
+
+bool MTexture::loadFromText(std::string text, SDL_Color color) {
+    free();
+
+    SDL_Texture *new_texture = nullptr;
+    SDL_Surface *loaded_surface = TTF_RenderText_Solid(SharedData::instance().getFont(), text.c_str(), color);
+    if (loaded_surface == nullptr) {
+        printf("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError());
+    } else {
+        new_texture = SDL_CreateTextureFromSurface(m_renderer, loaded_surface);
+        if (new_texture == nullptr) {
+            printf("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError());
+        } else {
+            m_width = loaded_surface->w;
+            m_height = loaded_surface->h;
+        }
+
+        SDL_FreeSurface(loaded_surface);
+    }
+
+    m_texture = new_texture;
+    return m_texture != nullptr;
 }
 
 bool MTexture::loadFromFile(std::string path) {
@@ -82,8 +121,8 @@ void MTexture::modulate(Uint8 r, Uint8 g, Uint8 b) {
 }
 
 void MTexture::render(int x, int y, int w, int h, SDL_Rect *clip) {
-    if(w == -1) w = m_width;
-    if(h == -1) h = m_height;
+    if (w == -1) w = m_width;
+    if (h == -1) h = m_height;
 
     SDL_Rect render_quad({x, y, w, h});
 
