@@ -10,7 +10,7 @@ class ChessColored {
 public:
     explicit ChessColored(ChessColor color) : m_color(color) {}
 
-    virtual ~ChessColored() = default;;
+    virtual ~ChessColored() = 0;
 
     ChessColored(const ChessColored &other) = default;
 
