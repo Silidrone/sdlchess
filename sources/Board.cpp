@@ -89,3 +89,15 @@ void Board::render() {
         pair.second.render(pair.first);
     }
 }
+
+Square *Board::get_square_by_screen_position(int x, int y) {
+    SDL_Point point({x, y});
+    for(auto &square : m_squares) {
+        SDL_Rect square_destination = square->getDestination();
+        if(SDL_PointInRect(&point, &square_destination) == SDL_TRUE) {
+            return square;
+        }
+    }
+
+    return nullptr;
+}

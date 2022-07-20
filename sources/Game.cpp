@@ -1,5 +1,6 @@
 #include "../headers/Game.h"
 #include <SDL2/SDL_image.h>
+#include <iostream>
 
 Game::Game() : sharedData(SharedData::instance()), m_board(nullptr) {
     SharedData::instance().init();
@@ -23,16 +24,28 @@ void Game::run() {
     SDL_Renderer *renderer = sharedData.getRenderer();
     bool quit = false;
 
-    //Event handler
     SDL_Event e;
-
-    //While application is running
+    bool mouse_clicked = false;
+    int mouse_x, mouse_y;
+    Piece *selected_piece = nullptr;
     while (!quit) {
-        //Handle events on queue
         while (SDL_PollEvent(&e) != 0) {
-            //User requests quit
             if (e.type == SDL_QUIT) {
                 quit = true;
+            }
+            if (e.type == SDL_MOUSEBUTTONDOWN) {
+                SDL_GetMouseState(&mouse_x, &mouse_y);
+                selected_piece = m_board->get_square_by_screen_position(mouse_x, mouse_y)->getPiece();
+            }
+            if (e.type == SDL_MOUSEBUTTONUP) {
+                SDL_GetMouseState(&mouse_x, &mouse_y);
+                selected_piece->setSquare(m_board->get_square_by_screen_position(mouse_x, mouse_y));
+                selected_piece = nullptr;
+            }
+            if (e.type == SDL_MOUSEMOTION && selected_piece) {
+                //Get mouse position
+                SDL_GetMouseState(&mouse_x, &mouse_y);
+                selected_piece->setPosition(mouse_x, mouse_y);
             }
         }
 

@@ -12,7 +12,6 @@ public:
     ~Game();
     void init();
     void run();
-
 protected:
     SharedData& sharedData;
     Board *m_board;
