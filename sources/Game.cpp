@@ -25,7 +25,6 @@ void Game::run() {
     bool quit = false;
 
     SDL_Event e;
-    bool mouse_clicked = false;
     int mouse_x, mouse_y;
     Piece *selected_piece = nullptr;
     while (!quit) {
@@ -37,7 +36,7 @@ void Game::run() {
                 SDL_GetMouseState(&mouse_x, &mouse_y);
                 selected_piece = m_board->get_square_by_screen_position(mouse_x, mouse_y)->getPiece();
             }
-            if (e.type == SDL_MOUSEBUTTONUP) {
+            if (e.type == SDL_MOUSEBUTTONUP && selected_piece) {
                 SDL_GetMouseState(&mouse_x, &mouse_y);
                 selected_piece->setSquare(m_board->get_square_by_screen_position(mouse_x, mouse_y));
                 selected_piece = nullptr;

@@ -2,13 +2,13 @@
 #include "../headers/Square.h"
 
 Piece::Piece(ChessColor c, Square *square, Board *board, const MTexture &texture)
-        : ChessColored(c), m_board(board), m_texture(texture) {
+        : ChessColored(c), m_square(nullptr), m_board(board), m_texture(texture) {
     setSquare(square);
 }
 
 void Piece::setSquare(Square *square) {
     if (m_square) {
-        m_square->setPiece(nullptr);
+        m_square->setPiece(nullptr, false);
     }
     m_square = square;
     square->setPiece(this);
