@@ -8,26 +8,39 @@
 #include "ChessColored.h"
 
 class Board;
+
 class Square;
 
 class Piece : public ChessColored {
 public:
     Piece(ChessColor, Square *, Board *, const MTexture &);
-    Piece(const Piece& other) = default;
+
+    Piece(const Piece &other) = default;
+
     virtual ~Piece() {};
 
-    Piece& operator=(const Piece &) = default;
+    Piece &operator=(const Piece &) = default;
 
-    virtual void move() = 0;
+    bool move(Square *);
+
+    bool fide31(Square *);
+
+    virtual bool fide33(Square *) = 0;
+
+    virtual bool fide35(Square *);
+
+    bool fide39() {};
 
     void setSquare(Square *);
 
     void setPosition(int, int);
 
     std::pair<int, int> getPosition() const;
+
     void render();
 
     Square *getSquare() const;
+
 protected:
     Square *m_square;
     Board *m_board;

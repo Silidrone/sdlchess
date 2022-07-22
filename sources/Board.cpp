@@ -12,9 +12,9 @@ Board::Board(const std::string &w_texture_path, const std::string &b_texture_pat
     for (int i = 0; i < ROW_SQUARE_COUNT; i++) {
         m_coordinate_textures.push_back(std::pair<SDL_Rect, MTexture>(
                 {5, i * square_height + 5, 25, 25}, MTexture(renderer,
-                                                               std::string() +
-                                                               static_cast<char>('0' + COLUMN_SQUARE_COUNT - i),
-                                                               text_color)));
+                                                             std::string() +
+                                                             static_cast<char>('0' + COLUMN_SQUARE_COUNT - i),
+                                                             text_color)));
         for (int j = 0; j < COLUMN_SQUARE_COUNT; j++, square_white = !square_white) {
             if (i == ROW_SQUARE_COUNT - 1) {
                 m_coordinate_textures.push_back(std::pair<SDL_Rect, MTexture>(
@@ -30,7 +30,7 @@ Board::Board(const std::string &w_texture_path, const std::string &b_texture_pat
             }
 
             m_squares.push_back(
-                    new Square(std::string() + (static_cast<char>('a' + i)) + static_cast<char>('1' + j),
+                    new Square(convert_indices_to_coordinate(i, j),
                                static_cast<ChessColor>(square_white), square_texture,
                                SDL_Rect{j * square_width, i * square_height, square_width, square_height}));
         }
@@ -92,12 +92,46 @@ void Board::render() {
 
 Square *Board::get_square_by_screen_position(int x, int y) {
     SDL_Point point({x, y});
-    for(auto &square : m_squares) {
+    for (auto &square: m_squares) {
         SDL_Rect square_destination = square->getDestination();
-        if(SDL_PointInRect(&point, &square_destination) == SDL_TRUE) {
+        if (SDL_PointInRect(&point, &square_destination) == SDL_TRUE) {
             return square;
         }
     }
 
     return nullptr;
+}
+
+Square *Board::get_square_by_coordinate(std::string coordinate) {
+    for (auto &square: m_squares) {
+        if (square->getCoordinate() == coordinate) return square;
+    }
+
+    return nullptr;
+}
+
+std::pair<int, int> Board::convert_coordinate_to_indices(std::string coordinate) {
+    return std::pair<int, int>(coordinate[0] - 'a', coordinate[1] - '1');
+}
+
+std::string Board::convert_indices_to_coordinate(int i, int j) {
+    return std::string() + static_cast<char>(i + 'a') + static_cast<char>(j + '1');
+}
+
+std::vector<Square *>
+Board::get_squares_in_direction_f(Square *starting_square,
+                                  std::function<std::pair<int, int>(std::pair<int, int>)> direction_f) {
+    std::vector<Square *> path_squares;
+    std::pair<int, int> indices = convert_coordinate_to_indices(starting_square->getCoordinate());
+    for (indices = direction_f(indices);
+         indices.first >= 0 && indices.second >= 0 && indices.first < ROW_SQUARE_COUNT &&
+         indices.second < COLUMN_SQUARE_COUNT; indices = direction_f(indices)) {
+        path_squares.push_back(m_squares.at(indices.first * ROW_SQUARE_COUNT + indices.second));
+    }
+
+    if (path_squares.size() > 0) {
+        path_squares.pop_back();
+    }
+
+    return path_squares;
 }

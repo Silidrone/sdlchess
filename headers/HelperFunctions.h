@@ -4,10 +4,17 @@
 #include <SDL2/SDL.h>
 #include <string>
 #include <SDL2/SDL_ttf.h>
+#include <vector>
+#include "Square.h"
 
-void getTextureFromText(std::string text, SDL_Color color = {255, 255, 255},) {
-    SDL_Surface *textSurface = TTF_RenderText_Solid(Sans, text.c_str(), color);
+namespace HelperFunctions {
+    bool sqauresHaveAnyPieces(std::vector<Square *> squares) {
+        for(auto &square: squares) {
+            if(square->getPiece() != nullptr) return true;
+        }
 
-}
+        return false;
+    }
+};
 
 #endif //CHESS_HELPERFUNCTIONS_H

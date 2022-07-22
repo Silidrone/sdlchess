@@ -14,6 +14,7 @@
 #include "Queen.h"
 #include "Pawn.h"
 #include <cmath>
+#include <functional>
 
 class Board {
 public:
@@ -27,7 +28,16 @@ public:
 
     void render();
 
+    std::vector<Square *> get_squares_in_direction_f(Square *, std::function<std::pair<int, int>(std::pair<int, int>)>);
+
+    Square *get_square_by_coordinate(std::string);
+
+    std::pair<int, int> convert_coordinate_to_indices(std::string);
+
+    std::string convert_indices_to_coordinate(int, int);
+
     Square *get_square_by_screen_position(int, int);
+
 protected:
     std::vector<Square *> m_squares{};
     std::vector<Piece *> m_pieces{};

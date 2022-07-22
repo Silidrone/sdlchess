@@ -11,9 +11,7 @@ public:
 
     }
 
-    void move() override {
-        
-    }
+    bool move(Square *target) override;
 };
 
 #endif //CHESS_PAWN_H

@@ -8,10 +8,10 @@ Piece::Piece(ChessColor c, Square *square, Board *board, const MTexture &texture
 
 void Piece::setSquare(Square *square) {
     if (m_square) {
-        m_square->setPiece(nullptr, false);
+        m_square->removePiece();
     }
     m_square = square;
-    square->setPiece(this);
+    square->putPiece(this);
     m_destination = square->getDestination();
 }
 

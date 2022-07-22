@@ -27,6 +27,7 @@ void Game::run() {
     SDL_Event e;
     int mouse_x, mouse_y;
     Piece *selected_piece = nullptr;
+    ChessColor turn_color = ChessColor::WHITE;
     while (!quit) {
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
@@ -34,12 +35,15 @@ void Game::run() {
             }
             if (e.type == SDL_MOUSEBUTTONDOWN) {
                 SDL_GetMouseState(&mouse_x, &mouse_y);
-                selected_piece = m_board->get_square_by_screen_position(mouse_x, mouse_y)->getPiece();
+                Piece *tmp_piece = m_board->get_square_by_screen_position(mouse_x, mouse_y)->getPiece();
+                if(tmp_piece && turn_color == tmp_piece->getColor())
+                    selected_piece = tmp_piece;
             }
             if (e.type == SDL_MOUSEBUTTONUP && selected_piece) {
                 SDL_GetMouseState(&mouse_x, &mouse_y);
-                selected_piece->setSquare(m_board->get_square_by_screen_position(mouse_x, mouse_y));
+                selected_piece->move(m_board->get_square_by_screen_position(mouse_x, mouse_y));
                 selected_piece = nullptr;
+                turn_color = static_cast<ChessColor>(!static_cast<bool>(turn_color));
             }
             if (e.type == SDL_MOUSEMOTION && selected_piece) {
                 //Get mouse position
