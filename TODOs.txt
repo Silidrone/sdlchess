@@ -1,0 +1,2 @@
+Aside TODOs mentioned in code I'll list some here whenever I want to mark an important TODO:
+- Keep **ONLY** declarations in header files and move all definitions inside a corresponding .cpp file

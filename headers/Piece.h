@@ -3,6 +3,7 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 #include "MTexture.h"
 #include "SharedData.h"
 #include "ChessColored.h"
@@ -21,15 +22,19 @@ public:
 
     Piece &operator=(const Piece &) = default;
 
-    bool move(Square *);
+    bool fide12(Square *);
 
     bool fide31(Square *);
 
-    virtual bool fide33(Square *) = 0;
+    virtual std::vector<Square *> moveable_squares(Square *) = 0;
 
-    virtual bool fide35(Square *);
+    bool fide3p(std::vector<Square *> &, Square *);
 
-    bool fide39() {};
+    virtual bool fide35(std::vector<Square *> &);
+
+    bool fide39();
+
+    bool move(Square *);
 
     void setSquare(Square *);
 

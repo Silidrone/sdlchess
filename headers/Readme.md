@@ -1,1 +1,0 @@
-Chess rule obeyed following the FIDE Laws of Chess article: https://www.fide.com/FIDE/handbook/LawsOfChess.pdf

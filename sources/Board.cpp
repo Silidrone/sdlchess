@@ -103,11 +103,15 @@ Square *Board::get_square_by_screen_position(int x, int y) {
 }
 
 Square *Board::get_square_by_coordinate(std::string coordinate) {
-    for (auto &square: m_squares) {
-        if (square->getCoordinate() == coordinate) return square;
-    }
+    return get_square_by_indices_pair(convert_coordinate_to_indices(coordinate));
+}
 
-    return nullptr;
+Square *Board::get_square_by_indices_pair(std::pair<int, int> indices) {
+    return get_square_by_indices(indices.first, indices.second);
+}
+
+Square *Board::get_square_by_indices(int i, int j) {
+    return m_squares.at(i * ROW_SQUARE_COUNT + j);
 }
 
 std::pair<int, int> Board::convert_coordinate_to_indices(std::string coordinate) {
@@ -118,19 +122,18 @@ std::string Board::convert_indices_to_coordinate(int i, int j) {
     return std::string() + static_cast<char>(i + 'a') + static_cast<char>(j + '1');
 }
 
-std::vector<Square *>
-Board::get_squares_in_direction_f(Square *starting_square,
-                                  std::function<std::pair<int, int>(std::pair<int, int>)> direction_f) {
+std::vector<Square *> Board::get_squares_in_fdirection(Square *starting_square, FDirection direction_f, bool one_step) {
     std::vector<Square *> path_squares;
-    std::pair<int, int> indices = convert_coordinate_to_indices(starting_square->getCoordinate());
-    for (indices = direction_f(indices);
-         indices.first >= 0 && indices.second >= 0 && indices.first < ROW_SQUARE_COUNT &&
-         indices.second < COLUMN_SQUARE_COUNT; indices = direction_f(indices)) {
-        path_squares.push_back(m_squares.at(indices.first * ROW_SQUARE_COUNT + indices.second));
-    }
+    std::pair<int, int> indices = direction_f(convert_coordinate_to_indices(starting_square->getCoordinate()));
 
-    if (path_squares.size() > 0) {
-        path_squares.pop_back();
+    if (!one_step) {
+        while (indices.first >= 0 && indices.second >= 0 && indices.first < ROW_SQUARE_COUNT &&
+               indices.second < COLUMN_SQUARE_COUNT) {
+            path_squares.push_back(get_square_by_indices_pair(indices));
+            indices = direction_f(indices);
+        }
+    } else {
+        path_squares.push_back(get_square_by_indices_pair(indices));
     }
 
     return path_squares;

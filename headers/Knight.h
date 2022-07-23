@@ -11,7 +11,7 @@ public:
 
     }
 
-    bool move(Square *target) override;
+    std::vector<Square *> moveable_squares(Square *) override;
 };
 
 #endif //CHESS_KNIGHT_H

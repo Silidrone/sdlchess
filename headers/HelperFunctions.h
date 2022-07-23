@@ -6,15 +6,14 @@
 #include <SDL2/SDL_ttf.h>
 #include <vector>
 #include "Square.h"
+#include "Board.h"
 
 namespace HelperFunctions {
-    bool sqauresHaveAnyPieces(std::vector<Square *> squares) {
-        for(auto &square: squares) {
-            if(square->getPiece() != nullptr) return true;
-        }
+    bool squaresHaveAnyPieces(std::vector<Square *> squares);
 
-        return false;
-    }
+    std::vector<Square *>
+    get_squares_in_fdirections(Board *board, Square *beginning_square, std::vector<FDirection> directions,
+                               bool one_step = false);
 };
 
 #endif //CHESS_HELPERFUNCTIONS_H
