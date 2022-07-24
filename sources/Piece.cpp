@@ -14,7 +14,8 @@ bool Piece::fide12(Square *target) {
 }
 
 bool Piece::fide31(Square *target) {
-    return (target->getPiece()->getColor() != this->getColor());
+    Piece *target_piece = target->getPiece();
+    return target_piece == nullptr || (target_piece->getColor() != this->getColor());
 }
 
 bool Piece::fide3p(std::vector<Square *> &legal_squares, Square *target) {
@@ -34,7 +35,13 @@ bool Piece::fide39() {
 
 bool Piece::move(Square *target) {
     std::vector<Square *> legal_squares = moveable_squares(target);
-    return fide12(target) && fide31(target) && fide3p(legal_squares, target) && fide35(legal_squares) && fide39();
+    bool move_legal =
+            fide12(target) && fide31(target) && fide3p(legal_squares, target) && fide35(legal_squares) && fide39();
+    if(move_legal) {
+        setSquare(target);
+    }
+
+    return move_legal;
 }
 
 void Piece::setSquare(Square *square) {
@@ -44,6 +51,10 @@ void Piece::setSquare(Square *square) {
     m_square = square;
     square->putPiece(this);
     m_destination = square->getDestination();
+}
+
+void Piece::resetPosition() {
+    m_destination = m_square->getDestination();
 }
 
 void Piece::setPosition(int x, int y) {

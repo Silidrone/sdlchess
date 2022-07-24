@@ -13,7 +13,7 @@
 #include "Bishop.h"
 #include "Queen.h"
 #include "Pawn.h"
-#include "FDirections.h"
+#include "FDirector.h"
 #include <cmath>
 #include <functional>
 
@@ -29,7 +29,7 @@ public:
 
     void render();
 
-    std::vector<Square *> get_squares_in_fdirection(Square *, FDirection, bool = false);
+    std::vector<Square *> get_squares_in_fdirection(Square *, FDirector *, FDirection, bool = false);
 
     Square *get_square_by_coordinate(std::string);
     Square *get_square_by_indices_pair(std::pair<int, int>);

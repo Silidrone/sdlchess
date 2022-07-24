@@ -12,7 +12,7 @@ namespace HelperFunctions {
     bool squaresHaveAnyPieces(std::vector<Square *> squares);
 
     std::vector<Square *>
-    get_squares_in_fdirections(Board *board, Square *beginning_square, std::vector<FDirection> directions,
+    get_squares_in_fdirections(Board *board, Square *beginning_square, FDirector *, std::vector<FDirection> directions,
                                bool one_step = false);
 };
 

@@ -5,6 +5,7 @@
 #include "../headers/HelperFunctions.h"
 
 std::vector<Square *> Rook::moveable_squares(Square *) {
-    return HelperFunctions::get_squares_in_fdirections(m_board, m_square,
-                                                       {FDirections::up, FDirections::down});
+    FDirector fDirector(m_color);
+    return HelperFunctions::get_squares_in_fdirections(m_board, m_square, &fDirector,
+                                                       {&FDirector::up, &FDirector::down});
 }

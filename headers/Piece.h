@@ -40,6 +40,8 @@ public:
 
     void setPosition(int, int);
 
+    void resetPosition();
+
     std::pair<int, int> getPosition() const;
 
     void render();
