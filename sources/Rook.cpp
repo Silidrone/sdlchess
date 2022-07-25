@@ -35,5 +35,5 @@ bool Rook::fide35(std::vector<DirectionalSquares> &legal_squares, Square *target
         }
     }
 
-    return HelperFunctions::squaresHaveAnyPieces(HelperFunctions::get_squares_by_direction(legal_squares, d));
+    return !HelperFunctions::squaresHaveAnyPieces(HelperFunctions::get_squares_by_direction(legal_squares, d));
 }

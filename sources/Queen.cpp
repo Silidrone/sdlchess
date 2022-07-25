@@ -47,5 +47,5 @@ bool Queen::fide35(std::vector<DirectionalSquares> &legal_squares, Square *targe
         d = Direction::DOWNRIGHT;
     }
 
-    return HelperFunctions::squaresHaveAnyPieces(HelperFunctions::get_squares_by_direction(legal_squares, d));
+    return !HelperFunctions::squaresHaveAnyPieces(HelperFunctions::get_squares_by_direction(legal_squares, d));
 }

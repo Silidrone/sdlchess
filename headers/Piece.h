@@ -13,7 +13,7 @@ class Board;
 
 class Square;
 
-using DirectionalSquares = std::pair<Direction, std::vector<Square *> &>;
+using DirectionalSquares = std::pair<Direction, std::vector<Square *>>;
 
 class Piece : public ChessColored {
 public:
