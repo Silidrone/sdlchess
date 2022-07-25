@@ -35,8 +35,12 @@ bool Piece::fide39() {
 
 bool Piece::move(Square *target) {
     std::vector<Square *> legal_squares = moveable_squares(target);
-    bool move_legal =
-            fide12(target) && fide31(target) && fide3p(legal_squares, target) && fide35(legal_squares) && fide39();
+    bool bfide12 = fide12(target);
+    bool bfide31 = fide31(target);
+    bool bfide3p = fide3p(legal_squares, target);
+    bool bfide35 = fide35(legal_squares);
+    bool bfide39 = fide39();
+    bool move_legal = bfide12 && bfide31 && bfide3p && bfide35 && bfide39;
     if(move_legal) {
         setSquare(target);
     }

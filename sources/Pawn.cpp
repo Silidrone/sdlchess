@@ -27,3 +27,5 @@ std::vector<Square *> Pawn::moveable_squares(Square *target) {
 
     return result;
 }
+
+bool Pawn::fide35(std::vector<Square *> &) { return true; }

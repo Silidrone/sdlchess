@@ -10,3 +10,5 @@ std::vector<Square *> Knight::moveable_squares(Square *) {
             true
     );
 }
+
+bool Knight::fide35(std::vector<Square *> &) { return true; }

@@ -108,7 +108,11 @@ Square *Board::get_square_by_coordinate(std::string coordinate) {
 }
 
 Square *Board::get_square_by_indices_pair(std::pair<int, int> indices) {
-    return get_square_by_indices(indices.first, indices.second);
+    try {
+        return get_square_by_indices(indices.first, indices.second);
+    } catch (std::out_of_range &) {
+        return nullptr;
+    }
 }
 
 Square *Board::get_square_by_indices(int i, int j) {
@@ -123,18 +127,27 @@ std::string Board::convert_indices_to_coordinate(int i, int j) {
     return std::string() + static_cast<char>(j + 'a') + static_cast<char>('1' + i);
 }
 
-std::vector<Square *> Board::get_squares_in_fdirection(Square *starting_square, FDirector *fDirector, FDirection direction_f, bool one_step) {
+std::vector<Square *>
+Board::get_squares_in_fdirection(Square *starting_square, FDirector *fDirector, FDirection direction_f, bool one_step) {
     std::vector<Square *> path_squares;
-    std::pair<int, int> indices = (fDirector->*direction_f)(convert_coordinate_to_indices(starting_square->getCoordinate()));
+    std::pair<int, int> indices = (fDirector->*direction_f)(
+            convert_coordinate_to_indices(starting_square->getCoordinate()));
+
+    auto square_add = [this, &indices, &path_squares]() {
+        Square *s = get_square_by_indices_pair(indices);
+        if (s) {
+            path_squares.push_back(s);
+        }
+    };
 
     if (!one_step) {
         while (indices.first >= 0 && indices.second >= 0 && indices.first < ROW_SQUARE_COUNT &&
                indices.second < COLUMN_SQUARE_COUNT) {
-            path_squares.push_back(get_square_by_indices_pair(indices));
+            square_add();
             indices = (fDirector->*direction_f)(indices);
         }
     } else {
-        path_squares.push_back(get_square_by_indices_pair(indices));
+        square_add();
     }
 
     return path_squares;
