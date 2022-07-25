@@ -2,7 +2,7 @@
 #include "../headers/Square.h"
 #include "../headers/Board.h"
 
-std::vector<Square *> Pawn::moveable_squares(Square *target) {
+std::pair< std::vector<Square *>, std::vector<DirectionalSquares>>Pawn::moveable_squares(Square *target) {
     FDirector fDirector(m_color);
     std::vector<Square *> result;
     const auto current_indices = m_board->convert_coordinate_to_indices(m_square->getCoordinate());
@@ -25,7 +25,7 @@ std::vector<Square *> Pawn::moveable_squares(Square *target) {
         result.push_back(target);
     }
 
-    return result;
+    return {result, {}};
 }
 
-bool Pawn::fide35(std::vector<Square *> &) { return true; }
+bool Pawn::fide35(std::vector<DirectionalSquares> &, Square *) { return true; }

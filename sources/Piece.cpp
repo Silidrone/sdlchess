@@ -24,21 +24,17 @@ bool Piece::fide3p(std::vector<Square *> &legal_squares, Square *target) {
            legal_squares.end();
 }
 
-bool Piece::fide35(std::vector<Square *> &squares) {
-    return !HelperFunctions::squaresHaveAnyPieces(squares);
-}
-
 //TODO finish the implementation of fide39 rule
 bool Piece::fide39() {
     return true;
 }
 
 bool Piece::move(Square *target) {
-    std::vector<Square *> legal_squares = moveable_squares(target);
+    auto legal_squares = moveable_squares(target);
     bool bfide12 = fide12(target);
     bool bfide31 = fide31(target);
-    bool bfide3p = fide3p(legal_squares, target);
-    bool bfide35 = fide35(legal_squares);
+    bool bfide3p = fide3p(legal_squares.first, target);
+    bool bfide35 = fide35(legal_squares.second, target);
     bool bfide39 = fide39();
     bool move_legal = bfide12 && bfide31 && bfide3p && bfide35 && bfide39;
     if(move_legal) {

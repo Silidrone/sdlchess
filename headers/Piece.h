@@ -7,10 +7,13 @@
 #include "MTexture.h"
 #include "SharedData.h"
 #include "ChessColored.h"
+#include "FDirector.h"
 
 class Board;
 
 class Square;
+
+using DirectionalSquares = std::pair<Direction, std::vector<Square *> &>;
 
 class Piece : public ChessColored {
 public:
@@ -26,11 +29,11 @@ public:
 
     bool fide31(Square *);
 
-    virtual std::vector<Square *> moveable_squares(Square *) = 0;
+    virtual std::pair<std::vector<Square *>, std::vector<DirectionalSquares>> moveable_squares(Square *) = 0;
 
     bool fide3p(std::vector<Square *> &, Square *);
 
-    virtual bool fide35(std::vector<Square *> &);
+    virtual bool fide35(std::vector<DirectionalSquares> &, Square *) = 0;
 
     bool fide39();
 

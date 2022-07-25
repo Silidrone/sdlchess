@@ -11,7 +11,8 @@ public:
 
     }
 
-    std::vector<Square *> moveable_squares(Square *) override;
+    std::pair< std::vector<Square *>, std::vector<DirectionalSquares>> moveable_squares(Square *) override;
+    bool fide35(std::vector<DirectionalSquares> &, Square *) override;
 };
 
 #endif //CHESS_ROOK_H

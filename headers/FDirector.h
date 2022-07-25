@@ -5,6 +5,26 @@
 #include <functional>
 #include "ChessColored.h"
 
+enum class Direction {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+    UPLEFT,
+    UPRIGHT,
+    DOWNLEFT,
+    DOWNRIGHT,
+    UPUPLEFT,
+    UPUPRIGHT,
+    DOWNDOWNLEFT,
+    DOWNDOWNRIGHT,
+    UPLEFTLEFT,
+    UPRIGHTGIHT,
+    DOWNLEFTLEFT,
+    DOWNRIGHTRIGHT,
+    ALL
+};
+
 class FDirector {
 public:
     FDirector(ChessColor);
