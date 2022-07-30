@@ -13,11 +13,13 @@
 #include "Bishop.h"
 #include "Queen.h"
 #include "Pawn.h"
-#include "FDirector.h"
 #include <cmath>
 #include <functional>
 
 class Board {
+private:
+    void swapSquares(Square *&, Square *&);
+
 public:
     static const int ROW_SQUARE_COUNT = 8;
     static const int COLUMN_SQUARE_COUNT = 8;
@@ -29,15 +31,13 @@ public:
 
     void render();
 
-    std::vector<Square *> get_squares_in_fdirection(Square *, FDirector *, FDirection, bool = false);
+    void rotate180();
 
-    Square *get_square_by_coordinate(std::string);
-    Square *get_square_by_indices_pair(std::pair<int, int>);
-    Square *get_square_by_indices(int, int);
+    std::vector<Square *> get_squares_in_fdirection(Square *, FDirection, bool = false);
 
-    std::pair<int, int> convert_coordinate_to_indices(std::string);
+    bool coordinateIsValid(std::string);
 
-    std::string convert_indices_to_coordinate(int, int);
+    Square *get_square_by_coordinate(const std::string &);
 
     Square *get_square_by_screen_position(int, int);
 

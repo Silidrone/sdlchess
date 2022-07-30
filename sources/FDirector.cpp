@@ -1,67 +1,67 @@
 #include "../headers/FDirector.h"
 
-FDirector::FDirector(ChessColor c) : m_color(c) {}
+ChessColor FDirector::color;
 
-std::pair<int, int> FDirector::up(std::pair<int, int> pos) {
-    return {pos.first + (m_color == ChessColor::WHITE ? 1 : -1), pos.second};
+std::string FDirector::up(std::string coordinate) {
+    return std::string() + coordinate[0] + static_cast<char>(coordinate[1] + (color == ChessColor::WHITE ? 1 : -1));
 }
 
-std::pair<int, int> FDirector::down(std::pair<int, int> pos) {
-    return {pos.first - (m_color == ChessColor::WHITE ? 1 : -1), pos.second};
+std::string FDirector::down(std::string coordinate) {
+    return std::string() + coordinate[0] + static_cast<char>(coordinate[1] - (color == ChessColor::WHITE ? 1 : -1));
 }
 
-std::pair<int, int> FDirector::left(std::pair<int, int> pos) {
-    return {pos.first, pos.second - (m_color == ChessColor::WHITE ? 1 : -1)};
+std::string FDirector::left(std::string coordinate) {
+    return std::string() + static_cast<char>(coordinate[0] - (color == ChessColor::WHITE ? 1 : -1)) + coordinate[1];
 }
 
-std::pair<int, int> FDirector::right(std::pair<int, int> pos) {
-    return {pos.first, pos.second + (m_color == ChessColor::WHITE ? 1 : -1)};
+std::string FDirector::right(std::string coordinate) {
+    return std::string() + static_cast<char>(coordinate[0] + (color == ChessColor::WHITE ? 1 : -1)) + coordinate[1];
 }
 
-std::pair<int, int> FDirector::upleft(std::pair<int, int> pos) {
-    return left(up(pos));
+std::string FDirector::up_left(std::string coordinate) {
+    return left(up(std::move(coordinate)));
 }
 
-std::pair<int, int> FDirector::upright(std::pair<int, int> pos) {
-    return right(up(pos));
+std::string FDirector::up_right(std::string coordinate) {
+    return right(up(std::move(coordinate)));
 }
 
-std::pair<int, int> FDirector::downleft(std::pair<int, int> pos) {
-    return left(down(pos));
+std::string FDirector::down_left(std::string coordinate) {
+    return left(down(std::move(coordinate)));
 }
 
-std::pair<int, int> FDirector::downright(std::pair<int, int> pos) {
-    return right(down(pos));
+std::string FDirector::down_right(std::string coordinate) {
+    return right(down(std::move(coordinate)));
 }
 
-std::pair<int, int> FDirector::upupleft(std::pair<int, int> indices) {
-    return up(up(left(indices)));
+std::string FDirector::up_up_left(std::string coordinate) {
+    return left(up(up(std::move(coordinate))));
 }
 
-std::pair<int, int> FDirector::upupright(std::pair<int, int> indices){
-    return up(up(right(indices)));
+std::string FDirector::up_up_right(std::string coordinate) {
+    return right(up(up(std::move(coordinate))));
 }
 
-std::pair<int, int> FDirector::downdownleft(std::pair<int, int> indices){
-    return down(down(left(indices)));
+std::string FDirector::down_down_left(std::string coordinate) {
+    return left(down(down(std::move(coordinate))));
 }
 
-std::pair<int, int> FDirector::downdownright(std::pair<int, int> indices){
-    return down(down(right(indices)));
+std::string FDirector::down_down_right(std::string coordinate) {
+    return right(down(down(std::move(coordinate))));
 }
 
-std::pair<int, int> FDirector::upleftleft(std::pair<int, int> indices){
-    return up(left(left(indices)));
+std::string FDirector::up_left_left(std::string coordinate) {
+    return left(left(up(std::move(coordinate))));
 }
 
-std::pair<int, int> FDirector::uprightright(std::pair<int, int> indices){
-    return up(right(right(indices)));
+std::string FDirector::up_right_right(std::string coordinate) {
+    return right(right(up(std::move(coordinate))));
 }
 
-std::pair<int, int> FDirector::downleftleft(std::pair<int, int> indices){
-    return down(left(left(indices)));
+std::string FDirector::down_left_left(std::string coordinate) {
+    return left(left(down(std::move(coordinate))));
 }
 
-std::pair<int, int> FDirector::downrightright(std::pair<int, int> indices){
-    return down(right(right(indices)));
+std::string FDirector::down_right_right(std::string coordinate) {
+    return right(right(down(std::move(coordinate))));
 }

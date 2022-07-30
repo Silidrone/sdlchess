@@ -5,7 +5,6 @@
 #include "../headers/SharedData.h"
 
 MTexture::MTexture(SDL_Renderer *renderer) {
-    std::cout << "ctor" << std::endl;
     m_width = m_height = 0;
     m_texture = nullptr;
     m_renderer = renderer;
@@ -13,7 +12,6 @@ MTexture::MTexture(SDL_Renderer *renderer) {
 }
 
 MTexture::MTexture(SDL_Renderer *renderer, std::string path) {
-    std::cout << "ctor2" << std::endl;
     m_width = m_height = 0;
     m_texture = nullptr;
     m_renderer = renderer;
@@ -22,7 +20,6 @@ MTexture::MTexture(SDL_Renderer *renderer, std::string path) {
 }
 
 MTexture::MTexture(SDL_Renderer *renderer, std::string text, SDL_Color color) {
-    std::cout << "ctor3" << std::endl;
     m_width = m_height = 0;
     m_texture = nullptr;
     m_renderer = renderer;
@@ -31,7 +28,6 @@ MTexture::MTexture(SDL_Renderer *renderer, std::string text, SDL_Color color) {
 }
 
 MTexture::MTexture(const MTexture &other) {
-    std::cout << "copy ctor" << std::endl;
     m_width = other.m_width;
     m_height = other.m_height;
     m_texture = other.m_texture;
@@ -43,7 +39,6 @@ MTexture::MTexture(const MTexture &other) {
 MTexture &MTexture::operator=(const MTexture &other) {
     if (this == &other) return *this;
 
-    std::cout << "assignment operator" << std::endl;
     m_width = other.m_width;
     m_height = other.m_height;
     m_texture = other.m_texture;
@@ -53,7 +48,6 @@ MTexture &MTexture::operator=(const MTexture &other) {
 }
 
 MTexture::~MTexture() {
-    std::cout << "dtor" << std::endl;
     free();
     m_renderer = nullptr;
     (*m_instance_count)--;

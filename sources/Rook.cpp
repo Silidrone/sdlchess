@@ -5,20 +5,19 @@
 #include "../headers/HelperFunctions.h"
 
 std::pair<std::vector<Square *>, std::vector<DirectionalSquares>> Rook::moveable_squares(Square *) {
-    FDirector fDirector(m_color);
-    return HelperFunctions::get_squares_in_fdirections(m_board, m_square, &fDirector,
-                                                       {{Direction::UP,   &FDirector::up},
-                                                        {Direction::DOWN, &FDirector::down}});
+    return HelperFunctions::get_squares_in_fdirections(m_board, m_square,
+                                                       {{Direction::UP,   FDirector::up},
+                                                        {Direction::DOWN, FDirector::down}});
 }
 
 bool Rook::fide35(std::vector<DirectionalSquares> &legal_squares, Square *target) {
-    auto this_indices = m_board->convert_coordinate_to_indices(getSquare()->getCoordinate());
-    auto target_indices = m_board->convert_coordinate_to_indices(target->getCoordinate());
+    auto this_coordinate = getSquare()->getCoordinate();
+    auto target_coordinate = target->getCoordinate();
 
-    bool up = target_indices.first > this_indices.first;
-    bool same_row = target_indices.first == this_indices.first;
-    bool left = target_indices.second < this_indices.second;
-    bool same_column = target_indices.second == this_indices.second;
+    bool up = target_coordinate[1] > this_coordinate[1];
+    bool same_row = target_coordinate[1] == this_coordinate[1];
+    bool left = target_coordinate[0] < this_coordinate[0];
+    bool same_column = target_coordinate[0] == this_coordinate[0];
     Direction d;
 
     if (same_column) {
@@ -35,5 +34,5 @@ bool Rook::fide35(std::vector<DirectionalSquares> &legal_squares, Square *target
         }
     }
 
-    return !HelperFunctions::squaresHaveAnyPieces(HelperFunctions::get_squares_by_direction(legal_squares, d));
+    return HelperFunctions::squaresBeforeNextPiece(HelperFunctions::get_squares_by_direction(legal_squares, d)).size() > 0;
 }

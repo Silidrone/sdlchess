@@ -1,7 +1,7 @@
 #ifndef CHESS_FDIRECTOR_H
 #define CHESS_FDIRECTOR_H
 
-#include <utility>
+#include <string>
 #include <functional>
 #include "ChessColored.h"
 
@@ -10,60 +10,57 @@ enum class Direction {
     DOWN,
     LEFT,
     RIGHT,
-    UPLEFT,
-    UPRIGHT,
-    DOWNLEFT,
-    DOWNRIGHT,
-    UPUPLEFT,
-    UPUPRIGHT,
-    DOWNDOWNLEFT,
-    DOWNDOWNRIGHT,
-    UPLEFTLEFT,
-    UPRIGHTGIHT,
-    DOWNLEFTLEFT,
-    DOWNRIGHTRIGHT,
-    ALL
+    UP_LEFT,
+    UP_RIGHT,
+    DOWN_LEFT,
+    DOWN_RIGHT,
+    UP_UP_LEFT,
+    UP_UP_RIGHT,
+    UP_LEFT_LEFT,
+    UP_RIGHT_RIGHT,
+    DOWN_DOWN_LEFT,
+    DOWN_DOWN_RIGHT,
+    DOWN_LEFT_LEFT,
+    DOWN_RIGHT_RIGHT
 };
+
+using FDirection = std::function<std::string(std::string)>;
 
 class FDirector {
 public:
-    FDirector(ChessColor);
+    static ChessColor color;
 
-    std::pair<int, int> up(std::pair<int, int>);
+    static std::string up(std::string);
 
-    std::pair<int, int> down(std::pair<int, int>);
+    static std::string down(std::string);
 
-    std::pair<int, int> left(std::pair<int, int>);
+    static std::string left(std::string);
 
-    std::pair<int, int> right(std::pair<int, int>);
+    static std::string right(std::string);
 
-    std::pair<int, int> upleft(std::pair<int, int>);
+    static std::string up_left(std::string);
 
-    std::pair<int, int> upright(std::pair<int, int>);
+    static std::string up_right(std::string);
 
-    std::pair<int, int> downleft(std::pair<int, int>);
+    static std::string down_left(std::string);
 
-    std::pair<int, int> downright(std::pair<int, int>);
+    static std::string down_right(std::string);
 
-    std::pair<int, int> upupleft(std::pair<int, int>);
+    static std::string up_up_left(std::string);
 
-    std::pair<int, int> upupright(std::pair<int, int>);
+    static std::string up_up_right(std::string);
 
-    std::pair<int, int> downdownleft(std::pair<int, int>);
+    static std::string down_down_left(std::string);
 
-    std::pair<int, int> downdownright(std::pair<int, int>);
+    static std::string down_down_right(std::string);
 
-    std::pair<int, int> upleftleft(std::pair<int, int>);
+    static std::string up_left_left(std::string);
 
-    std::pair<int, int> uprightright(std::pair<int, int>);
+    static std::string up_right_right(std::string);
 
-    std::pair<int, int> downleftleft(std::pair<int, int>);
+    static std::string down_left_left(std::string);
 
-    std::pair<int, int> downrightright(std::pair<int, int>);
-protected:
-    ChessColor m_color;
+    static std::string down_right_right(std::string);
 };
-
-using FDirection = std::pair<int, int> (FDirector::*)(std::pair<int, int>);
 
 #endif //CHESS_FDIRECTOR_H

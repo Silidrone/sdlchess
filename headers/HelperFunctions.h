@@ -9,10 +9,10 @@
 #include "Board.h"
 
 namespace HelperFunctions {
-    bool squaresHaveAnyPieces(std::vector<Square *>);
+    std::vector<Square *> squaresBeforeNextPiece(std::vector<Square *>);
 
     std::pair<std::vector<Square *>, std::vector<DirectionalSquares>>
-    get_squares_in_fdirections(Board *, Square *, FDirector *, std::vector<std::pair<Direction, FDirection>>,
+    get_squares_in_fdirections(Board *, Square *, std::vector<std::pair<Direction, FDirection>>,
                                bool = false);
     std::vector<Square *> get_squares_by_direction(std::vector<DirectionalSquares> &, Direction);
 };

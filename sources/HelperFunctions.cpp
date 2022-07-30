@@ -1,21 +1,21 @@
 #include "../headers/HelperFunctions.h"
 
-bool HelperFunctions::squaresHaveAnyPieces(std::vector<Square *> squares) {
-    for (auto &square: squares) {
-        if (square->getPiece() != nullptr) return true;
+std::vector<Square *> HelperFunctions::squaresBeforeNextPiece(std::vector<Square *> squares) {
+    for (auto it = squares.begin(); it != squares.end(); it++) {
+        if ((*it)->getPiece() != nullptr) return std::vector<Square *>(squares.begin(), it);
     }
 
-    return false;
+    return squares;
 }
 
 std::pair<std::vector<Square *>, std::vector<DirectionalSquares>>
-HelperFunctions::get_squares_in_fdirections(Board *board, Square *beginning_square, FDirector *fDirector,
+HelperFunctions::get_squares_in_fdirections(Board *board, Square *beginning_square,
                                             std::vector<std::pair<Direction, FDirection>> directions,
                                             bool one_step) {
     std::vector<DirectionalSquares> result;
     std::vector<Square *> all_squares;
     for (auto &direction: directions) {
-        auto squares = board->get_squares_in_fdirection(beginning_square, fDirector, direction.second, one_step);
+        auto squares = board->get_squares_in_fdirection(beginning_square, direction.second, one_step);
         result.push_back({direction.first, squares});
         all_squares.insert(all_squares.begin(), squares.begin(), squares.end());
     }

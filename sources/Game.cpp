@@ -28,6 +28,7 @@ void Game::run() {
     int mouse_x, mouse_y;
     Piece *selected_piece = nullptr;
     ChessColor turn_color = ChessColor::WHITE;
+    FDirector::color = turn_color;
     while (!quit) {
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_QUIT) {
@@ -45,6 +46,8 @@ void Game::run() {
                     selected_piece->resetPosition();
                 } else {
                     turn_color = static_cast<ChessColor>(!static_cast<bool>(turn_color));
+                    FDirector::color = turn_color;
+                    m_board->rotate180();
                 }
                 selected_piece = nullptr;
             }
