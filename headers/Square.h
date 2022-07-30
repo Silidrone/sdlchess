@@ -2,44 +2,30 @@
 #define CHESS_SQUARE_H
 
 #include "MTexture.h"
-#include "Piece.h"
+#include "ChessColored.h"
+
+class Piece;
 
 // TODO add Board to the ctor of this class and remove from Piece. Logically, a square belongs to a board and a piece belongs to a square
 class Square : public ChessColored {
 public:
-    Square(std::string coordinate, ChessColor c, const MTexture &t, SDL_Rect dest)
-            : m_coordinate(std::move(coordinate)), ChessColored(c), m_texture(t), m_destination(dest),
-              m_piece(nullptr) {
-    }
+    Square(std::string, ChessColor, const MTexture &, SDL_Rect);
 
-    void render() {
-        m_texture.render(m_destination);
-    }
+    void render();
 
-    MTexture getTexture() const { return m_texture; }
+    MTexture getTexture() const;
 
-    void putPiece(Piece *p) {
-        if (m_piece) {
-            delete m_piece;
-            m_piece = nullptr;
-        }
-        m_piece = p;
-    }
+    void putPiece(Piece *);
 
-    void removePiece() {
-        m_piece = nullptr;
-    }
+    void removePiece();
 
-    Piece *getPiece() const { return m_piece; }
+    Piece *getPiece() const;
 
-    void setDestination(int x, int y) {
-        m_destination = {x, y, m_destination.w, m_destination.h};
-        if (m_piece) m_piece->resetPosition();
-    }
+    void setDestination(int, int);
 
-    SDL_Rect getDestination() const { return m_destination; }
+    SDL_Rect getDestination() const;
 
-    std::string getCoordinate() const { return m_coordinate; }
+    std::string getCoordinate() const;
 
 protected:
     MTexture m_texture;

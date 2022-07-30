@@ -1,6 +1,7 @@
 #include "../headers/Game.h"
 #include <SDL2/SDL_image.h>
-#include <iostream>
+#include "../headers/Piece.h"
+#include "../headers/Square.h"
 
 Game::Game() : sharedData(SharedData::instance()), m_board(nullptr) {
     SharedData::instance().init();

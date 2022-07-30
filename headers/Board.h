@@ -2,19 +2,13 @@
 #define CHESS_BOARD_H
 
 #include <string>
-#include "MTexture.h"
-#include "SharedData.h"
 #include <vector>
-#include "Piece.h"
-#include "Square.h"
-#include "King.h"
-#include "Rook.h"
-#include "Knight.h"
-#include "Bishop.h"
-#include "Queen.h"
-#include "Pawn.h"
-#include <cmath>
-#include <functional>
+#include "MTexture.h"
+#include "../headers/FDirector.h"
+
+using DirectionalSquares = std::pair<Direction, std::vector<Square *>>;
+
+class Piece;
 
 class Board {
 private:
@@ -34,6 +28,11 @@ public:
     void rotate180();
 
     std::vector<Square *> get_squares_in_fdirection(Square *, FDirection, bool = false);
+
+    std::pair<std::vector<Square *>, std::vector<DirectionalSquares>>
+    get_squares_in_fdirections(Square *, std::vector<std::pair<Direction, FDirection>>, bool = false);
+
+    std::vector<Square *> get_squares_by_direction(std::vector<DirectionalSquares> &, Direction);
 
     bool coordinateIsValid(std::string);
 

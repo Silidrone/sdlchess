@@ -2,8 +2,13 @@
 #define CHESS_FDIRECTOR_H
 
 #include <string>
+#include <vector>
 #include <functional>
 #include "ChessColored.h"
+#include <map>
+
+class Square;
+class Piece;
 
 enum class Direction {
     UP,
@@ -61,6 +66,8 @@ public:
     static std::string down_left_left(std::string);
 
     static std::string down_right_right(std::string);
+
+    static Direction get_target_direction(Piece *, Square *);
 };
 
 #endif //CHESS_FDIRECTOR_H

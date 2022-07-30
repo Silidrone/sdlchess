@@ -1,5 +1,13 @@
 #include "../headers/Board.h"
-#include <algorithm>
+#include "../headers/SharedData.h"
+#include "../headers/Piece.h"
+#include "../headers/Square.h"
+#include "../headers/King.h"
+#include "../headers/Rook.h"
+#include "../headers/Knight.h"
+#include "../headers/Bishop.h"
+#include "../headers/Queen.h"
+#include "../headers/Pawn.h"
 
 Board::Board(const std::string &w_texture_path, const std::string &b_texture_path)
         : m_squares(), m_pieces() {
@@ -142,6 +150,30 @@ Board::get_squares_in_fdirection(Square *starting_square, FDirection fDirection,
     }
 
     return path_squares;
+}
+
+std::pair<std::vector<Square *>, std::vector<DirectionalSquares>>
+Board::get_squares_in_fdirections(Square *beginning_square, std::vector<std::pair<Direction, FDirection>> directions,
+                                  bool one_step) {
+    std::vector<DirectionalSquares> result;
+    std::vector<Square *> all_squares;
+    for (auto &direction: directions) {
+        auto squares = get_squares_in_fdirection(beginning_square, direction.second, one_step);
+        result.push_back({direction.first, squares});
+        all_squares.insert(all_squares.begin(), squares.begin(), squares.end());
+    }
+
+    return {all_squares, result};
+}
+
+std::vector<Square *> Board::get_squares_by_direction(std::vector<DirectionalSquares> &legal_squares, Direction d) {
+    for (auto &legal_square: legal_squares) {
+        if (legal_square.first == d) {
+            return legal_square.second;
+        }
+    }
+
+    return std::vector<Square *>();
 }
 
 void Board::swapSquares(Square *&a, Square *&b) {

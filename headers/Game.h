@@ -5,6 +5,7 @@
 #include <vector>
 #include "MTexture.h"
 #include "Board.h"
+#include "SharedData.h"
 
 class Game {
 public:

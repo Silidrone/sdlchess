@@ -8,12 +8,9 @@
 #include "SharedData.h"
 #include "ChessColored.h"
 #include "FDirector.h"
-
-class Board;
+#include "../headers/Board.h"
 
 class Square;
-
-using DirectionalSquares = std::pair<Direction, std::vector<Square *>>;
 
 class Piece : public ChessColored {
 public:
@@ -29,11 +26,9 @@ public:
 
     bool fide31(Square *);
 
-    virtual std::pair<std::vector<Square *>, std::vector<DirectionalSquares>> moveable_squares(Square *) = 0;
+    virtual std::vector<Square *> moveable_squares(Square *) = 0;
 
-    bool fide3p(std::vector<Square *> &, Square *);
-
-    virtual bool fide35(std::vector<DirectionalSquares> &, Square *) = 0;
+    bool fide3p(const std::vector<Square *> &, Square *);
 
     bool fide39();
 
@@ -55,7 +50,7 @@ protected:
     Square *m_square;
     Board *m_board;
     MTexture m_texture;
-    SDL_Rect m_destination;
+    SDL_Rect m_destination{};
 };
 
 #endif //CHESS_PIECE_H

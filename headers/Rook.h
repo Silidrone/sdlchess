@@ -1,18 +1,17 @@
 #ifndef CHESS_ROOK_H
 #define CHESS_ROOK_H
 
-#include "Piece.h"
+#include "QRBPiece.h"
 
-class Rook : public Piece {
+class Rook : public QRBPiece {
 public:
-    Rook(ChessColor c, Square *square, Board *b) : Piece(c, square, b, MTexture(SharedData::instance().getRenderer(),
+    Rook(ChessColor c, Square *square, Board *b) : QRBPiece(c, square, b, MTexture(SharedData::instance().getRenderer(),
                                                                  c == ChessColor::WHITE ? "../resources/w_rook.png"
                                                                                         : "../resources/b_rook.png")) {
 
     }
 
-    std::pair< std::vector<Square *>, std::vector<DirectionalSquares>> moveable_squares(Square *) override;
-    bool fide35(std::vector<DirectionalSquares> &, Square *) override;
+    std::vector<std::pair<Direction, FDirection>> getDirections() override;
 };
 
 #endif //CHESS_ROOK_H

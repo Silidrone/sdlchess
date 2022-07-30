@@ -1,9 +1,8 @@
 #include "../headers/Knight.h"
-#include "../headers/HelperFunctions.h"
 
-std::pair<std::vector<Square *>, std::vector<DirectionalSquares>> Knight::moveable_squares(Square *) {
-    return HelperFunctions::get_squares_in_fdirections(
-            m_board, m_square,
+std::vector<Square *> Knight::moveable_squares(Square *) {
+    return m_board->get_squares_in_fdirections(
+            m_square,
             {
                     {Direction::UP_UP_LEFT,       &FDirector::up_up_left},
                     {Direction::UP_UP_RIGHT,      &FDirector::up_up_right},
@@ -13,7 +12,5 @@ std::pair<std::vector<Square *>, std::vector<DirectionalSquares>> Knight::moveab
                     {Direction::UP_RIGHT_RIGHT,   &FDirector::up_right_right},
                     {Direction::DOWN_LEFT_LEFT,   &FDirector::down_left_left},
                     {Direction::DOWN_RIGHT_RIGHT, &FDirector::down_right_right},
-            }, true);
+            }, true).first;
 }
-
-bool Knight::fide35(std::vector<DirectionalSquares> &, Square *) { return true; }

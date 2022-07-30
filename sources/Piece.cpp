@@ -1,6 +1,7 @@
 #include "../headers/Piece.h"
 #include "../headers/Square.h"
 #include "../headers/HelperFunctions.h"
+#include "../headers/King.h"
 #include <algorithm>
 
 Piece::Piece(ChessColor c, Square *square, Board *board, const MTexture &texture)
@@ -15,13 +16,13 @@ bool Piece::fide12(Square *target) {
 
 bool Piece::fide31(Square *target) {
     Piece *target_piece = target->getPiece();
-    return target_piece == nullptr || (target_piece->getColor() != this->getColor());
+    return target_piece == nullptr || (target_piece->getColor() != getColor());
 }
 
-bool Piece::fide3p(std::vector<Square *> &legal_squares, Square *target) {
-    return find_if(legal_squares.begin(), legal_squares.end(),
+bool Piece::fide3p(const std::vector<Square *> &squares, Square *target) {
+    return find_if(squares.begin(), squares.end(),
                    [&target](Square *s) { return s->getCoordinate() == target->getCoordinate(); }) !=
-           legal_squares.end();
+           squares.end();
 }
 
 //TODO finish the implementation of fide39 rule
@@ -30,14 +31,13 @@ bool Piece::fide39() {
 }
 
 bool Piece::move(Square *target) {
-    auto legal_squares = moveable_squares(target);
     bool bfide12 = fide12(target);
     bool bfide31 = fide31(target);
-    bool bfide3p = fide3p(legal_squares.first, target);
-    bool bfide35 = fide35(legal_squares.second, target);
+    auto legal_squares = moveable_squares(target);
+    bool bfide3p = fide3p(legal_squares, target);
     bool bfide39 = fide39();
-    bool move_legal = bfide12 && bfide31 && bfide3p && bfide35 && bfide39;
-    if(move_legal) {
+    bool move_legal = bfide12 && bfide31 && bfide3p && bfide39;
+    if (move_legal) {
         setSquare(target);
     }
 
