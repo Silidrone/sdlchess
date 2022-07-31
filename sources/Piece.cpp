@@ -71,3 +71,12 @@ void Piece::render() {
 }
 
 Square *Piece::getSquare() const { return m_square; }
+
+void Piece::setRenderPriority(int rp) {
+    m_render_priority = rp;
+    m_board->updateRenderOrder();
+}
+
+int Piece::getRenderPriority() const {
+    return m_render_priority;
+}

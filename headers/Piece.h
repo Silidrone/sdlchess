@@ -14,6 +14,8 @@ class Square;
 
 class Piece : public ChessColored {
 public:
+    static const int DEFAULT_RENDER_PRIORITY = 0;
+
     Piece(ChessColor, Square *, Board *, const MTexture &);
 
     Piece(const Piece &other) = default;
@@ -46,10 +48,15 @@ public:
 
     Square *getSquare() const;
 
+    void setRenderPriority(int);
+
+    int getRenderPriority() const;
+
 protected:
     Square *m_square;
     Board *m_board;
     MTexture m_texture;
+    int m_render_priority = 0; //TODO check if it is UB to assign this to Piece::DEFAULT_RENDER_PRIORITY if not then do it
     SDL_Rect m_destination{};
 };
 

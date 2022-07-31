@@ -19,8 +19,8 @@ std::vector<Square *> Pawn::moveable_squares(Square *target) {
         result.push_back(m_board->get_square_by_coordinate(FDirector::up(next_up_square->getCoordinate())));
     }
     // if the target square contains a piece and if it is to the upleft or to the upright of the pawn, add it to result
-    if (target->getPiece() != nullptr || FDirector::up_left(current_coordinate) == target->getCoordinate() ||
-        FDirector::up_right(current_coordinate) == target->getCoordinate()) {
+    if (target->getPiece() != nullptr && (FDirector::up_left(current_coordinate) == target->getCoordinate() ||
+        FDirector::up_right(current_coordinate) == target->getCoordinate())) {
         result.push_back(target);
     }
 

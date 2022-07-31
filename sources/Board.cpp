@@ -8,6 +8,7 @@
 #include "../headers/Bishop.h"
 #include "../headers/Queen.h"
 #include "../headers/Pawn.h"
+#include <algorithm>
 
 Board::Board(const std::string &w_texture_path, const std::string &b_texture_path)
         : m_squares(), m_pieces() {
@@ -165,6 +166,12 @@ Board::get_squares_in_fdirections(Square *beginning_square, std::vector<std::pai
     }
 
     return {all_squares, result};
+}
+
+void Board::updateRenderOrder() {
+    std::sort(m_pieces.begin(), m_pieces.end(), [](Piece *&a, Piece *&b) -> bool {
+        return a->getRenderPriority() > b->getRenderPriority();
+    });
 }
 
 void Board::rotate180() {

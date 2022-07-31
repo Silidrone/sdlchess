@@ -38,8 +38,10 @@ void Game::run() {
             if (e.type == SDL_MOUSEBUTTONDOWN) {
                 SDL_GetMouseState(&mouse_x, &mouse_y);
                 Piece *tmp_piece = m_board->get_square_by_screen_position(mouse_x, mouse_y)->getPiece();
-                if(tmp_piece && turn_color == tmp_piece->getColor())
+                if(tmp_piece && turn_color == tmp_piece->getColor()) {
                     selected_piece = tmp_piece;
+                    selected_piece->setRenderPriority(-1);
+                }
             }
             if (e.type == SDL_MOUSEBUTTONUP && selected_piece) {
                 SDL_GetMouseState(&mouse_x, &mouse_y);
@@ -50,6 +52,7 @@ void Game::run() {
                     FDirector::color = turn_color;
                     m_board->rotate180();
                 }
+                selected_piece->setRenderPriority(Piece::DEFAULT_RENDER_PRIORITY);
                 selected_piece = nullptr;
             }
             if (e.type == SDL_MOUSEMOTION && selected_piece) {

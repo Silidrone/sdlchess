@@ -23,6 +23,8 @@ public:
 
     void render();
 
+    void updateRenderOrder();
+
     void rotate180();
 
     std::vector<Square *> get_squares_in_fdirection(Square *, FDirection, bool = false);
