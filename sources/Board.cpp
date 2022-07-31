@@ -21,14 +21,14 @@ Board::Board(const std::string &w_texture_path, const std::string &b_texture_pat
     bool square_white = static_cast<bool>(ChessColor::BLACK);
 
     for (int i = 0; i < ROW_SQUARE_COUNT; i++) {
-        m_coordinate_textures.push_back(std::pair<SDL_Rect, MTexture>(
+        m_coordinate_textures.at(0).push_back(std::pair<SDL_Rect, MTexture>(
                 {5, i * square_height + 5, 25, 25}, MTexture(renderer,
                                                              std::string() +
                                                              static_cast<char>('0' + COLUMN_SQUARE_COUNT - i),
                                                              text_color)));
         for (int j = 0; j < COLUMN_SQUARE_COUNT; j++, square_white = !square_white) {
             if (i == ROW_SQUARE_COUNT - 1) {
-                m_coordinate_textures.push_back(std::pair<SDL_Rect, MTexture>(
+                m_coordinate_textures.at(1).push_back(std::pair<SDL_Rect, MTexture>(
                         {j * square_width + (square_width - 30), i * square_height + (square_height - 30), 25, 25},
                         MTexture(renderer, std::string() + static_cast<char>('a' + j), text_color)));
             }
@@ -88,7 +88,6 @@ Board::Board(const std::string &w_texture_path, const std::string &b_texture_pat
     };
 }
 
-
 void Board::render() {
     for (auto &square: m_squares) {
         square->render();
@@ -98,8 +97,10 @@ void Board::render() {
         piece->render();
     }
 
-    for (auto &pair: m_coordinate_textures) {
-        pair.second.render(pair.first);
+    for (auto &crc: m_coordinate_textures) {
+        for (auto &dest_texture_pair: crc) {
+            dest_texture_pair.second.render(dest_texture_pair.first);
+        }
     }
 }
 
@@ -166,22 +167,6 @@ Board::get_squares_in_fdirections(Square *beginning_square, std::vector<std::pai
     return {all_squares, result};
 }
 
-std::vector<Square *> Board::get_squares_by_direction(std::vector<DirectionalSquares> &legal_squares, Direction d) {
-    for (auto &legal_square: legal_squares) {
-        if (legal_square.first == d) {
-            return legal_square.second;
-        }
-    }
-
-    return std::vector<Square *>();
-}
-
-void Board::swapSquares(Square *&a, Square *&b) {
-    Square *c = a;
-    a = b;
-    b = c;
-}
-
 void Board::rotate180() {
     for (int i = 0, j = COLUMN_SQUARE_COUNT - 1; i <= ROW_SQUARE_COUNT / 2 - 1 && j >= ROW_SQUARE_COUNT / 2; i++, j--) {
         for (int k = 0; k < ROW_SQUARE_COUNT; k++) {
@@ -191,8 +176,12 @@ void Board::rotate180() {
             SDL_Rect b_destination = b->getDestination();
             a->setDestination(b_destination.x, b_destination.y);
             b->setDestination(a_destination.x, a_destination.y);
-
-            swapSquares(m_squares[i * ROW_SQUARE_COUNT + k], m_squares[j * ROW_SQUARE_COUNT + k]);
         }
+    }
+    auto &row_coordinate_textures = m_coordinate_textures[0];
+    for (int i = 0; i < row_coordinate_textures.size() / 2; i++) {
+        SDL_Rect tmp_rect = row_coordinate_textures[i].first;
+        row_coordinate_textures[i].first = row_coordinate_textures[row_coordinate_textures.size() - i - 1].first;
+        row_coordinate_textures[row_coordinate_textures.size() - i - 1].first = tmp_rect;
     }
 }

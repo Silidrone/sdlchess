@@ -5,15 +5,13 @@
 #include <vector>
 #include "MTexture.h"
 #include "../headers/FDirector.h"
+#include <array>
 
 using DirectionalSquares = std::pair<Direction, std::vector<Square *>>;
 
 class Piece;
 
 class Board {
-private:
-    void swapSquares(Square *&, Square *&);
-
 public:
     static const int ROW_SQUARE_COUNT = 8;
     static const int COLUMN_SQUARE_COUNT = 8;
@@ -32,8 +30,6 @@ public:
     std::pair<std::vector<Square *>, std::vector<DirectionalSquares>>
     get_squares_in_fdirections(Square *, std::vector<std::pair<Direction, FDirection>>, bool = false);
 
-    std::vector<Square *> get_squares_by_direction(std::vector<DirectionalSquares> &, Direction);
-
     bool coordinateIsValid(std::string);
 
     Square *get_square_by_coordinate(const std::string &);
@@ -43,7 +39,7 @@ public:
 protected:
     std::vector<Square *> m_squares{};
     std::vector<Piece *> m_pieces{};
-    std::vector<std::pair<SDL_Rect, MTexture>> m_coordinate_textures;
+    std::array<std::vector<std::pair<SDL_Rect, MTexture>>, 2> m_coordinate_textures;
 };
 
 #endif //CHESS_BOARD_H
