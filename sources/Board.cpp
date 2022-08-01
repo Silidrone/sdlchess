@@ -87,6 +87,8 @@ Board::Board(const std::string &w_texture_path, const std::string &b_texture_pat
             new Pawn(ChessColor::BLACK, m_squares[49], this),
             new Pawn(ChessColor::BLACK, m_squares[48], this),
     };
+
+    updateAttackedSquares();
 }
 
 void Board::render() {
@@ -102,6 +104,22 @@ void Board::render() {
         for (auto &dest_texture_pair: crc) {
             dest_texture_pair.second.render(dest_texture_pair.first);
         }
+    }
+
+    for (auto &square: m_squares) {
+        auto destination = square->getDestination();
+        MTexture white_attack_count_texture(SharedData::instance().getRenderer(),
+                                            std::string("W: ") +
+                                            static_cast<char>('0' + square->getAttackCount(ChessColor::WHITE)),
+                                            SDL_Color({255, 0, 0}));
+        MTexture black_attack_count_texture(SharedData::instance().getRenderer(),
+                                            std::string("B: ") +
+                                            static_cast<char>('0' + square->getAttackCount(ChessColor::BLACK)),
+                                            SDL_Color({0, 0, 255}));
+        white_attack_count_texture.render({destination.x + destination.w / 2 - 30, destination.y + destination.h / 2,
+                                           35, 35});
+        black_attack_count_texture.render({destination.x + destination.w / 2 + 20, destination.y + destination.h / 2,
+                                           35, 35});
     }
 }
 
@@ -131,9 +149,9 @@ bool Board::coordinateIsValid(std::string coordinate) {
 }
 
 std::vector<Square *>
-Board::get_squares_in_fdirection(Square *starting_square, FDirection fDirection, bool one_step) {
+Board::get_squares_in_fdirection(Piece *starting_piece, FDirection fDirection, bool one_step) {
     std::vector<Square *> path_squares;
-    std::string coordinate = fDirection(starting_square->getCoordinate());
+    std::string coordinate = (starting_piece->getFDirector().*fDirection)(starting_piece->getSquare()->getCoordinate());
 
     auto square_add = [this, &coordinate, &path_squares]() {
         Square *s = get_square_by_coordinate(coordinate);
@@ -145,7 +163,7 @@ Board::get_squares_in_fdirection(Square *starting_square, FDirection fDirection,
     if (!one_step) {
         while (coordinateIsValid(coordinate)) {
             square_add();
-            coordinate = fDirection(coordinate);
+            coordinate = (starting_piece->getFDirector().*fDirection)(coordinate);
         }
     } else {
         square_add();
@@ -155,14 +173,14 @@ Board::get_squares_in_fdirection(Square *starting_square, FDirection fDirection,
 }
 
 std::pair<std::vector<Square *>, std::vector<DirectionalSquares>>
-Board::get_squares_in_fdirections(Square *beginning_square, std::vector<std::pair<Direction, FDirection>> directions,
+Board::get_squares_in_fdirections(Piece *starting_piece, std::vector<std::pair<Direction, FDirection>> directions,
                                   bool one_step) {
     std::vector<DirectionalSquares> result;
     std::vector<Square *> all_squares;
     for (auto &direction: directions) {
-        auto squares = get_squares_in_fdirection(beginning_square, direction.second, one_step);
+        auto squares = get_squares_in_fdirection(starting_piece, direction.second, one_step);
         result.push_back({direction.first, squares});
-        all_squares.insert(all_squares.begin(), squares.begin(), squares.end());
+        all_squares.insert(all_squares.end(), squares.begin(), squares.end());
     }
 
     return {all_squares, result};
@@ -191,4 +209,23 @@ void Board::rotate180() {
         row_coordinate_textures[i].first = row_coordinate_textures[row_coordinate_textures.size() - i - 1].first;
         row_coordinate_textures[row_coordinate_textures.size() - i - 1].first = tmp_rect;
     }
+}
+
+void Board::updateAttackedSquares() {
+    for (auto &piece: m_pieces) {
+        piece->unattack_squares();
+        piece->attack_squares();
+    }
+}
+
+void Board::removePiece(Piece *p) {
+    for (auto it = m_pieces.begin(); it != m_pieces.end(); it++) {
+        if ((*it)->getSquare()->getCoordinate() == p->getSquare()->getCoordinate()) {
+            m_pieces.erase(it);
+        }
+    }
+//    std::remove_if(m_pieces.begin(), m_pieces.end(),
+//                   [&p](Piece *piece) {
+//                       return piece->getSquare()->getCoordinate() == p->getSquare()->getCoordinate();
+//                   });
 }

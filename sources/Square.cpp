@@ -3,7 +3,7 @@
 
 Square::Square(std::string coordinate, ChessColor c, const MTexture &t, SDL_Rect dest)
         : m_coordinate(std::move(coordinate)), ChessColored(c), m_texture(t), m_destination(dest),
-          m_piece(nullptr) {
+          m_piece(nullptr), m_white_attack_count(0), m_black_attack_count(0) {
 }
 
 void Square::render() {
@@ -16,6 +16,7 @@ MTexture Square::getTexture() const {
 
 void Square::putPiece(Piece *p) {
     if (m_piece) {
+        m_piece->removePieceFromBoard();
         delete m_piece;
         m_piece = nullptr;
     }
@@ -41,4 +42,28 @@ SDL_Rect Square::getDestination() const {
 
 std::string Square::getCoordinate() const {
     return m_coordinate;
+}
+
+void Square::attack(ChessColor c) {
+    if (c == ChessColor::WHITE) {
+        m_white_attack_count++;
+    } else {
+        m_black_attack_count++;
+    }
+}
+
+void Square::unattack(ChessColor c) {
+    if (c == ChessColor::WHITE) {
+        m_white_attack_count--;
+    } else {
+        m_black_attack_count--;
+    }
+}
+
+bool Square::isAttacked(ChessColor c) const {
+    return c == ChessColor::WHITE ? (m_white_attack_count > 0) : (m_black_attack_count > 0);
+}
+
+int Square::getAttackCount(ChessColor c) const {
+    return c == ChessColor::WHITE ? m_white_attack_count : m_black_attack_count;
 }

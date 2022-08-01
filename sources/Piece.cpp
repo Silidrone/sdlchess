@@ -5,9 +5,11 @@
 #include <algorithm>
 
 Piece::Piece(ChessColor c, Square *square, Board *board, const MTexture &texture)
-        : ChessColored(c), m_square(nullptr), m_board(board), m_texture(texture) {
+        : ChessColored(c), m_square(nullptr), m_board(board), m_texture(texture), m_fDirector(c) {
     setSquare(square);
 }
+
+Piece::~Piece() {}
 
 //From fide 1.2: "...and also ’capturing’ the opponent’s king are not allowed"
 bool Piece::fide12(Square *target) {
@@ -30,15 +32,40 @@ bool Piece::fide39() {
     return true;
 }
 
+std::vector<Square *> Piece::moveable_squares(std::vector<Square *> &attacked_squares) {
+    std::vector<Square *> result;
+    for (auto &attacked_square: attacked_squares) {
+        if (can_move_to_attacked(attacked_square)) {
+            result.push_back(attacked_square);
+        }
+    }
+
+    return result;
+}
+
+void Piece::attack_squares() {
+    m_squares_attacked = attacked_squares();
+    for (auto &attacked_square: m_squares_attacked) {
+        attacked_square->attack(m_color);
+    }
+}
+
+void Piece::unattack_squares() {
+    for (auto &attacked_square: m_squares_attacked) {
+        attacked_square->unattack(m_color);
+    }
+
+    m_squares_attacked.clear();
+}
+
 bool Piece::move(Square *target) {
-    bool bfide12 = fide12(target);
-    bool bfide31 = fide31(target);
-    auto legal_squares = moveable_squares(target);
-    bool bfide3p = fide3p(legal_squares, target);
-    bool bfide39 = fide39();
-    bool move_legal = bfide12 && bfide31 && bfide3p && bfide39;
+    if(!fide12(target) || !fide31(target)) return false;
+    auto squares_attacked = attacked_squares();
+    auto legal_squares = moveable_squares(squares_attacked);
+    bool move_legal = fide3p(legal_squares, target);
     if (move_legal) {
         setSquare(target);
+        m_board->updateAttackedSquares();
     }
 
     return move_legal;
@@ -48,8 +75,8 @@ void Piece::setSquare(Square *square) {
     if (m_square) {
         m_square->removePiece();
     }
-    m_square = square;
     square->putPiece(this);
+    m_square = square;
     m_destination = square->getDestination();
 }
 
@@ -79,4 +106,12 @@ void Piece::setRenderPriority(int rp) {
 
 int Piece::getRenderPriority() const {
     return m_render_priority;
+}
+
+FDirector Piece::getFDirector() const {
+    return m_fDirector;
+}
+
+void Piece::removePieceFromBoard() {
+    m_board->removePiece(this);
 }

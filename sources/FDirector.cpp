@@ -3,22 +3,22 @@
 #include "../headers/Square.h"
 #include "../headers/Piece.h"
 
-ChessColor FDirector::color;
+FDirector::FDirector(ChessColor c) : m_color(c) {}
 
 std::string FDirector::up(std::string coordinate) {
-    return std::string() + coordinate[0] + static_cast<char>(coordinate[1] + (color == ChessColor::WHITE ? 1 : -1));
+    return std::string() + coordinate[0] + static_cast<char>(coordinate[1] + (m_color == ChessColor::WHITE ? 1 : -1));
 }
 
 std::string FDirector::down(std::string coordinate) {
-    return std::string() + coordinate[0] + static_cast<char>(coordinate[1] - (color == ChessColor::WHITE ? 1 : -1));
+    return std::string() + coordinate[0] + static_cast<char>(coordinate[1] - (m_color == ChessColor::WHITE ? 1 : -1));
 }
 
 std::string FDirector::left(std::string coordinate) {
-    return std::string() + static_cast<char>(coordinate[0] - (color == ChessColor::WHITE ? 1 : -1)) + coordinate[1];
+    return std::string() + static_cast<char>(coordinate[0] - (m_color == ChessColor::WHITE ? 1 : -1)) + coordinate[1];
 }
 
 std::string FDirector::right(std::string coordinate) {
-    return std::string() + static_cast<char>(coordinate[0] + (color == ChessColor::WHITE ? 1 : -1)) + coordinate[1];
+    return std::string() + static_cast<char>(coordinate[0] + (m_color == ChessColor::WHITE ? 1 : -1)) + coordinate[1];
 }
 
 std::string FDirector::up_left(std::string coordinate) {
@@ -77,7 +77,7 @@ Direction FDirector::get_target_direction(Piece *this_piece, Square *target_squa
     bool left = target_coordinate[0] < this_coordinate[0];
     bool same_column = target_coordinate[0] == this_coordinate[0];
 
-    if (color == ChessColor::BLACK) {
+    if (m_color == ChessColor::BLACK) {
         up = !up;
         left = !left;
     }

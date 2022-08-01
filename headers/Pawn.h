@@ -5,14 +5,13 @@
 
 class Pawn : public Piece {
 public:
-    Pawn(ChessColor c, Square *square, Board *b) : Piece(c, square, b, MTexture(SharedData::instance().getRenderer(),
-                                                                                c == ChessColor::WHITE
-                                                                                ? "../resources/w_pawn.png"
-                                                                                : "../resources/b_pawn.png")) {
+    Pawn(ChessColor, Square *, Board *);
 
-    }
+    std::vector<Square *> attacked_squares() override;
 
-    std::vector<Square *> moveable_squares(Square *) override;
+    bool can_move_to_attacked(Square *) override;
+
+    std::vector<Square *> moveable_squares(std::vector<Square *> &) override;
 };
 
 #endif //CHESS_PAWN_H

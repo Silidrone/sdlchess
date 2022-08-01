@@ -5,11 +5,7 @@
 
 class Rook : public QRBPiece {
 public:
-    Rook(ChessColor c, Square *square, Board *b) : QRBPiece(c, square, b, MTexture(SharedData::instance().getRenderer(),
-                                                                 c == ChessColor::WHITE ? "../resources/w_rook.png"
-                                                                                        : "../resources/b_rook.png")) {
-
-    }
+    Rook(ChessColor, Square *, Board *);
 
     std::vector<std::pair<Direction, FDirection>> getDirections() override;
 };

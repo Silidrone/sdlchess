@@ -5,13 +5,11 @@
 
 class Knight : public Piece {
 public:
-    Knight(ChessColor c, Square *square, Board *b) : Piece(c, square, b, MTexture(SharedData::instance().getRenderer(),
-                                                                   c == ChessColor::WHITE ? "../resources/w_knight.png"
-                                                                                          : "../resources/b_knight.png")) {
+    Knight(ChessColor, Square *, Board *);
 
-    }
+    std::vector<Square *> attacked_squares() override;
 
-    std::vector<Square *> moveable_squares(Square *) override;
+    bool can_move_to_attacked(Square *) override;
 };
 
 #endif //CHESS_KNIGHT_H

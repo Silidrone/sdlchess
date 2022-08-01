@@ -3,15 +3,14 @@
 
 QRBPiece::QRBPiece(ChessColor c, Square *s, Board *b, const MTexture &t) : Piece(c, s, b, t) {}
 
+QRBPiece::~QRBPiece() {}
+
 std::vector<Square *>
 QRBPiece::squaresBeforeNextPieceInDirection(const DirectionalSquares &directional_squares) {
     auto it = directional_squares.second.begin();
     for (; it != directional_squares.second.end(); it++) {
-        Piece *p = (*it)->getPiece();
-        if (p != nullptr) {
-            if (getColor() != p->getColor()) {
-                it++;
-            }
+        if ((*it)->getPiece() != nullptr) {
+            it++;
             break;
         }
     }
@@ -23,12 +22,17 @@ std::vector<Square *> QRBPiece::squaresBeforeNextPieceInDirections(const std::ve
     std::vector<Square *> result;
     for (auto &ds: dss) {
         auto squares = squaresBeforeNextPieceInDirection(ds);
-        result.insert(result.begin(), squares.begin(), squares.end());
+        result.insert(result.end(), squares.begin(), squares.end());
     }
 
     return result;
 }
 
-std::vector<Square *> QRBPiece::moveable_squares(Square *target) {
-    return squaresBeforeNextPieceInDirections(m_board->get_squares_in_fdirections(m_square, getDirections()).second);
+std::vector<Square *> QRBPiece::attacked_squares() {
+    return squaresBeforeNextPieceInDirections(m_board->get_squares_in_fdirections(this, getDirections()).second);
+}
+
+bool QRBPiece::can_move_to_attacked(Square *s) {
+    Piece *p = s->getPiece();
+    return p == nullptr || p->getColor() != getColor();
 }

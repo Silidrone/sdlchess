@@ -9,9 +9,10 @@ private:
     std::vector<Square *> squaresBeforeNextPieceInDirections(const std::vector<DirectionalSquares>&);
 public:
     QRBPiece(ChessColor, Square *, Board *, const MTexture &);
+    virtual ~QRBPiece();
     virtual std::vector<std::pair<Direction, FDirection>> getDirections() = 0;
-    std::vector<Square *> moveable_squares(Square *) override;
-
+    std::vector<Square *> attacked_squares() override;
+    bool can_move_to_attacked(Square *) override;
 };
 
 #endif //CHESS_QRBPIECE_H

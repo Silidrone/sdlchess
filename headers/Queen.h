@@ -5,12 +5,7 @@
 
 class Queen : public QRBPiece {
 public:
-    Queen(ChessColor c, Square *square, Board *b) :
-            QRBPiece(c, square, b, MTexture(SharedData::instance().getRenderer(), c == ChessColor::WHITE
-                                                                                  ? "../resources/w_queen.png"
-                                                                                  : "../resources/b_queen.png")) {
-
-    }
+    Queen(ChessColor, Square *, Board *);
 
     std::vector<std::pair<Direction, FDirection>> getDirections() override;
 };

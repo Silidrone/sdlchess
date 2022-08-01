@@ -20,7 +20,7 @@ public:
 
     Piece(const Piece &other) = default;
 
-    virtual ~Piece() {};
+    virtual ~Piece();
 
     Piece &operator=(const Piece &) = default;
 
@@ -28,7 +28,15 @@ public:
 
     bool fide31(Square *);
 
-    virtual std::vector<Square *> moveable_squares(Square *) = 0;
+    void attack_squares();
+
+    void unattack_squares();
+
+    virtual std::vector<Square *> attacked_squares() = 0;
+
+    virtual bool can_move_to_attacked(Square *) = 0;
+
+    virtual std::vector<Square *> moveable_squares(std::vector<Square *>&);
 
     bool fide3p(const std::vector<Square *> &, Square *);
 
@@ -52,12 +60,17 @@ public:
 
     int getRenderPriority() const;
 
+    FDirector getFDirector() const;
+
+    void removePieceFromBoard();
 protected:
     Square *m_square;
     Board *m_board;
     MTexture m_texture;
     int m_render_priority = 0; //TODO check if it is UB to assign this to Piece::DEFAULT_RENDER_PRIORITY if not then do it
     SDL_Rect m_destination{};
+    FDirector m_fDirector;
+    std::vector<Square *> m_squares_attacked;
 };
 
 #endif //CHESS_PIECE_H

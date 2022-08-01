@@ -3,6 +3,7 @@
 
 #include "MTexture.h"
 #include "ChessColored.h"
+#include "FDirector.h"
 
 class Piece;
 
@@ -27,10 +28,19 @@ public:
 
     std::string getCoordinate() const;
 
+    void attack(ChessColor);
+
+    void unattack(ChessColor);
+
+    bool isAttacked(ChessColor) const;
+
+    int getAttackCount(ChessColor) const;
 protected:
     MTexture m_texture;
     Piece *m_piece;
     SDL_Rect m_destination;
+    int m_white_attack_count;
+    int m_black_attack_count;
     // TODO this implies that m_coordinate can be a string of any size, when it must only be 2 characters, this should be changed to char[2]
     std::string m_coordinate;
 };

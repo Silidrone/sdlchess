@@ -27,10 +27,10 @@ public:
 
     void rotate180();
 
-    std::vector<Square *> get_squares_in_fdirection(Square *, FDirection, bool = false);
+    std::vector<Square *> get_squares_in_fdirection(Piece *, FDirection, bool = false);
 
     std::pair<std::vector<Square *>, std::vector<DirectionalSquares>>
-    get_squares_in_fdirections(Square *, std::vector<std::pair<Direction, FDirection>>, bool = false);
+    get_squares_in_fdirections(Piece *, std::vector<std::pair<Direction, FDirection>>, bool = false);
 
     bool coordinateIsValid(std::string);
 
@@ -38,6 +38,9 @@ public:
 
     Square *get_square_by_screen_position(int, int);
 
+    void removePiece(Piece *);
+
+    void updateAttackedSquares();
 protected:
     std::vector<Square *> m_squares{};
     std::vector<Piece *> m_pieces{};

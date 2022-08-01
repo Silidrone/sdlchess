@@ -1,8 +1,14 @@
 #include "../headers/Knight.h"
 
-std::vector<Square *> Knight::moveable_squares(Square *) {
+Knight::Knight(ChessColor c, Square *square, Board *b) : Piece(c, square, b,
+                                                               MTexture(SharedData::instance().getRenderer(),
+                                                                        c == ChessColor::WHITE
+                                                                        ? "../resources/w_knight.png"
+                                                                        : "../resources/b_knight.png")) {}
+
+std::vector<Square *> Knight::attacked_squares() {
     return m_board->get_squares_in_fdirections(
-            m_square,
+            this,
             {
                     {Direction::UP_UP_LEFT,       &FDirector::up_up_left},
                     {Direction::UP_UP_RIGHT,      &FDirector::up_up_right},
@@ -14,3 +20,5 @@ std::vector<Square *> Knight::moveable_squares(Square *) {
                     {Direction::DOWN_RIGHT_RIGHT, &FDirector::down_right_right},
             }, true).first;
 }
+
+bool Knight::can_move_to_attacked(Square *) { return true; }
