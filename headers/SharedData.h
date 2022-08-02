@@ -16,8 +16,6 @@ private:
     SharedData() : m_window(nullptr), m_renderer(nullptr), m_font(nullptr), initialized(false) {}
 
 public:
-    ChessColor turn_color;
-
     static SharedData &instance() {
         static SharedData INSTANCE;
         return INSTANCE;

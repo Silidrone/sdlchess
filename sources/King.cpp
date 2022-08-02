@@ -1,5 +1,4 @@
 #include "../headers/King.h"
-#include "../headers/Square.h"
 
 std::vector<Square *> King::attacked_squares() {
     return m_board->get_squares_in_fdirections(
@@ -17,5 +16,6 @@ std::vector<Square *> King::attacked_squares() {
 }
 
 bool King::can_move_to_attacked(Square *s) {
-    return !s->isAttacked(static_cast<ChessColor>(!static_cast<bool>(getColor())));
+    Piece *p = s->getPiece();
+    return (p == nullptr || p->getColor() != getColor()) && !s->isAttacked(static_cast<ChessColor>(!static_cast<bool>(getColor())));
 }

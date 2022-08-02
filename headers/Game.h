@@ -24,6 +24,8 @@ public:
 protected:
     SharedData& sharedData;
     Board *m_board;
+    bool m_game_over;
+    ChessColor m_turn_color;
 };
 
 #endif //CHESS_GAME_H
