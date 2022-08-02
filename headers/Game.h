@@ -8,11 +8,19 @@
 #include "SharedData.h"
 
 class Game {
-public:
+private:
     Game();
     ~Game();
+
+public:
+    static Game &instance() {
+        static Game INSTANCE;
+        return INSTANCE;
+    }
+
     void init();
     void run();
+    void over();
 protected:
     SharedData& sharedData;
     Board *m_board;

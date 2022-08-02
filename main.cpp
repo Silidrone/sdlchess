@@ -3,7 +3,6 @@
 
 int main(int argc, char *args[]) {
     std::cout << "main" << std::endl;
-    Game game;
-    game.init();
-    game.run();
+    Game::instance().init();
+    Game::instance().run();
 }

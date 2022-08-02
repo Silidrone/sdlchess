@@ -8,6 +8,10 @@ Square::Square(std::string coordinate, ChessColor c, const MTexture &t, SDL_Rect
 
 void Square::render() {
     m_texture.render(m_destination);
+    if(m_piece) {
+        MTexture m(SharedData::instance().getRenderer(), "X", {0, 255, 0});
+        m.render(m_destination);
+    }
 }
 
 MTexture Square::getTexture() const {

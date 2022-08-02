@@ -72,8 +72,8 @@ bool Piece::move(Square *target) {
     if (target_piece) {
         target_piece->unattack_squares();
         target_piece->removePieceFromBoard();
+        target->removePiece();
     }
-    target->removePiece();
     target->putPiece(this);
     Square *previous_square = m_square;
     this->setSquare(target);
@@ -85,6 +85,8 @@ bool Piece::move(Square *target) {
         if(target_piece) {
             target->putPiece(target_piece);
             m_board->addPiece(target_piece);
+        } else {
+            target->removePiece();
         }
         m_board->updateAttackedSquares();
         return false;
