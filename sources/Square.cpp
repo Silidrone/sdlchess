@@ -15,11 +15,6 @@ MTexture Square::getTexture() const {
 }
 
 void Square::putPiece(Piece *p) {
-    if (m_piece) {
-        m_piece->removePieceFromBoard();
-        delete m_piece;
-        m_piece = nullptr;
-    }
     m_piece = p;
 }
 

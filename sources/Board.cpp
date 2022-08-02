@@ -224,8 +224,17 @@ void Board::removePiece(Piece *p) {
             m_pieces.erase(it);
         }
     }
-//    std::remove_if(m_pieces.begin(), m_pieces.end(),
-//                   [&p](Piece *piece) {
-//                       return piece->getSquare()->getCoordinate() == p->getSquare()->getCoordinate();
-//                   });
+}
+
+void Board::addPiece(Piece *p) {
+    m_pieces.push_back(p);
+}
+
+King *Board::getKing(ChessColor c) {
+    for (auto &piece: m_pieces) {
+        King *king = dynamic_cast<King *>(piece);
+        if (king != nullptr && king->getColor() == c) return king;
+    }
+
+    return nullptr;
 }

@@ -6,6 +6,7 @@
 
 Piece::Piece(ChessColor c, Square *square, Board *board, const MTexture &texture)
         : ChessColored(c), m_square(nullptr), m_board(board), m_texture(texture), m_fDirector(c) {
+    square->putPiece(this);
     setSquare(square);
 }
 
@@ -29,7 +30,8 @@ bool Piece::fide3p(const std::vector<Square *> &squares, Square *target) {
 
 //TODO finish the implementation of fide39 rule
 bool Piece::fide39() {
-    return true;
+    King *king = m_board->getKing(getColor());
+    return king == nullptr || !king->getSquare()->isAttacked(static_cast<ChessColor>(!static_cast<bool>(getColor())));
 }
 
 std::vector<Square *> Piece::moveable_squares(std::vector<Square *> &attacked_squares) {
@@ -59,23 +61,41 @@ void Piece::unattack_squares() {
 }
 
 bool Piece::move(Square *target) {
-    if(!fide12(target) || !fide31(target)) return false;
+    if (!fide12(target) || !fide31(target)) return false;
     auto squares_attacked = attacked_squares();
     auto legal_squares = moveable_squares(squares_attacked);
-    bool move_legal = fide3p(legal_squares, target);
-    if (move_legal) {
-        setSquare(target);
-        m_board->updateAttackedSquares();
-    }
-
-    return move_legal;
-}
-
-void Piece::setSquare(Square *square) {
+    if (!fide3p(legal_squares, target)) return false;
     if (m_square) {
         m_square->removePiece();
     }
-    square->putPiece(this);
+    Piece *target_piece = target->getPiece();
+    if (target_piece) {
+        target_piece->unattack_squares();
+        target_piece->removePieceFromBoard();
+    }
+    target->removePiece();
+    target->putPiece(this);
+    Square *previous_square = m_square;
+    this->setSquare(target);
+
+    m_board->updateAttackedSquares();
+    if(!fide39()) {
+        this->setSquare(previous_square);
+        previous_square->putPiece(this);
+        if(target_piece) {
+            target->putPiece(target_piece);
+            m_board->addPiece(target_piece);
+        }
+        m_board->updateAttackedSquares();
+        return false;
+    } else {
+        delete target_piece;
+    }
+
+    return true;
+}
+
+void Piece::setSquare(Square *square) {
     m_square = square;
     m_destination = square->getDestination();
 }
