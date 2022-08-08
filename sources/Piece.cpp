@@ -5,7 +5,7 @@
 #include <algorithm>
 
 Piece::Piece(ChessColor c, Square *square, Board *board, const MTexture &texture)
-        : ChessColored(c), m_square(nullptr), m_board(board), m_texture(texture), m_fDirector(c) {
+        : ChessColored(c), m_square(nullptr), m_board(board), m_texture(texture), m_fDirector(c), m_moved(false) {
     square->putPiece(this);
     setSquare(square);
 }
@@ -79,10 +79,10 @@ bool Piece::move(Square *target) {
     this->setSquare(target);
 
     m_board->updateAttackedSquares();
-    if(!fide39()) {
+    if (!fide39()) {
         this->setSquare(previous_square);
         previous_square->putPiece(this);
-        if(target_piece) {
+        if (target_piece) {
             target->putPiece(target_piece);
             m_board->addPiece(target_piece);
         } else {
@@ -94,6 +94,7 @@ bool Piece::move(Square *target) {
         delete target_piece;
     }
 
+    m_moved = true;
     return true;
 }
 
@@ -136,4 +137,8 @@ FDirector Piece::getFDirector() const {
 
 void Piece::removePieceFromBoard() {
     m_board->removePiece(this);
+}
+
+bool Piece::hasMoved() const {
+    return m_moved;
 }

@@ -36,7 +36,7 @@ public:
 
     virtual bool can_move_to_attacked(Square *) = 0;
 
-    virtual std::vector<Square *> moveable_squares(std::vector<Square *>&);
+    virtual std::vector<Square *> moveable_squares(std::vector<Square *> &);
 
     bool fide3p(const std::vector<Square *> &, Square *);
 
@@ -63,6 +63,9 @@ public:
     FDirector getFDirector() const;
 
     void removePieceFromBoard();
+
+    bool hasMoved() const;
+
 protected:
     Square *m_square;
     Board *m_board;
@@ -71,6 +74,7 @@ protected:
     SDL_Rect m_destination{};
     FDirector m_fDirector;
     std::vector<Square *> m_squares_attacked;
+    bool m_moved;
 };
 
 #endif //CHESS_PIECE_H

@@ -20,8 +20,6 @@ Game::~Game() {
 }
 
 void Game::over() {
-    m_game_over = true;
-
     auto renderer = SharedData::instance().getRenderer();
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderClear(renderer);
@@ -48,7 +46,7 @@ void Game::run() {
     int mouse_x, mouse_y;
     Piece *selected_piece = nullptr;
     while (!quit) {
-        while (!m_game_over) {
+        if (!m_game_over) {
             while (SDL_PollEvent(&e) != 0) {
                 if (e.type == SDL_QUIT) {
                     quit = true;
@@ -73,7 +71,7 @@ void Game::run() {
                         auto king_attacked_squares = king->attacked_squares();
                         if (king->moveable_squares(king_attacked_squares).empty() &&
                             king->getSquare()->isAttacked(static_cast<ChessColor>(!static_cast<bool>(m_turn_color)))) {
-                            over();
+                            m_game_over = true;
                         }
                     }
                     selected_piece->setRenderPriority(Piece::DEFAULT_RENDER_PRIORITY);
@@ -94,6 +92,13 @@ void Game::run() {
 
             //Update screen
             SDL_RenderPresent(renderer);
+        } else {
+            over();
+            while (SDL_PollEvent(&e) != 0) {
+                if (e.type == SDL_QUIT) {
+                    quit = true;
+                }
+            }
         }
     }
 }
