@@ -11,6 +11,7 @@ class Piece;
 class Square : public ChessColored {
 public:
     Square(std::string, ChessColor, const MTexture &, SDL_Rect);
+    ~Square() = default;
 
     void render();
 

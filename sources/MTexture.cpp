@@ -1,6 +1,5 @@
 #include "../headers/MTexture.h"
 #include <SDL2/SDL_image.h>
-#include <iostream>
 #include <utility>
 #include "../headers/SharedData.h"
 

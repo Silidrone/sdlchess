@@ -17,6 +17,8 @@ Game::~Game() {
     //Quit SDL subsystems
     IMG_Quit();
     SDL_Quit();
+
+    delete m_board;
 }
 
 void Game::over() {
@@ -64,13 +66,15 @@ void Game::run() {
                     if (!selected_piece->move(m_board->get_square_by_screen_position(mouse_x, mouse_y))) {
                         selected_piece->resetPosition();
                     } else {
+                        auto previous_turn_color = m_turn_color;
                         m_turn_color = static_cast<ChessColor>(!static_cast<bool>(m_turn_color));
                         m_board->rotate180();
 
                         auto king = m_board->getKing(m_turn_color);
                         auto king_attacked_squares = king->attacked_squares();
-                        if (king->moveable_squares(king_attacked_squares).empty() &&
-                            king->getSquare()->isAttacked(static_cast<ChessColor>(!static_cast<bool>(m_turn_color)))) {
+                        if (king->getSquare()->isAttacked(previous_turn_color) &&
+                            king->moveable_squares(king_attacked_squares).empty() &&
+                            !m_board->legalMoveExists(m_turn_color)) {
                             m_game_over = true;
                         }
                     }

@@ -91,6 +91,16 @@ Board::Board(const std::string &w_texture_path, const std::string &b_texture_pat
     updateAttackedSquares();
 }
 
+Board::~Board() {
+    for (auto &p: m_pieces) {
+        delete p;
+    }
+
+    for (auto &s: m_squares) {
+        delete s;
+    }
+}
+
 void Board::render() {
     for (auto &square: m_squares) {
         square->render();
@@ -146,6 +156,22 @@ Square *Board::get_square_by_coordinate(const std::string &coordinate) {
 bool Board::coordinateIsValid(std::string coordinate) {
     return coordinate[0] >= 'a' + 0 && coordinate[1] >= '1' + 0 && coordinate[0] < 'a' + ROW_SQUARE_COUNT &&
            coordinate[1] < '1' + COLUMN_SQUARE_COUNT;
+}
+
+bool Board::legalMoveExists(ChessColor c) {
+    for (auto &piece: m_pieces) {
+        if (piece->getColor() == c) {
+            auto attacked_squares = piece->attacked_squares();
+            auto moveable_squares = piece->moveable_squares(attacked_squares);
+            for (auto &moveable_square: moveable_squares) {
+                if (piece->move(moveable_square, true)) {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
 }
 
 std::vector<Square *>
@@ -221,7 +247,8 @@ void Board::updateAttackedSquares() {
 void Board::removePiece(Piece *p) {
     for (auto it = m_pieces.begin(); it != m_pieces.end(); it++) {
         if ((*it)->getSquare()->getCoordinate() == p->getSquare()->getCoordinate()) {
-            m_pieces.erase(it);
+            it = m_pieces.erase(it);
+            --it;
         }
     }
 }

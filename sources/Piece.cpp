@@ -1,6 +1,5 @@
 #include "../headers/Piece.h"
 #include "../headers/Square.h"
-#include "../headers/HelperFunctions.h"
 #include "../headers/King.h"
 #include <algorithm>
 
@@ -10,7 +9,7 @@ Piece::Piece(ChessColor c, Square *square, Board *board, const MTexture &texture
     setSquare(square);
 }
 
-Piece::~Piece() {}
+Piece::~Piece() { }
 
 //From fide 1.2: "...and also ’capturing’ the opponent’s king are not allowed"
 bool Piece::fide12(Square *target) {
@@ -28,7 +27,6 @@ bool Piece::fide3p(const std::vector<Square *> &squares, Square *target) {
            squares.end();
 }
 
-//TODO finish the implementation of fide39 rule
 bool Piece::fide39() {
     King *king = m_board->getKing(getColor());
     return king == nullptr || !king->getSquare()->isAttacked(static_cast<ChessColor>(!static_cast<bool>(getColor())));
@@ -60,26 +58,28 @@ void Piece::unattack_squares() {
     m_squares_attacked.clear();
 }
 
-bool Piece::move(Square *target) {
+bool Piece::move(Square *target, bool test_move) {
     if (!fide12(target) || !fide31(target)) return false;
     auto squares_attacked = attacked_squares();
     auto legal_squares = moveable_squares(squares_attacked);
-    if (!fide3p(legal_squares, target)) return false;
-    if (m_square) {
-        m_square->removePiece();
-    }
-    Piece *target_piece = target->getPiece();
-    if (target_piece) {
-        target_piece->unattack_squares();
-        target_piece->removePieceFromBoard();
-        target->removePiece();
-    }
-    target->putPiece(this);
-    Square *previous_square = m_square;
-    this->setSquare(target);
 
-    m_board->updateAttackedSquares();
-    if (!fide39()) {
+    if (std::find_if(legal_squares.begin(), legal_squares.end(),
+                     [&target](Square *s) { return s->getCoordinate() == target->getCoordinate(); }) ==
+        legal_squares.end()) {
+        return false;
+    }
+
+    Piece *target_piece = target->getPiece();
+    Square *previous_square = move_without_rules(target);
+
+    bool bfide39 = fide39();
+
+    if (!test_move && bfide39) {
+        delete target_piece;
+        post_move_f(previous_square);
+        m_moved = true;
+        return true;
+    } else {
         this->setSquare(previous_square);
         previous_square->putPiece(this);
         if (target_piece) {
@@ -89,13 +89,29 @@ bool Piece::move(Square *target) {
             target->removePiece();
         }
         m_board->updateAttackedSquares();
-        return false;
-    } else {
-        delete target_piece;
     }
 
-    m_moved = true;
-    return true;
+    return bfide39;
+}
+
+void Piece::post_move_f(Square *) {}
+
+Square *Piece::move_without_rules(Square *target) {
+    if (m_square) {
+        m_square->removePiece();
+    }
+    Piece *target_piece = target->getPiece();
+    if (target_piece) {
+        target_piece->unattack_squares();
+        target_piece->removeFromBoard();
+        target->removePiece();
+    }
+    target->putPiece(this);
+    Square *previous_square = m_square;
+    this->setSquare(target);
+
+    m_board->updateAttackedSquares();
+    return previous_square;
 }
 
 void Piece::setSquare(Square *square) {
@@ -135,7 +151,7 @@ FDirector Piece::getFDirector() const {
     return m_fDirector;
 }
 
-void Piece::removePieceFromBoard() {
+void Piece::removeFromBoard() {
     m_board->removePiece(this);
 }
 

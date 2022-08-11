@@ -42,7 +42,11 @@ public:
 
     bool fide39();
 
-    bool move(Square *);
+    bool move(Square *, bool = false);
+
+    virtual void post_move_f(Square *);
+
+    Square *move_without_rules(Square *);
 
     void setSquare(Square *);
 
@@ -62,7 +66,7 @@ public:
 
     FDirector getFDirector() const;
 
-    void removePieceFromBoard();
+    void removeFromBoard();
 
     bool hasMoved() const;
 

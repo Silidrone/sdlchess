@@ -11,6 +11,7 @@ using DirectionalSquares = std::pair<Direction, std::vector<Square *>>;
 
 class Piece;
 class King;
+class Rook;
 
 class Board {
 public:
@@ -20,13 +21,15 @@ public:
 
     Board(const std::string &w_texture_path, const std::string &b_texture_path);
 
-    ~Board() = default;
+    ~Board();
 
     void render();
 
     void updateRenderOrder();
 
     void rotate180();
+
+    bool legalMoveExists(ChessColor);
 
     std::vector<Square *> get_squares_in_fdirection(Piece *, FDirection, bool = false);
 

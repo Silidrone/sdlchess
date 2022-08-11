@@ -14,11 +14,11 @@ std::string FDirector::down(std::string coordinate) {
 }
 
 std::string FDirector::left(std::string coordinate) {
-    return std::string() + static_cast<char>(coordinate[0] - (m_color == ChessColor::WHITE ? 1 : -1)) + coordinate[1];
+    return std::string() + static_cast<char>(coordinate[0] - 1) + coordinate[1];
 }
 
 std::string FDirector::right(std::string coordinate) {
-    return std::string() + static_cast<char>(coordinate[0] + (m_color == ChessColor::WHITE ? 1 : -1)) + coordinate[1];
+    return std::string() + static_cast<char>(coordinate[0] + 1) + coordinate[1];
 }
 
 std::string FDirector::up_left(std::string coordinate) {
