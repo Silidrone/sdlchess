@@ -72,6 +72,7 @@ bool Piece::move(Square *target, bool test_move) {
     if (!test_move && bfide39) {
         post_move_f(previous_square);
         m_moved = true;
+        if (target_piece) delete target_piece;
         return true;
     } else {
         this->setSquare(previous_square);

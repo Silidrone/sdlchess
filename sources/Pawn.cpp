@@ -2,6 +2,7 @@
 #include "../headers/Square.h"
 #include "../headers/MoveLogger.h"
 #include <iostream>
+#include "../headers/Queen.h"
 
 Pawn::Pawn(ChessColor c, Square *square, Board *b) : Piece(c, square, b, MTexture(SharedData::instance().getRenderer(),
                                                                                   c == ChessColor::WHITE
@@ -69,5 +70,16 @@ void Pawn::post_move_f(Square *) {
         en_passed_pawn->removeFromBoard();
         m_en_passed_square->removePiece();
         m_en_passed_square = nullptr;
+    }
+    Square *current_square = getSquare();
+    int current_row = current_square->getCoordinate()[1] - '0';
+    if(current_row == 1 || current_row == 8) {
+        this->unattack_squares();
+        m_board->removePiece(this);
+        current_square->removePiece();
+        Queen *promoted = new Queen(getColor(), current_square, m_board);
+        m_board->addPiece(promoted);
+        m_board->updateAttackedSquares();
+        delete this;
     }
 }
