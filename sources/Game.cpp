@@ -1,8 +1,8 @@
 #include "../headers/Game.h"
 #include <SDL2/SDL_image.h>
-#include "../headers/Piece.h"
 #include "../headers/Square.h"
 #include "../headers/King.h"
+#include <iostream>
 
 Game::Game() : sharedData(SharedData::instance()), m_board(nullptr), m_game_over(false),
                m_turn_color(ChessColor::WHITE) {
@@ -53,6 +53,9 @@ void Game::run() {
                 if (e.type == SDL_QUIT) {
                     quit = true;
                 }
+                if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_m) {
+                    MoveLogger::instance().toggle();
+                }
                 if (e.type == SDL_MOUSEBUTTONDOWN) {
                     SDL_GetMouseState(&mouse_x, &mouse_y);
                     Piece *tmp_piece = m_board->get_square_by_screen_position(mouse_x, mouse_y)->getPiece();
@@ -63,9 +66,12 @@ void Game::run() {
                 }
                 if (e.type == SDL_MOUSEBUTTONUP && selected_piece) {
                     SDL_GetMouseState(&mouse_x, &mouse_y);
+                    std::string prev_coordinate = selected_piece->getSquare()->getCoordinate();
                     if (!selected_piece->move(m_board->get_square_by_screen_position(mouse_x, mouse_y))) {
                         selected_piece->resetPosition();
                     } else {
+                        MoveLogger::instance().addLog(selected_piece, prev_coordinate,
+                                                      selected_piece->getSquare()->getCoordinate());
                         auto previous_turn_color = m_turn_color;
                         m_turn_color = static_cast<ChessColor>(!static_cast<bool>(m_turn_color));
                         m_board->rotate180();
@@ -93,6 +99,7 @@ void Game::run() {
             SDL_RenderClear(renderer);
 
             m_board->render();
+            MoveLogger::instance().render();
 
             //Update screen
             SDL_RenderPresent(renderer);

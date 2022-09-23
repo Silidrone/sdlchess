@@ -12,6 +12,10 @@ public:
     bool can_move_to_attacked(Square *) override;
 
     std::vector<Square *> moveable_squares(std::vector<Square *> &) override;
+
+    void post_move_f(Square *) override;
+protected:
+    Square *m_en_passed_square;
 };
 
 #endif //CHESS_PAWN_H

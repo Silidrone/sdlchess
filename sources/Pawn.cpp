@@ -1,10 +1,13 @@
 #include "../headers/Pawn.h"
 #include "../headers/Square.h"
+#include "../headers/MoveLogger.h"
+#include <iostream>
 
 Pawn::Pawn(ChessColor c, Square *square, Board *b) : Piece(c, square, b, MTexture(SharedData::instance().getRenderer(),
                                                                                   c == ChessColor::WHITE
                                                                                   ? "../resources/w_pawn.png"
-                                                                                  : "../resources/b_pawn.png")) {
+                                                                                  : "../resources/b_pawn.png")),
+                                                     m_en_passed_square(nullptr) {
 }
 
 std::vector<Square *> Pawn::attacked_squares() {
@@ -30,11 +33,41 @@ std::vector<Square *> Pawn::moveable_squares(std::vector<Square *> &attacked_squ
     // if the pawn hasn't moved yet, allow it to move to the square after the next one too (in the up direction)
     if (!hasMoved()) {
         auto s = m_board->get_square_by_coordinate(m_fDirector.up(next_up_square->getCoordinate()));
-        if (s && s->getPiece() == nullptr) result.push_back(s);
+        if (s && s->getPiece() == nullptr) {
+            result.push_back(s);
+        }
+    }
+
+    Square *neighbour_squares[2] = {
+            m_board->get_square_by_coordinate(m_fDirector.left(current_coordinate)),
+            m_board->get_square_by_coordinate(m_fDirector.right(current_coordinate))
+    };
+    for (auto &neighbour_square: neighbour_squares) {
+        if (neighbour_square) {
+            Pawn *neighbour_pawn = dynamic_cast<Pawn *>(neighbour_square->getPiece());
+            if (neighbour_pawn && neighbour_pawn->getColor() != m_color) {
+                auto logs = MoveLogger::instance().getLogs(neighbour_pawn);
+                if (logs.size() > 0 && MoveLogger::instance().getCurrentMoveCount() - logs.back().move_count == 1 &&
+                    abs(logs.back().prev[1] - logs.back().current[1]) == 2) {
+                    result.push_back(m_board->get_square_by_coordinate(m_fDirector.up(logs.back().current)));
+                    m_en_passed_square = neighbour_square;
+                }
+            }
+        }
     }
 
     auto squares = Piece::moveable_squares(attacked_squares);
     result.insert(result.end(), squares.begin(), squares.end());
 
     return result;
+}
+
+void Pawn::post_move_f(Square *) {
+    if (m_en_passed_square) {
+        auto en_passed_pawn = m_en_passed_square->getPiece();
+        en_passed_pawn->unattack_squares();
+        en_passed_pawn->removeFromBoard();
+        m_en_passed_square->removePiece();
+        m_en_passed_square = nullptr;
+    }
 }

@@ -5,4 +5,4 @@ Render function should not render immediately, rather it should put the texture 
 should be able to have a rendering_priority setting, and no matter the order in which all textures' render functions
 are called, they should always obey the rendering_priority.
 
-Implement castling, en passant and promoting
+Implement en passant and promoting

@@ -2,6 +2,7 @@
 #include "../headers/Square.h"
 #include "../headers/King.h"
 #include <algorithm>
+#include "../headers/Pawn.h"
 
 Piece::Piece(ChessColor c, Square *square, Board *board, const MTexture &texture)
         : ChessColored(c), m_square(nullptr), m_board(board), m_texture(texture), m_fDirector(c), m_moved(false) {
@@ -9,7 +10,7 @@ Piece::Piece(ChessColor c, Square *square, Board *board, const MTexture &texture
     setSquare(square);
 }
 
-Piece::~Piece() { }
+Piece::~Piece() {}
 
 //From fide 1.2: "...and also ’capturing’ the opponent’s king are not allowed"
 bool Piece::fide12(Square *target) {
@@ -19,12 +20,6 @@ bool Piece::fide12(Square *target) {
 bool Piece::fide31(Square *target) {
     Piece *target_piece = target->getPiece();
     return target_piece == nullptr || (target_piece->getColor() != getColor());
-}
-
-bool Piece::fide3p(const std::vector<Square *> &squares, Square *target) {
-    return find_if(squares.begin(), squares.end(),
-                   [&target](Square *s) { return s->getCoordinate() == target->getCoordinate(); }) !=
-           squares.end();
 }
 
 bool Piece::fide39() {
@@ -75,7 +70,6 @@ bool Piece::move(Square *target, bool test_move) {
     bool bfide39 = fide39();
 
     if (!test_move && bfide39) {
-        delete target_piece;
         post_move_f(previous_square);
         m_moved = true;
         return true;
@@ -126,10 +120,6 @@ void Piece::resetPosition() {
 void Piece::setPosition(int x, int y) {
     m_destination.x = x - m_destination.w / 2;
     m_destination.y = y - m_destination.h / 2;
-}
-
-std::pair<int, int> Piece::getPosition() const {
-    return std::pair<int, int>(m_destination.x, m_destination.y);
 }
 
 void Piece::render() {

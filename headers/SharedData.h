@@ -14,7 +14,6 @@ private:
     bool initialized;
 
     SharedData() : m_window(nullptr), m_renderer(nullptr), m_font(nullptr), initialized(false) {}
-
 public:
     static SharedData &instance() {
         static SharedData INSTANCE;

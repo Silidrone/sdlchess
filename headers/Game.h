@@ -6,6 +6,7 @@
 #include "MTexture.h"
 #include "Board.h"
 #include "SharedData.h"
+#include "MoveLogger.h"
 
 class Game {
 private:

@@ -38,8 +38,6 @@ public:
 
     virtual std::vector<Square *> moveable_squares(std::vector<Square *> &);
 
-    bool fide3p(const std::vector<Square *> &, Square *);
-
     bool fide39();
 
     bool move(Square *, bool = false);
@@ -53,8 +51,6 @@ public:
     void setPosition(int, int);
 
     void resetPosition();
-
-    std::pair<int, int> getPosition() const;
 
     void render();
 
