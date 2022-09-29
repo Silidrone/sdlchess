@@ -7,6 +7,7 @@
 struct Log {
     int move_count;
     Piece *piece;
+    std::string disp;
     std::string prev;
     std::string current;
 };
@@ -20,7 +21,7 @@ private:
 public:
     static MoveLogger &instance();
 
-    void addLog(Piece *, const std::string &, const std::string &);
+    void addLog(Piece *, const std::string &, const std::string &, const std::string &);
 
     int getCurrentMoveCount() const;
 

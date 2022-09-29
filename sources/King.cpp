@@ -1,5 +1,6 @@
 #include "../headers/King.h"
 #include "../headers/Rook.h"
+#include "../headers/HelperFunctions.h"
 
 std::vector<Square *> King::attacked_squares() {
     return m_board->get_squares_in_fdirections(
@@ -30,11 +31,11 @@ std::vector<Square *> King::moveable_squares(std::vector<Square *> &attacked_squ
     if (!hasMoved() && !getSquare()->isAttacked(oppositeColor)) {
         std::string kingSideRookCoordinate, queenSideRookCoordinate;
         if (c == ChessColor::WHITE) {
-            kingSideRookCoordinate = "a8";
+            kingSideRookCoordinate = "h1";
             queenSideRookCoordinate = "a1";
         } else {
             kingSideRookCoordinate = "h8";
-            queenSideRookCoordinate = "h1";
+            queenSideRookCoordinate = "a8";
         }
 
         Rook *kingSideRook = dynamic_cast<Rook *>(m_board->get_square_by_coordinate(
@@ -82,5 +83,18 @@ void King::post_move_f(Square *prev_square) {
             r->move_without_rules(m_board->get_square_by_coordinate(
                     col_diff > 0 ? m_fDirector.left(current_coordinate) : m_fDirector.right(current_coordinate)));
         }
+    }
+}
+
+std::string King::move_log(Square *prev, bool captured) {
+    std::string current_coordinate = m_square->getCoordinate();
+    if (abs(current_coordinate[0] - prev->getCoordinate()[0]) == 2) {
+        if (current_coordinate[0] == 'g') {
+            return "O-O";
+        } else if (current_coordinate[0] == 'c') {
+            return "O-O-O";
+        }
+    } else {
+        return HelperFunctions::get_algebraic_notation('K', m_square->getCoordinate(), captured);
     }
 }

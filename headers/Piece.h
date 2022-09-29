@@ -44,6 +44,8 @@ public:
 
     virtual void post_move_f(Square *);
 
+    virtual std::string move_log(Square *, bool);
+
     Square *move_without_rules(Square *);
 
     void setSquare(Square *);

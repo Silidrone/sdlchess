@@ -56,7 +56,7 @@ public:
                         printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
                         success = false;
                     } else {
-                        m_font = TTF_OpenFont("../resources/sans.ttf", 24);
+                        m_font = TTF_OpenFont("../resources/sans.ttf", 14);
                         if (m_font == nullptr) {
                             printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
                             success = false;

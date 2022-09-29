@@ -116,21 +116,22 @@ void Board::render() {
         }
     }
 
-    for (auto &square: m_squares) {
-        auto destination = square->getDestination();
-        MTexture white_attack_count_texture(SharedData::instance().getRenderer(),
-                                            std::string("W: ") +
-                                            static_cast<char>('0' + square->getAttackCount(ChessColor::WHITE)),
-                                            SDL_Color({255, 0, 0}));
-        MTexture black_attack_count_texture(SharedData::instance().getRenderer(),
-                                            std::string("B: ") +
-                                            static_cast<char>('0' + square->getAttackCount(ChessColor::BLACK)),
-                                            SDL_Color({0, 0, 255}));
-        white_attack_count_texture.render({destination.x + destination.w / 2 - 30, destination.y + destination.h / 2,
-                                           35, 35});
-        black_attack_count_texture.render({destination.x + destination.w / 2 + 20, destination.y + destination.h / 2,
-                                           35, 35});
-    }
+// debug for white/black attack count on each square
+//    for (auto &square: m_squares) {
+//        auto destination = square->getDestination();
+//        MTexture white_attack_count_texture(SharedData::instance().getRenderer(),
+//                                            std::string("W: ") +
+//                                            static_cast<char>('0' + square->getAttackCount(ChessColor::WHITE)),
+//                                            SDL_Color({255, 0, 0}));
+//        MTexture black_attack_count_texture(SharedData::instance().getRenderer(),
+//                                            std::string("B: ") +
+//                                            static_cast<char>('0' + square->getAttackCount(ChessColor::BLACK)),
+//                                            SDL_Color({0, 0, 255}));
+//        white_attack_count_texture.render({destination.x + destination.w / 2 - 30, destination.y + destination.h / 2,
+//                                           35, 35});
+//        black_attack_count_texture.render({destination.x + destination.w / 2 + 20, destination.y + destination.h / 2,
+//                                           35, 35});
+//    }
 }
 
 Square *Board::get_square_by_screen_position(int x, int y) {

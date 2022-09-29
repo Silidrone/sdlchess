@@ -14,6 +14,8 @@ public:
     std::vector<Square *> moveable_squares(std::vector<Square *> &) override;
 
     void post_move_f(Square *) override;
+
+    std::string move_log(Square *, bool) override;
 protected:
     Square *m_en_passed_square;
 };

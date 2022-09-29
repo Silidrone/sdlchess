@@ -3,6 +3,7 @@
 #include "../headers/King.h"
 #include <algorithm>
 #include "../headers/Pawn.h"
+#include "../headers/MoveLogger.h"
 
 Piece::Piece(ChessColor c, Square *square, Board *board, const MTexture &texture)
         : ChessColored(c), m_square(nullptr), m_board(board), m_texture(texture), m_fDirector(c), m_moved(false) {
@@ -71,6 +72,8 @@ bool Piece::move(Square *target, bool test_move) {
 
     if (!test_move && bfide39) {
         post_move_f(previous_square);
+        MoveLogger::instance().addLog(this, move_log(previous_square, target_piece != nullptr),
+                                      previous_square->getCoordinate(), m_square->getCoordinate());
         m_moved = true;
         if (target_piece) delete target_piece;
         return true;
@@ -90,6 +93,8 @@ bool Piece::move(Square *target, bool test_move) {
 }
 
 void Piece::post_move_f(Square *) {}
+
+std::string Piece::move_log(Square *, bool) { return ""; }
 
 Square *Piece::move_without_rules(Square *target) {
     if (m_square) {

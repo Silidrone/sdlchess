@@ -1,4 +1,6 @@
 #include "../headers/Knight.h"
+#include "../headers/HelperFunctions.h"
+#include "../headers/Square.h"
 
 Knight::Knight(ChessColor c, Square *square, Board *b) : Piece(c, square, b,
                                                                MTexture(SharedData::instance().getRenderer(),
@@ -22,3 +24,7 @@ std::vector<Square *> Knight::attacked_squares() {
 }
 
 bool Knight::can_move_to_attacked(Square *) { return true; }
+
+std::string Knight::move_log(Square *, bool captured) {
+    return HelperFunctions::get_algebraic_notation('N', m_square->getCoordinate(), captured);
+}

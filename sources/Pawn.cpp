@@ -1,8 +1,8 @@
 #include "../headers/Pawn.h"
 #include "../headers/Square.h"
 #include "../headers/MoveLogger.h"
-#include <iostream>
 #include "../headers/Queen.h"
+#include "../headers/HelperFunctions.h"
 
 Pawn::Pawn(ChessColor c, Square *square, Board *b) : Piece(c, square, b, MTexture(SharedData::instance().getRenderer(),
                                                                                   c == ChessColor::WHITE
@@ -48,7 +48,7 @@ std::vector<Square *> Pawn::moveable_squares(std::vector<Square *> &attacked_squ
             Pawn *neighbour_pawn = dynamic_cast<Pawn *>(neighbour_square->getPiece());
             if (neighbour_pawn && neighbour_pawn->getColor() != m_color) {
                 auto logs = MoveLogger::instance().getLogs(neighbour_pawn);
-                if (logs.size() > 0 && MoveLogger::instance().getCurrentMoveCount() - logs.back().move_count == 1 &&
+                if (logs.size() > 0 && MoveLogger::instance().getCurrentMoveCount() - logs.back().move_count <= 1 &&
                     abs(logs.back().prev[1] - logs.back().current[1]) == 2) {
                     result.push_back(m_board->get_square_by_coordinate(m_fDirector.up(logs.back().current)));
                     m_en_passed_square = neighbour_square;
@@ -73,7 +73,7 @@ void Pawn::post_move_f(Square *) {
     }
     Square *current_square = getSquare();
     int current_row = current_square->getCoordinate()[1] - '0';
-    if(current_row == 1 || current_row == 8) {
+    if (current_row == 1 || current_row == 8) {
         this->unattack_squares();
         m_board->removePiece(this);
         current_square->removePiece();
@@ -81,5 +81,21 @@ void Pawn::post_move_f(Square *) {
         m_board->addPiece(promoted);
         m_board->updateAttackedSquares();
         delete this;
+    }
+}
+
+std::string Pawn::move_log(Square *prev, bool captured) {
+    std::string current_coordinate = m_square->getCoordinate();
+    std::string prev_coordinate = prev->getCoordinate();
+    //if en passant
+    if (!captured && prev_coordinate[0] != current_coordinate[0] && prev_coordinate[1] != current_coordinate[1]) {
+        captured = true;
+    }
+    if (current_coordinate[0] == '1' || current_coordinate[0] == '8') {
+        return current_coordinate + 'Q';
+    } else if (captured) {
+        return std::string() + prev->getCoordinate()[0] + 'x' + current_coordinate;
+    } else {
+        return current_coordinate;
     }
 }

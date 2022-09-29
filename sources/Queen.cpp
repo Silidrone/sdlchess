@@ -1,4 +1,6 @@
 #include "../headers/Queen.h"
+#include "../headers/HelperFunctions.h"
+#include "../headers/Square.h"
 
 Queen::Queen(ChessColor c, Square *square, Board *b) :
         QRBPiece(c, square, b, MTexture(SharedData::instance().getRenderer(), c == ChessColor::WHITE
@@ -17,4 +19,8 @@ std::vector<std::pair<Direction, FDirection>> Queen::getDirections() {
             {Direction::DOWN_LEFT,  &FDirector::down_left},
             {Direction::DOWN_RIGHT, &FDirector::down_right},
     };
+}
+
+std::string Queen::move_log(Square *, bool captured) {
+    return HelperFunctions::get_algebraic_notation('Q', m_square->getCoordinate(), captured);
 }

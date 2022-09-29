@@ -7,8 +7,8 @@ MoveLogger &MoveLogger::instance() {
     return INSTANCE;
 }
 
-void MoveLogger::addLog(Piece *piece, const std::string &prev, const std::string &current) {
-    m_logs.push_back({getCurrentMoveCount(), piece, prev, current});
+void MoveLogger::addLog(Piece *piece, const std::string &disp, const std::string &prev, const std::string &current) {
+    m_logs.push_back({getCurrentMoveCount(), piece, disp, prev, current});
 }
 
 int MoveLogger::getCurrentMoveCount() const {
@@ -29,7 +29,7 @@ void MoveLogger::render() const {
     const auto renderer = SharedData::instance().getRenderer();
     const int w = SharedData::instance().SCREEN_WIDTH;
     const int h = SharedData::instance().SCREEN_HEIGHT;
-    SDL_Rect r = {w - w / 8, 0, w / 8, h / 2};
+    SDL_Rect r = {w - w / 4, 0, w / 4, h / 2};
     SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
     SDL_RenderFillRect(renderer, &r);
     SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
@@ -54,9 +54,9 @@ void MoveLogger::render() const {
         }
         MTexture move_number_text(SharedData::instance().getRenderer(),
                                   std::to_string(row), {0, 0, 0});
-        move_number_text.render({r0.x, r1.y - 1, 12, 12});
-        MTexture move_text(SharedData::instance().getRenderer(), log.current, {0, 0, 0});
-        move_text.render({move_x, move_y, 15, 15});
+        move_number_text.render({r0.x, r1.y - 1, 10, 10});
+        MTexture move_text(SharedData::instance().getRenderer(), log.disp, {0, 0, 0});
+        move_text.render({move_x, move_y, static_cast<int>(log.disp.length() * 10), 13});
         i++;
     }
 }

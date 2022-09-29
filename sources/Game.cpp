@@ -23,15 +23,16 @@ Game::~Game() {
 
 void Game::over() {
     auto renderer = SharedData::instance().getRenderer();
-    SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+    SDL_SetRenderDrawColor(renderer, 86, 100, 112, 0);
     SDL_RenderClear(renderer);
 
     MTexture game_over(renderer,
                        std::string() + "Game over " + (m_turn_color == ChessColor::WHITE ? "black" : "white") +
-                       " won!", {0, 255, 0});
+                       " won!", {255, 255, 255});
     auto screen_width = SharedData::instance().SCREEN_WIDTH;
     auto screen_height = SharedData::instance().SCREEN_HEIGHT;
-    game_over.render({screen_width / 6, screen_height / 2, screen_width / 3, screen_height / 6});
+    game_over.render(
+            {screen_width * 3 / 12, screen_height / 2 - screen_height / 10, screen_width * 6 / 12, screen_height / 10});
     //Update screen
     SDL_RenderPresent(renderer);
 }
@@ -70,8 +71,6 @@ void Game::run() {
                     if (!selected_piece->move(m_board->get_square_by_screen_position(mouse_x, mouse_y))) {
                         selected_piece->resetPosition();
                     } else {
-                        MoveLogger::instance().addLog(selected_piece, prev_coordinate,
-                                                      selected_piece->getSquare()->getCoordinate());
                         auto previous_turn_color = m_turn_color;
                         m_turn_color = static_cast<ChessColor>(!static_cast<bool>(m_turn_color));
                         m_board->rotate180();

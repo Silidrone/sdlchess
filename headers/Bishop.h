@@ -8,6 +8,7 @@ public:
     Bishop(ChessColor, Square *, Board *);
 
     std::vector<std::pair<Direction, FDirection>> getDirections() override;
+    std::string move_log(Square *, bool) override;
 };
 
 #endif //CHESS_BISHOP_H

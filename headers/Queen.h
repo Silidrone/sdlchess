@@ -8,6 +8,7 @@ public:
     Queen(ChessColor, Square *, Board *);
 
     std::vector<std::pair<Direction, FDirection>> getDirections() override;
+    std::string move_log(Square *, bool) override;
 };
 
 #endif //CHESS_QUEEN_H
