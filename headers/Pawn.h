@@ -16,8 +16,11 @@ public:
     void post_move_f(Square *) override;
 
     std::string move_log(Square *, bool) override;
+
+    void setPromotedPiece(Piece *);
 protected:
     Square *m_en_passed_square;
+    Piece *m_promoted_piece;
 };
 
 #endif //CHESS_PAWN_H

@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "../headers/Pawn.h"
 #include "../headers/MoveLogger.h"
+#include "../headers/HelperFunctions.h"
 
 Piece::Piece(ChessColor c, Square *square, Board *board, const MTexture &texture)
         : ChessColored(c), m_square(nullptr), m_board(board), m_texture(texture), m_fDirector(c), m_moved(false) {
@@ -69,13 +70,26 @@ bool Piece::move(Square *target, bool test_move) {
     Square *previous_square = move_without_rules(target);
 
     bool bfide39 = fide39();
+    bool promotion_cancelled = false;
 
+    Pawn *pawn = dynamic_cast<Pawn *>(this);
     if (!test_move && bfide39) {
+        char target_square_row = target->getCoordinate()[1];
+        if (pawn && (target_square_row == '8' || target_square_row == '1')) {
+            Piece *chosen_promoted_piece = HelperFunctions::getChosenPromotedPieceWithModal(m_color, m_square, m_board);
+            if (chosen_promoted_piece) {
+                pawn->setPromotedPiece(chosen_promoted_piece);
+            } else {
+                promotion_cancelled = true;
+            }
+        }
+    }
+
+    if (!test_move && bfide39 && !promotion_cancelled) {
         post_move_f(previous_square);
         MoveLogger::instance().addLog(this, move_log(previous_square, target_piece != nullptr),
                                       previous_square->getCoordinate(), m_square->getCoordinate());
         m_moved = true;
-        if (target_piece) delete target_piece;
         return true;
     } else {
         this->setSquare(previous_square);
@@ -89,7 +103,11 @@ bool Piece::move(Square *target, bool test_move) {
         m_board->updateAttackedSquares();
     }
 
-    return bfide39;
+    if(pawn) {
+        pawn->setPromotedPiece(nullptr);
+    }
+
+    return bfide39 && !promotion_cancelled;
 }
 
 void Piece::post_move_f(Square *) {}

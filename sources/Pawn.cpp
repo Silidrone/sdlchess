@@ -3,12 +3,15 @@
 #include "../headers/MoveLogger.h"
 #include "../headers/Queen.h"
 #include "../headers/HelperFunctions.h"
+#include "../headers/Rook.h"
+#include "../headers/Bishop.h"
+#include "../headers/Knight.h"
 
 Pawn::Pawn(ChessColor c, Square *square, Board *b) : Piece(c, square, b, MTexture(SharedData::instance().getRenderer(),
                                                                                   c == ChessColor::WHITE
                                                                                   ? "../resources/w_pawn.png"
                                                                                   : "../resources/b_pawn.png")),
-                                                     m_en_passed_square(nullptr) {
+                                                     m_en_passed_square(nullptr), m_promoted_piece(nullptr) {
 }
 
 std::vector<Square *> Pawn::attacked_squares() {
@@ -70,32 +73,44 @@ void Pawn::post_move_f(Square *) {
         en_passed_pawn->removeFromBoard();
         m_en_passed_square->removePiece();
         m_en_passed_square = nullptr;
-    }
-    Square *current_square = getSquare();
-    int current_row = current_square->getCoordinate()[1] - '0';
-    if (current_row == 1 || current_row == 8) {
+    } else if (m_promoted_piece) {
         this->unattack_squares();
-        m_board->removePiece(this);
-        current_square->removePiece();
-        Queen *promoted = new Queen(getColor(), current_square, m_board);
-        m_board->addPiece(promoted);
+        this->removeFromBoard();
+        m_board->addPiece(m_promoted_piece);
         m_board->updateAttackedSquares();
-        delete this;
     }
 }
 
 std::string Pawn::move_log(Square *prev, bool captured) {
     std::string current_coordinate = m_square->getCoordinate();
     std::string prev_coordinate = prev->getCoordinate();
+    std::string result = "";
     //if en passant
     if (!captured && prev_coordinate[0] != current_coordinate[0] && prev_coordinate[1] != current_coordinate[1]) {
         captured = true;
     }
-    if (current_coordinate[0] == '1' || current_coordinate[0] == '8') {
-        return current_coordinate + 'Q';
-    } else if (captured) {
-        return std::string() + prev->getCoordinate()[0] + 'x' + current_coordinate;
+    if (captured) {
+        result += std::string() + prev->getCoordinate()[0] + 'x' + current_coordinate;
     } else {
-        return current_coordinate;
+        result += current_coordinate;
     }
+    if (current_coordinate[1] == '1' || current_coordinate[1] == '8') {
+        char c;
+        if (dynamic_cast<Queen *>(m_promoted_piece)) {
+            c = 'Q';
+        } else if (dynamic_cast<Rook *>(m_promoted_piece)) {
+            c = 'R';
+        } else if (dynamic_cast<Bishop *>(m_promoted_piece)) {
+            c = 'B';
+        } else if (dynamic_cast<Knight *>(m_promoted_piece)) {
+            c = 'N';
+        }
+        result += c;
+    }
+
+    return result;
+}
+
+void Pawn::setPromotedPiece(Piece *p) {
+    m_promoted_piece = p;
 }

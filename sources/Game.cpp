@@ -3,6 +3,8 @@
 #include "../headers/Square.h"
 #include "../headers/King.h"
 #include <iostream>
+#include "../headers/Pawn.h"
+#include "../headers/HelperFunctions.h"
 
 Game::Game() : sharedData(SharedData::instance()), m_board(nullptr), m_game_over(false),
                m_turn_color(ChessColor::WHITE) {
@@ -67,7 +69,7 @@ void Game::run() {
                 }
                 if (e.type == SDL_MOUSEBUTTONUP && selected_piece) {
                     SDL_GetMouseState(&mouse_x, &mouse_y);
-                    std::string prev_coordinate = selected_piece->getSquare()->getCoordinate();
+
                     if (!selected_piece->move(m_board->get_square_by_screen_position(mouse_x, mouse_y))) {
                         selected_piece->resetPosition();
                     } else {

@@ -99,6 +99,10 @@ Board::~Board() {
     for (auto &s: m_squares) {
         delete s;
     }
+
+    for (auto &rp: m_removed_pieces) {
+        delete rp;
+    }
 }
 
 void Board::render() {
@@ -248,6 +252,7 @@ void Board::updateAttackedSquares() {
 void Board::removePiece(Piece *p) {
     for (auto it = m_pieces.begin(); it != m_pieces.end(); it++) {
         if ((*it)->getSquare()->getCoordinate() == p->getSquare()->getCoordinate()) {
+            m_removed_pieces.push_back(*it);
             it = m_pieces.erase(it);
             --it;
         }

@@ -10,7 +10,9 @@
 using DirectionalSquares = std::pair<Direction, std::vector<Square *>>;
 
 class Piece;
+
 class King;
+
 class Rook;
 
 class Board {
@@ -43,14 +45,17 @@ public:
     Square *get_square_by_screen_position(int, int);
 
     void removePiece(Piece *);
+
     void addPiece(Piece *);
 
     void updateAttackedSquares();
 
     King *getKing(ChessColor);
+
 protected:
     std::vector<Square *> m_squares{};
     std::vector<Piece *> m_pieces{};
+    std::vector<Piece *> m_removed_pieces{};
     std::array<std::vector<std::pair<SDL_Rect, MTexture>>, 2> m_coordinate_textures;
 };
 

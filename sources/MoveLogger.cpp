@@ -44,7 +44,7 @@ void MoveLogger::render() const {
         SDL_Rect r1 = {r0.x + move_number_gap, r0.y - log_gap, line_thickness, log_gap};
         SDL_Rect r2 = {r0.x + move_gap, r1.y, r1.w, r1.h};
         int move_x = r1.x + 10;
-        int move_y = r1.y - 2;
+        int move_y = r1.y - 4;
         if (i % 2 == 0) {
             SDL_RenderFillRect(renderer, &r0);
             SDL_RenderFillRect(renderer, &r1);
@@ -56,7 +56,7 @@ void MoveLogger::render() const {
                                   std::to_string(row), {0, 0, 0});
         move_number_text.render({r0.x, r1.y - 1, 10, 10});
         MTexture move_text(SharedData::instance().getRenderer(), log.disp, {0, 0, 0});
-        move_text.render({move_x, move_y, static_cast<int>(log.disp.length() * 10), 13});
+        move_text.render({move_x, move_y, static_cast<int>(log.disp.length() * 10), 19});
         i++;
     }
 }
