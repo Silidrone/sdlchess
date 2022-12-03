@@ -87,7 +87,7 @@ bool Piece::move(Square *target, bool test_move) {
 
     if (!test_move && bfide39 && !promotion_cancelled) {
         post_move_f(previous_square);
-        MoveLogger::instance().addLog(this, move_log(previous_square, target_piece != nullptr),
+        m_board->getMoveLogger().addLog(this, move_log(previous_square, target_piece != nullptr),
                                       previous_square->getCoordinate(), m_square->getCoordinate());
         m_moved = true;
         return true;

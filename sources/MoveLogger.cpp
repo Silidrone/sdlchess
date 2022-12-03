@@ -2,11 +2,6 @@
 
 MoveLogger::MoveLogger() : m_logs({}), m_renderActive(false) {}
 
-MoveLogger &MoveLogger::instance() {
-    static MoveLogger INSTANCE;
-    return INSTANCE;
-}
-
 void MoveLogger::addLog(Piece *piece, const std::string &disp, const std::string &prev, const std::string &current) {
     m_logs.push_back({getCurrentMoveCount(), piece, disp, prev, current});
 }

@@ -8,10 +8,12 @@
 #include "../headers/Bishop.h"
 #include "../headers/Queen.h"
 #include "../headers/Pawn.h"
+#include "../headers/MoveLogger.h"
 #include <algorithm>
 
-Board::Board(const std::string &w_texture_path, const std::string &b_texture_path)
-        : m_squares(), m_pieces() {
+Board::Board(MoveLogger &moveLogger) : m_squares(), m_pieces(), m_moveLogger(moveLogger) {}
+
+void Board::init(const std::string &w_texture_path, const std::string &b_texture_path) {
     const int square_width = SharedData::instance().SCREEN_WIDTH / ROW_SQUARE_COUNT;
     const int square_height = SharedData::instance().SCREEN_HEIGHT / COLUMN_SQUARE_COUNT;
     const SDL_Color text_color = SDL_Color({255, 255, 255});
@@ -42,12 +44,11 @@ Board::Board(const std::string &w_texture_path, const std::string &b_texture_pat
                 square_texture = square_white ? w_square_texture : b_square_texture;
             }
 
-            Square *new_square = new Square(std::string() + static_cast<char>(j + 'a') + static_cast<char>('1' + i),
-                                            static_cast<ChessColor>(square_white),
-                                            square_texture,
-                                            SDL_Rect{j * square_width, square_height * (ROW_SQUARE_COUNT - i - 1),
-                                                     square_width, square_height});
-            m_squares.push_back(new_square);
+            m_squares.push_back(new Square(std::string() + static_cast<char>(j + 'a') + static_cast<char>('1' + i),
+                                           static_cast<ChessColor>(square_white),
+                                           square_texture,
+                                           SDL_Rect{j * square_width, square_height * (ROW_SQUARE_COUNT - i - 1),
+                                                    square_width, square_height}));
         }
     }
     m_pieces = {
@@ -270,4 +271,8 @@ King *Board::getKing(ChessColor c) {
     }
 
     return nullptr;
+}
+
+MoveLogger &Board::getMoveLogger() const {
+    return m_moveLogger;
 }

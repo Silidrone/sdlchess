@@ -4,4 +4,8 @@ Aside TODOs mentioned in code I'll list some here whenever I want to mark an imp
     should be able to have a rendering_priority setting, and no matter the order in which all textures' render functions
     are called, they should always obey the rendering_priority.
 
+    -Localize all code (no globals, everything should be instantiable)
+
+    -Import/Export PGN file
+
     -Tester

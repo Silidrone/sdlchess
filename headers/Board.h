@@ -15,15 +15,19 @@ class King;
 
 class Rook;
 
+class MoveLogger;
+
 class Board {
 public:
     static const int ROW_SQUARE_COUNT = 8;
     static const int COLUMN_SQUARE_COUNT = 8;
     static constexpr float PIECES_SCALE = 1.0f;
 
-    Board(const std::string &w_texture_path, const std::string &b_texture_path);
+    Board(MoveLogger &);
 
     ~Board();
+
+    void init(const std::string &, const std::string &);
 
     void render();
 
@@ -52,11 +56,13 @@ public:
 
     King *getKing(ChessColor);
 
+    MoveLogger &getMoveLogger() const;
 protected:
     std::vector<Square *> m_squares{};
     std::vector<Piece *> m_pieces{};
     std::vector<Piece *> m_removed_pieces{};
     std::array<std::vector<std::pair<SDL_Rect, MTexture>>, 2> m_coordinate_textures;
+    MoveLogger &m_moveLogger;
 };
 
 #endif //CHESS_BOARD_H
