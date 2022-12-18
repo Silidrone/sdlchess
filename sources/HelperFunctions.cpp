@@ -1,3 +1,6 @@
+#include <sstream>
+#include <fstream>
+#include <cctype>
 #include "../headers/HelperFunctions.h"
 #include "../headers/Queen.h"
 #include "../headers/Square.h"
@@ -70,4 +73,113 @@ Piece *HelperFunctions::getChosenPromotedPieceWithModal(ChessColor color, Square
         //Update screen
         SDL_RenderPresent(renderer);
     }
+}
+
+const char *ws = " \t\n\r\f\v";
+
+inline std::string &HelperFunctions::rtrim(std::string &s) {
+    s.erase(s.find_last_not_of(ws) + 1);
+    return s;
+}
+
+inline std::string &HelperFunctions::ltrim(std::string &s) {
+    s.erase(0, s.find_first_not_of(ws));
+    return s;
+}
+
+inline std::string &HelperFunctions::trim(std::string &s) {
+    return HelperFunctions::ltrim(HelperFunctions::rtrim(s));
+}
+
+std::vector<std::string> HelperFunctions::split(const std::string &s, char delim) {
+    std::vector<std::string> result;
+    std::stringstream ss(s);
+    std::string item;
+
+    while (getline(ss, item, delim)) {
+        result.push_back(item);
+    }
+
+    return result;
+}
+
+std::vector<PGNGameDetails> HelperFunctions::parsePGN(std::string &&file_path) {
+    std::ifstream file;
+    file.open(std::move(file_path));
+
+    std::vector<PGNGameDetails> games;
+
+    bool prev_header = true;
+    std::string event, site, date, round, white_name, black_name, result, whiteElo, blackElo, eco, time_control, termination;
+    std::vector<std::string> moves;
+    auto reset_to_default = [&]() {
+        games.push_back(
+                PGNGameDetails{moves, event, site, date, round, white_name, black_name, result, whiteElo,
+                               blackElo, eco, time_control, termination});
+        event = site = date = round = white_name = black_name = result = whiteElo = blackElo = eco = time_control = termination = "";
+        moves.clear();
+    };
+    while (file.good()) {
+        std::string line;
+        std::getline(file, line);
+        if (line == "") {
+            reset_to_default();
+            break;
+        };
+        char first_char = line.at(0);
+        if (isspace(first_char)) continue;
+        else {
+            if (first_char == '[') { //parse game info
+                if (!prev_header) { //if it's a new game to be parsed, set game info values and moves back to default
+                    reset_to_default();
+                }
+                prev_header = true;
+                auto separator_pos = line.find_first_of(' ');
+                std::string header_key = line.substr(1, separator_pos - 1);
+                int a = line.find_last_of('"');
+                std::string header_value = line.substr(separator_pos + 2, line.find_last_of('"') - (separator_pos + 2));
+                if (header_key == "Event") {
+                    event = header_value;
+                } else if (header_key == "Site") {
+                    site = header_value;
+                } else if (header_key == "Date") {
+                    date = header_value;
+                } else if (header_key == "Round") {
+                    round = header_value;
+                } else if (header_key == "White") {
+                    white_name = header_value;
+                } else if (header_key == "Black") {
+                    black_name = header_value;
+                } else if (header_key == "Result") {
+                    result = header_value;
+                } else if (header_key == "WhiteElo") {
+                    whiteElo = header_value;
+                } else if (header_key == "BlackElo") {
+                    blackElo = header_value;
+                } else if (header_key == "ECO") {
+                    eco = header_value;
+                } else if (header_key == "TimeControl") {
+                    time_control = header_value;
+                } else if (header_key == "Termination") {
+                    termination = header_value;
+                }
+            } else if (std::isdigit(first_char)) { // parse game moves
+                prev_header = false;
+                auto parsed_moves = HelperFunctions::split(line, ' ');
+                for (auto parsed_move: parsed_moves) {
+                    if (parsed_move == "") continue;
+                    parsed_move = trim(parsed_move);
+                    if (parsed_move.find('.') != std::string::npos) {
+                        moves.push_back(HelperFunctions::split(parsed_move, '.')[1]);
+                    } else if (parsed_move.find('-') != std::string::npos && std::isdigit(parsed_move[0])) continue;
+                    else {
+                        moves.push_back(parsed_move);
+                    }
+                }
+            }
+        }
+    }
+    file.close();
+
+    return games;
 }
