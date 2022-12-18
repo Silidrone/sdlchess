@@ -77,17 +77,17 @@ Piece *HelperFunctions::getChosenPromotedPieceWithModal(ChessColor color, Square
 
 const char *ws = " \t\n\r\f\v";
 
-inline std::string &HelperFunctions::rtrim(std::string &s) {
+std::string &HelperFunctions::rtrim(std::string &s) {
     s.erase(s.find_last_not_of(ws) + 1);
     return s;
 }
 
-inline std::string &HelperFunctions::ltrim(std::string &s) {
+std::string &HelperFunctions::ltrim(std::string &s) {
     s.erase(0, s.find_first_not_of(ws));
     return s;
 }
 
-inline std::string &HelperFunctions::trim(std::string &s) {
+std::string &HelperFunctions::trim(std::string &s) {
     return HelperFunctions::ltrim(HelperFunctions::rtrim(s));
 }
 
@@ -122,7 +122,7 @@ std::vector<PGNGameDetails> HelperFunctions::parsePGN(std::string &&file_path) {
     while (file.good()) {
         std::string line;
         std::getline(file, line);
-        if (line == "") {
+        if (line.empty()) {
             reset_to_default();
             break;
         };

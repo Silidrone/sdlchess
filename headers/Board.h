@@ -17,13 +17,26 @@ class Rook;
 
 class MoveLogger;
 
+class Queen;
+
+class Pawn;
+
+class Bishop;
+
+class Knight;
+
+class Rook;
+
 class Board {
+protected:
+    template <class T>
+    std::vector<T *> getPieces(ChessColor);
 public:
     static const int ROW_SQUARE_COUNT = 8;
     static const int COLUMN_SQUARE_COUNT = 8;
     static constexpr float PIECES_SCALE = 1.0f;
 
-    Board(MoveLogger &);
+    explicit Board(MoveLogger &);
 
     ~Board();
 
@@ -55,13 +68,20 @@ public:
     void updateAttackedSquares();
 
     King *getKing(ChessColor);
+    Queen *getQueen(ChessColor);
+    std::vector<Pawn*> getPawns(ChessColor);
+    std::vector<Bishop*> getBishops(ChessColor);
+    std::vector<Knight*> getKnights(ChessColor);
+    std::vector<Rook*> getRooks(ChessColor);
+
+    bool isGameOver(ChessColor, ChessColor);
 
     MoveLogger &getMoveLogger() const;
 protected:
     std::vector<Square *> m_squares{};
     std::vector<Piece *> m_pieces{};
     std::vector<Piece *> m_removed_pieces{};
-    std::array<std::vector<std::pair<SDL_Rect, MTexture>>, 2> m_coordinate_textures;
+    std::array<std::vector<std::pair<SDL_Rect, MTexture>>, 2> m_coordinate_textures{};
     MoveLogger &m_moveLogger;
 };
 

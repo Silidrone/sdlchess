@@ -71,12 +71,7 @@ void Game::run() {
                         auto previous_turn_color = m_turn_color;
                         m_turn_color = static_cast<ChessColor>(!static_cast<bool>(m_turn_color));
                         m_board.rotate180();
-
-                        auto king = m_board.getKing(m_turn_color);
-                        auto king_attacked_squares = king->attacked_squares();
-                        if (king->getSquare()->isAttacked(previous_turn_color) &&
-                            king->moveable_squares(king_attacked_squares).empty() &&
-                            !m_board.legalMoveExists(m_turn_color)) {
+                        if (m_board.isGameOver(m_turn_color, previous_turn_color)) {
                             m_game_over = true;
                         }
                     }

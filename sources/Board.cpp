@@ -264,13 +264,51 @@ void Board::addPiece(Piece *p) {
     m_pieces.push_back(p);
 }
 
-King *Board::getKing(ChessColor c) {
+template<class T>
+std::vector<T *> Board::getPieces(ChessColor c) {
+    std::vector<T *> result;
     for (auto &piece: m_pieces) {
-        King *king = dynamic_cast<King *>(piece);
-        if (king != nullptr && king->getColor() == c) return king;
+        T *t_piece = dynamic_cast<T *>(piece);
+        if (t_piece != nullptr && t_piece->getColor() == c) result.push_back(t_piece);
     }
 
+    return result;
+}
+
+King *Board::getKing(ChessColor c) {
+    auto kings = getPieces<King>(c);
+    if (kings.size() > 0) return kings[0];
     return nullptr;
+}
+
+Queen *Board::getQueen(ChessColor c) {
+    auto queens = getPieces<Queen>(c);
+    if (queens.size() > 0) return queens[0];
+    return nullptr;
+}
+
+std::vector<Pawn *> Board::getPawns(ChessColor c) {
+    return getPieces<Pawn>(c);
+}
+
+std::vector<Bishop *> Board::getBishops(ChessColor c) {
+    return getPieces<Bishop>(c);
+}
+
+std::vector<Knight *> Board::getKnights(ChessColor c) {
+    return getPieces<Knight>(c);
+}
+
+std::vector<Rook *> Board::getRooks(ChessColor c) {
+    return getPieces<Rook>(c);
+}
+
+bool Board::isGameOver(ChessColor turn_color, ChessColor previous_turn_color) {
+    auto king = getKing(turn_color);
+    auto king_attacked_squares = king->attacked_squares();
+    return king->getSquare()->isAttacked(previous_turn_color) &&
+           king->moveable_squares(king_attacked_squares).empty() &&
+           !legalMoveExists(turn_color);
 }
 
 MoveLogger &Board::getMoveLogger() const {

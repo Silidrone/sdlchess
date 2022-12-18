@@ -9,9 +9,10 @@ namespace HelperFunctions {
     std::string get_algebraic_notation(char, const std::string&, bool);
     Piece *getChosenPromotedPieceWithModal(ChessColor, Square*, Board*);
     std::vector<std::string> split (const std::string &, char);
-    inline std::string& rtrim(std::string& s);
-    inline std::string& ltrim(std::string& s);
-    inline std::string& trim(std::string& s);
+    std::string& rtrim(std::string& s);
+    std::string& ltrim(std::string& s);
+    std::string& trim(std::string& s);
+
     std::vector<PGNGameDetails> parsePGN(std::string &&);
 };
 
