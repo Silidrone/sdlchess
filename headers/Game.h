@@ -18,7 +18,6 @@ public:
 private:
     void over();
 
-    SharedData& sharedData;
     MoveLogger m_moveLogger;
     Board m_board;
     ChessColor m_turn_color;

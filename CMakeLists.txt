@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 project(chess)
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(HEADERS "headers/Board.h" "headers/Game.h" "headers/MTexture.h" "headers/Piece.h" "headers/SharedData.h" "headers/Square.h" "headers/ChessColored.h" "headers/HelperFunctions.h" "headers/King.h" "headers/Queen.h" "headers/Bishop.h" "headers/Knight.h" "headers/Rook.h" "headers/Pawn.h" headers/FDirector.h headers/QRBPiece.h headers/MoveLogger.h headers/PGNGameDetails.h headers/Env.h)
 set(SOURCES "sources/Game.cpp" "sources/MTexture.cpp" sources/ChessColored.cpp sources/Board.cpp sources/Piece.cpp sources/Rook.cpp sources/Pawn.cpp sources/Queen.cpp sources/King.cpp sources/Bishop.cpp sources/Knight.cpp sources/HelperFunctions.cpp sources/FDirector.cpp sources/Square.cpp sources/QRBPiece.cpp sources/MoveLogger.cpp sources/PGNGameDetails.cpp)
 find_package(SDL2 REQUIRED SDL2)

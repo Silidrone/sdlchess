@@ -1,3 +1,5 @@
+// Added as a possible usage in the future
+
 #ifndef CHESS_ENV_H
 #define CHESS_ENV_H
 
@@ -10,6 +12,9 @@
 class Env {
 private:
     std::vector<std::pair<std::string, std::string>> vars;
+    bool initialized;
+
+    Env() : initialized(false) {}
 public:
     static Env &getInstance() {
         static Env instance;
@@ -20,20 +25,9 @@ public:
 
     void operator=(Env const &) = delete;
 
-    std::string getVar(const std::string &key) const {
-        for (auto &var: vars) {
-            if (var.first == key) {
-                return var.second;
-            }
-        }
+    void init(const std::string &env_file_path) {
+        if(initialized) return;
 
-        return "";
-    }
-
-private:
-    Env() {}
-
-    void init(const std::string &env_file_path = ".env") {
         std::ifstream file;
         file.open(env_file_path);
 
@@ -48,15 +42,26 @@ private:
             int replacement_pos;
             while ((replacement_pos = value.find('$')) != std::string::npos) {
                 std::string var_name;
-                for (int i = replacement_pos + 1; i < value.size() && isalpha(value[i]); i++) {
+                for (int i = replacement_pos + 1; i < value.size() && (isalpha(value[i]) || value[i] == '_'); i++) {
                     var_name += value[i];
                 }
-                value.replace(replacement_pos, var_name.length(), getVar(var_name));
+                value.replace(replacement_pos, var_name.length() + 1, getVar(var_name));
             }
             vars.push_back({env_pair[0], value});
         }
 
         file.close();
+        initialized = true;
+    }
+
+    std::string getVar(const std::string &key) const {
+        for (auto &var: vars) {
+            if (var.first == key) {
+                return var.second;
+            }
+        }
+
+        return "";
     }
 };
 

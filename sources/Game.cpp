@@ -4,13 +4,13 @@
 #include "../headers/King.h"
 #include "../headers/HelperFunctions.h"
 
-Game::Game() : sharedData(SharedData::instance()), m_moveLogger(), m_board(m_moveLogger),
+Game::Game() : m_moveLogger(), m_board(m_moveLogger),
                m_turn_color(ChessColor::WHITE), m_game_over(false) {}
 
 Game::~Game() {
     //Destroy window
-    SDL_DestroyRenderer(sharedData.getRenderer());
-    SDL_DestroyWindow(sharedData.getWindow());
+    SDL_DestroyRenderer(SharedData::instance().getRenderer());
+    SDL_DestroyWindow(SharedData::instance().getWindow());
 
     //Quit SDL subsystems
     IMG_Quit();
@@ -39,7 +39,7 @@ void Game::init() {
 }
 
 void Game::run() {
-    SDL_Renderer *renderer = sharedData.getRenderer();
+    SDL_Renderer *renderer = SharedData::instance().getRenderer();
     bool quit = false;
 
     SDL_Event e;
