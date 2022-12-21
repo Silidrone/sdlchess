@@ -112,7 +112,7 @@ Piece *HelperFunctions::matchingPiece(const std::string &target, std::vector<Pie
 
         auto attacked_squares = possible_piece->attacked_squares();
         for (auto &moveable_square: possible_piece->moveable_squares(attacked_squares)) {
-            if (moveable_square->getCoordinate() == target) {
+            if (moveable_square->getCoordinate() == target && possible_piece->move(moveable_square, true)) {
                 return possible_piece;
             }
         }

@@ -96,7 +96,7 @@ bool Piece::move(Square *target, bool test_move) {
         previous_square->putPiece(this);
         if (target_piece) {
             target->putPiece(target_piece);
-            m_board->addPiece(target_piece);
+            m_board->unRemovePiece(target_piece);
         } else {
             target->removePiece();
         }

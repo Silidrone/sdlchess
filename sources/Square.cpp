@@ -1,5 +1,7 @@
 #include "../headers/Square.h"
 #include "../headers/Piece.h"
+#include "../headers/King.h"
+#include <iostream>
 
 Square::Square(std::string coordinate, ChessColor c, const MTexture &t, SDL_Rect dest)
         : m_coordinate(std::move(coordinate)), ChessColored(c), m_texture(t), m_destination(dest),

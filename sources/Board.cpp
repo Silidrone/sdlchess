@@ -256,6 +256,18 @@ void Board::removePiece(Piece *p) {
             m_removed_pieces.push_back(*it);
             it = m_pieces.erase(it);
             --it;
+            break;
+        }
+    }
+}
+
+void Board::unRemovePiece(Piece *p) {
+    for (auto it = m_removed_pieces.begin(); it != m_removed_pieces.end(); it++) {
+        if ((*it)->getSquare()->getCoordinate() == p->getSquare()->getCoordinate()) {
+            m_pieces.push_back(*it);
+            it = m_removed_pieces.erase(it);
+            --it;
+            break;
         }
     }
 }

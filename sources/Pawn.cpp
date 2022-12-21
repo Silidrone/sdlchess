@@ -32,13 +32,14 @@ std::vector<Square *> Pawn::moveable_squares(std::vector<Square *> &attacked_squ
     std::vector<Square *> result;
     const auto current_coordinate = m_square->getCoordinate();
     const auto next_up_square = m_board->get_square_by_coordinate(m_fDirector.up(current_coordinate));
-    if (next_up_square && next_up_square->getPiece() == nullptr) result.push_back(next_up_square);
-
-    // if the pawn hasn't moved yet, allow it to move to the square after the next one too (in the up direction)
-    if (!hasMoved()) {
-        auto s = m_board->get_square_by_coordinate(m_fDirector.up(next_up_square->getCoordinate()));
-        if (s && s->getPiece() == nullptr) {
-            result.push_back(s);
+    if (next_up_square && next_up_square->getPiece() == nullptr) {
+        result.push_back(next_up_square);
+        // if the pawn hasn't moved yet, allow it to move to the square after the next one too (in the up direction)
+        if (!hasMoved()) {
+            auto s = m_board->get_square_by_coordinate(m_fDirector.up(next_up_square->getCoordinate()));
+            if (s && s->getPiece() == nullptr) {
+                result.push_back(s);
+            }
         }
     }
 

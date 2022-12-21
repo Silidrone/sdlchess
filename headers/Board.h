@@ -62,6 +62,7 @@ public:
     Square *get_square_by_screen_position(int, int);
 
     void removePiece(Piece *);
+    void unRemovePiece(Piece *);
 
     void addPiece(Piece *);
 
