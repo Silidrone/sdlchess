@@ -68,39 +68,3 @@ std::string FDirector::down_left_left(std::string coordinate) {
 std::string FDirector::down_right_right(std::string coordinate) {
     return right(right(down(std::move(coordinate))));
 }
-
-Direction FDirector::get_target_direction(Piece *this_piece, Square *target_square) {
-    std::string this_coordinate = this_piece->getSquare()->getCoordinate();
-    std::string target_coordinate = target_square->getCoordinate();
-    bool up = target_coordinate[1] > this_coordinate[1];
-    bool same_row = target_coordinate[1] == this_coordinate[1];
-    bool left = target_coordinate[0] < this_coordinate[0];
-    bool same_column = target_coordinate[0] == this_coordinate[0];
-
-    if (m_color == ChessColor::BLACK) {
-        up = !up;
-        left = !left;
-    }
-
-    if (same_column) {
-        if (up) {
-            return Direction::UP;
-        } else {
-            return Direction::DOWN;
-        }
-    } else if (same_row) {
-        if (left) {
-            return Direction::LEFT;
-        } else {
-            return Direction::RIGHT;
-        }
-    } else if (up && left) {
-        return Direction::UP_LEFT;
-    } else if (up) {
-        return Direction::UP_RIGHT;
-    } else if (left) {
-        return Direction::DOWN_LEFT;
-    } else {
-        return Direction::DOWN_RIGHT;
-    }
-}

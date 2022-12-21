@@ -103,6 +103,24 @@ std::vector<std::string> HelperFunctions::split(const std::string &s, char delim
     return result;
 }
 
+Piece *HelperFunctions::matchingPiece(const std::string &target, std::vector<Piece *> &possible_pieces,
+                                      char column, char row) {
+    for (auto &possible_piece: possible_pieces) {
+        const auto possible_piece_coordinate = possible_piece->getSquare()->getCoordinate();
+        if (column && possible_piece_coordinate.at(0) != column) continue;
+        if (row && possible_piece_coordinate.at(1) != row) continue;
+
+        auto attacked_squares = possible_piece->attacked_squares();
+        for (auto &moveable_square: possible_piece->moveable_squares(attacked_squares)) {
+            if (moveable_square->getCoordinate() == target) {
+                return possible_piece;
+            }
+        }
+    }
+
+    return nullptr;
+}
+
 std::vector<PGNGameDetails> HelperFunctions::parsePGN(std::string &&file_path) {
     std::ifstream file;
     file.open(std::move(file_path));
@@ -170,8 +188,8 @@ std::vector<PGNGameDetails> HelperFunctions::parsePGN(std::string &&file_path) {
                     if (parsed_move == "") continue;
                     parsed_move = trim(parsed_move);
                     if (parsed_move.find('.') != std::string::npos) {
-                        moves.push_back(HelperFunctions::split(parsed_move, '.')[1]);
-                    } else if (parsed_move.find('-') != std::string::npos && std::isdigit(parsed_move[0])) continue;
+                        moves.push_back(HelperFunctions::split(parsed_move, '.').at(1));
+                    } else if (parsed_move.find('-') != std::string::npos && std::isdigit(parsed_move.at(0))) continue;
                     else {
                         moves.push_back(parsed_move);
                     }

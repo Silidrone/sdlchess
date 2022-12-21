@@ -47,60 +47,52 @@ struct InvalidPieceNotation : ChessGameException {
     }
 };
 
-int main(int argc, char *args[]) {
-    SharedData::instance().init();
-    std::cout << "tester.cpp: start test" << std::endl;
-    auto games = HelperFunctions::parsePGN("../pgn_games/Adams.pgn");
-    auto matching_piece = [](std::string move, std::vector<Piece *> &possible_pieces,
-                             char piece_specification_char) -> Piece * {
-        for (auto &possible_piece: possible_pieces) {
-            if (piece_specification_char &&
-                possible_piece->getSquare()->getCoordinate()[0] != piece_specification_char)
-                continue;
-            auto attacked_squares = possible_piece->attacked_squares();
-            for (auto &moveable_square: possible_piece->moveable_squares(attacked_squares)) {
-                if (moveable_square->getCoordinate() == move) {
-                    return possible_piece;
-                }
-            }
+void test_game(const PGNGameDetails &game) {
+    MoveLogger moveLogger;
+    Board board(moveLogger);
+    board.init("../resources/w_square_gray.png", "../resources/b_square_gray.png");
+
+    for (int j = 0; j < game.getMoveCount(); j++) {
+        const auto turn_color = static_cast<ChessColor>(static_cast<bool>(j % 2 == 0));
+        const auto previous_turn_color = static_cast<ChessColor>(static_cast<bool>(j % 2 != 0));
+        std::string move = game.getMove(j);
+
+        Piece *selected_piece = nullptr;
+        std::string target_square_coordinate = "";
+
+        const auto check_index = move.find('+');
+        if (check_index != std::string::npos) { // remove a check mark if there is one
+            move.erase(check_index, 1);
         }
 
-        return nullptr;
-    };
-    for (int i = 0; i < 1; i++) {
-        PGNGameDetails &game = games[i];
-        std::cout << "Game " << i + 1 << std::endl;
-        MoveLogger moveLogger;
-        Board board(moveLogger);
-        board.init("../resources/w_square_gray.png", "../resources/b_square_gray.png");
-        int k = 1;
-        for (int j = 0; j < game.getMoveCount(); j++) {
-            auto turn_color = static_cast<ChessColor>(static_cast<bool>(j % 2 == 0));
-            auto previous_turn_color = static_cast<ChessColor>(static_cast<bool>(j % 2 != 0));
-            std::string move = game.getMove(j);
-            if (j % 2 == 0) {
-                std::cout << std::endl;
-                std::cout << k << ".: ";
-                k++;
+        if (move.find('-') != std::string::npos) { // i.e.: O-O or O-O-O
+            selected_piece = board.getKing(turn_color);
+            auto fDirector = selected_piece->getFDirector();
+            if (move.length() == 3) { // i.e. 0-0 (king-side)
+                target_square_coordinate = fDirector.right(
+                        fDirector.right(selected_piece->getSquare()->getCoordinate()));
+            } else if (move.length() == 5) { // i.e. 0-0-0 (queen-side)
+                target_square_coordinate = fDirector.left(
+                        fDirector.left(selected_piece->getSquare()->getCoordinate()));
             }
-            std::cout << move << " ";
-            Piece *selected_piece = nullptr;
-            Square *target_square = nullptr;
-            if (move.find('x') != std::string::npos) { // e.g.: Rxb5
-                auto capture_move_arr = HelperFunctions::split(move, 'x');
-                move = std::string(capture_move_arr[0]);
-                target_square = board.get_square_by_coordinate(capture_move_arr[1]);
-            }
-            if (move.length() == 2 || move.length() == 3 || move.length() == 4) { // e.g.: e4
-                std::vector<Piece *> possible_pieces;
-                char piece_specification_char = '\0';
-                if (move.length() == 2) {
+        } else { // e.g. e4, exd4, Bxe4, Bc4, Nbd7
+            std::vector<Piece *> possible_pieces;
+            char column = '\0';
+            char row = '\0';
+
+            if (move.length() == 2) {
+                for (auto &pawn: board.getPawns(turn_color)) {
+                    possible_pieces.push_back(pawn);
+                }
+                target_square_coordinate = move;
+                column = move.at(0);
+            } else {
+                char piece_letter = move.at(0);
+                if (std::islower(piece_letter)) {
                     for (auto &pawn: board.getPawns(turn_color)) {
                         possible_pieces.push_back(pawn);
                     }
-                    target_square = board.get_square_by_coordinate(move);
                 } else {
-                    char piece_letter = move[0];
                     if (piece_letter == 'K') {
                         possible_pieces.push_back(board.getKing(turn_color));
                     } else if (piece_letter == 'Q') {
@@ -118,37 +110,65 @@ int main(int argc, char *args[]) {
                             possible_pieces.push_back(rook);
                         }
                     }
-                    if (move.length() == 3) {
-                        move = move.substr(1, move.size() - 1);
-                    } else if (move.length() == 4) {
-                        piece_specification_char = move[1];
-                        move = move.substr(2, move.size() - 2);
-                    }
                 }
 
-                target_square = board.get_square_by_coordinate(move);
-                selected_piece = matching_piece(move, possible_pieces, piece_specification_char);
-            } else if (move.find('-') != std::string::npos) { // e.g.: O-O or O-O-O
-                selected_piece = board.getKing(turn_color);
-                target_square = board.get_square_by_coordinate(move);
-            }
-
-            if (selected_piece) {
-                if (!selected_piece->move(target_square)) {
-                    throw InvalidMove(game.getMove(j), game);
-                } else {
-                    if (board.isGameOver(turn_color, previous_turn_color)) {
-                        if (j != game.getMoveCount() - 1) {
-                            throw PrematureCheckmate(game.getMove(j), game);
+                if (move.find('x') != std::string::npos) {
+                    auto capture_move_arr = HelperFunctions::split(move, 'x');
+                    if (capture_move_arr[0].size() == 1) {
+                        target_square_coordinate = capture_move_arr[1];
+                        const char first_letter = capture_move_arr[0].at(0);
+                        if (std::islower(first_letter)) {
+                            column = first_letter;
                         }
                     }
+                } else if (move.length() == 3) {
+                    target_square_coordinate = move.substr(1, move.size() - 1);
+                } else if (move.length() == 4) {
+                    target_square_coordinate = move.substr(2, move.size() - 2);
+                    const char ambiguity_clarifier_letter = move[1];
+                    if (std::isdigit(ambiguity_clarifier_letter)) {
+                        row = ambiguity_clarifier_letter;
+                    } else {
+                        column = ambiguity_clarifier_letter;
+                    }
                 }
-            } else {
-                throw InvalidPieceNotation(game.getMove(j), game);
             }
+
+            selected_piece = HelperFunctions::matchingPiece(target_square_coordinate, possible_pieces, column, row);
         }
-        std::cout << std::endl << std::endl;
+
+        if (selected_piece && !target_square_coordinate.empty()) {
+            if (!selected_piece->move(board.get_square_by_coordinate(target_square_coordinate))) {
+                throw InvalidMove(move, game);
+            } else {
+                if (board.isGameOver(turn_color, previous_turn_color)) {
+                    if (j != game.getMoveCount() - 1) {
+                        throw PrematureCheckmate(move, game);
+                    }
+                }
+            }
+        } else {
+            throw InvalidPieceNotation(move, game);
+        }
     }
+}
+
+int main(int argc, char *args[]) {
+    SharedData::instance().init();
+    std::cout << "tester.cpp: start test" << std::endl;
+    auto games = HelperFunctions::parsePGN("../pgn_games/Adams.pgn");
+    unsigned long long succeeded_game_count = 0;
+    for (int i = 0; i < games.size(); i++) {
+        PGNGameDetails &game = games[i];
+        try {
+            test_game(game);
+            succeeded_game_count++;
+        } catch (ChessGameException &exception) {
+            std::cout << "Game No. " << i + 1 << " failed. Reason: " << exception.what() << std::endl;
+        }
+    }
+
+    std::cout << (float)succeeded_game_count / games.size() * 100 << "% games succeeded" << std::endl;
 
     //Destroy window
     SDL_DestroyRenderer(SharedData::instance().getRenderer());

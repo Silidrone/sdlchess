@@ -68,8 +68,6 @@ public:
     std::string down_left_left(std::string);
 
     std::string down_right_right(std::string);
-
-    Direction get_target_direction(Piece *, Square *);
 };
 
 using FDirection = std::string(FDirector::*)(std::string);
