@@ -261,15 +261,12 @@ void Board::removePiece(Piece *p) {
     }
 }
 
-void Board::unRemovePiece(Piece *p) {
-    for (auto it = m_removed_pieces.begin(); it != m_removed_pieces.end(); it++) {
-        if ((*it)->getSquare()->getCoordinate() == p->getSquare()->getCoordinate()) {
-            m_pieces.push_back(*it);
-            it = m_removed_pieces.erase(it);
-            --it;
-            break;
-        }
-    }
+void Board::unRemoveLastPiece() {
+    if (m_removed_pieces.empty())
+        throw std::logic_error("Trying to unremove the last removed piece when there is none!");
+    auto last = std::prev(m_removed_pieces.end());
+    m_pieces.push_back(*last);
+    m_removed_pieces.erase(last);
 }
 
 void Board::addPiece(Piece *p) {

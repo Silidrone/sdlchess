@@ -67,7 +67,9 @@ bool Piece::move(Square *target, bool test_move) {
     }
 
     Piece *target_piece = target->getPiece();
-    Square *previous_square = move_without_rules(target);
+    auto rp = move_without_rules(target);
+    Square *previous_square = rp.first;
+    bool target_piece_removed = rp.second;
 
     bool bfide39 = fide39();
     bool promotion_cancelled = false;
@@ -88,7 +90,7 @@ bool Piece::move(Square *target, bool test_move) {
     if (!test_move && bfide39 && !promotion_cancelled) {
         post_move_f(previous_square);
         m_board->getMoveLogger().addLog(this, move_log(previous_square, target_piece != nullptr),
-                                      previous_square->getCoordinate(), m_square->getCoordinate());
+                                        previous_square->getCoordinate(), m_square->getCoordinate());
         m_moved = true;
         return true;
     } else {
@@ -96,14 +98,14 @@ bool Piece::move(Square *target, bool test_move) {
         previous_square->putPiece(this);
         if (target_piece) {
             target->putPiece(target_piece);
-            m_board->unRemovePiece(target_piece);
+            if (target_piece_removed) m_board->unRemoveLastPiece();
         } else {
             target->removePiece();
         }
         m_board->updateAttackedSquares();
     }
 
-    if(pawn) {
+    if (pawn) {
         pawn->setPromotedPiece(nullptr);
     }
 
@@ -114,7 +116,8 @@ void Piece::post_move_f(Square *) {}
 
 std::string Piece::move_log(Square *, bool) { return ""; }
 
-Square *Piece::move_without_rules(Square *target) {
+std::pair<Square *, bool> Piece::move_without_rules(Square *target) {
+    bool target_piece_removed = false;
     if (m_square) {
         m_square->removePiece();
     }
@@ -123,13 +126,14 @@ Square *Piece::move_without_rules(Square *target) {
         target_piece->unattack_squares();
         target_piece->removeFromBoard();
         target->removePiece();
+        target_piece_removed = true;
     }
     target->putPiece(this);
     Square *previous_square = m_square;
     this->setSquare(target);
 
     m_board->updateAttackedSquares();
-    return previous_square;
+    return {previous_square, target_piece_removed};
 }
 
 void Piece::setSquare(Square *square) {

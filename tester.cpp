@@ -114,18 +114,25 @@ void test_game(const PGNGameDetails &game) {
 
                 if (move.find('x') != std::string::npos) {
                     auto capture_move_arr = HelperFunctions::split(move, 'x');
-                    if (capture_move_arr[0].size() == 1) {
-                        target_square_coordinate = capture_move_arr[1];
-                        const char first_letter = capture_move_arr[0].at(0);
+                    target_square_coordinate = capture_move_arr.at(1);
+                    if (capture_move_arr.at(0).size() == 1) {
+                        const char first_letter = capture_move_arr.at(0).at(0);
                         if (std::islower(first_letter)) {
                             column = first_letter;
+                        }
+                    } else if (capture_move_arr.at(0).size() == 2) {
+                        char ambiguity_clarifier_letter = capture_move_arr.at(0).at(1);
+                        if (std::isdigit(ambiguity_clarifier_letter)) {
+                            row = ambiguity_clarifier_letter;
+                        } else {
+                            column = ambiguity_clarifier_letter;
                         }
                     }
                 } else if (move.length() == 3) {
                     target_square_coordinate = move.substr(1, move.size() - 1);
                 } else if (move.length() == 4) {
                     target_square_coordinate = move.substr(2, move.size() - 2);
-                    const char ambiguity_clarifier_letter = move[1];
+                    const char ambiguity_clarifier_letter = move.at(1);
                     if (std::isdigit(ambiguity_clarifier_letter)) {
                         row = ambiguity_clarifier_letter;
                     } else {
@@ -158,7 +165,7 @@ int main(int argc, char *args[]) {
     std::cout << "tester.cpp: start test" << std::endl;
     auto games = HelperFunctions::parsePGN("../pgn_games/Adams.pgn");
     unsigned long long succeeded_game_count = 0;
-    for (int i = 1095; i < games.size(); i++) {
+    for (int i = 1097; i < games.size(); i++) {
         PGNGameDetails &game = games[i];
         try {
             test_game(game);
@@ -168,7 +175,7 @@ int main(int argc, char *args[]) {
         }
     }
 
-    std::cout << (float)succeeded_game_count / games.size() * 100 << "% games succeeded" << std::endl;
+    std::cout << (float) succeeded_game_count / games.size() * 100 << "% games succeeded" << std::endl;
 
     //Destroy window
     SDL_DestroyRenderer(SharedData::instance().getRenderer());
