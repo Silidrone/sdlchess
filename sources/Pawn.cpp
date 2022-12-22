@@ -67,8 +67,10 @@ std::vector<Square *> Pawn::moveable_squares(std::vector<Square *> &attacked_squ
     return result;
 }
 
-void Pawn::post_move_f(Square *) {
-    if (m_en_passed_square) {
+void Pawn::post_move_f(Square *previous_square) {
+    const char previous_square_column = previous_square->getCoordinate().at(0);
+    const char current_column = this->getSquare()->getCoordinate().at(0);
+    if (m_en_passed_square && previous_square_column != current_column) {
         auto en_passed_pawn = m_en_passed_square->getPiece();
         en_passed_pawn->unattack_squares();
         en_passed_pawn->removeFromBoard();
