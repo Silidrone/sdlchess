@@ -3,6 +3,7 @@
 #include "../headers/Square.h"
 #include "../headers/King.h"
 #include "../headers/HelperFunctions.h"
+#include "../headers/Pawn.h"
 
 Game::Game() : m_moveLogger(), m_board(m_moveLogger),
                m_turn_color(ChessColor::WHITE), m_game_over(false) {}
@@ -65,7 +66,8 @@ void Game::run() {
                 if (e.type == SDL_MOUSEBUTTONUP && selected_piece) {
                     SDL_GetMouseState(&mouse_x, &mouse_y);
 
-                    if (!selected_piece->move(m_board.get_square_by_screen_position(mouse_x, mouse_y))) {
+                    if (!selected_piece->move(m_board.get_square_by_screen_position(mouse_x, mouse_y), false, 
+                                                [this](Pawn *selected_pawn) {return HelperFunctions::getChosenPromotedPieceWithModal(selected_pawn->getColor(), selected_pawn->getSquare()->getDestination(), &m_board); })) {
                         selected_piece->resetPosition();
                     } else {
                         auto previous_turn_color = m_turn_color;

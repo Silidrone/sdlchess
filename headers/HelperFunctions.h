@@ -8,7 +8,7 @@
 namespace HelperFunctions {
     std::string get_algebraic_notation(char, const std::string &, bool);
 
-    Piece *getChosenPromotedPieceWithModal(ChessColor, Square *, Board *);
+    Piece *getChosenPromotedPieceWithModal(ChessColor, SDL_Rect, Board *);
 
     std::vector<std::string> split(const std::string &, char);
 

@@ -5,7 +5,7 @@
 
 class Pawn : public Piece {
 public:
-    Pawn(ChessColor, Square *, Board *);
+    Pawn(ChessColor, Board *, Square * = nullptr);
 
     std::vector<Square *> attacked_squares() override;
 

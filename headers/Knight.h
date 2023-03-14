@@ -5,7 +5,7 @@
 
 class Knight : public Piece {
 public:
-    Knight(ChessColor, Square *, Board *);
+    Knight(ChessColor, Board *, Square * = nullptr);
 
     std::vector<Square *> attacked_squares() override;
 

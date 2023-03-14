@@ -2,10 +2,10 @@
 #include "../headers/HelperFunctions.h"
 #include "../headers/Square.h"
 
-Queen::Queen(ChessColor c, Square *square, Board *b) :
-        QRBPiece(c, square, b, MTexture(SharedData::instance().getRenderer(), c == ChessColor::WHITE
+Queen::Queen(ChessColor c, Board *b, Square *square) :
+        QRBPiece(c, b, MTexture(SharedData::instance().getRenderer(), c == ChessColor::WHITE
                                                                               ? "../resources/w_queen.png"
-                                                                              : "../resources/b_queen.png")) {
+                                                                              : "../resources/b_queen.png"), square) {
 }
 
 std::vector<std::pair<Direction, FDirection>> Queen::getDirections() {

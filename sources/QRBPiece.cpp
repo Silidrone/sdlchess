@@ -1,7 +1,7 @@
 #include "../headers/QRBPiece.h"
 #include "../headers/Square.h"
 
-QRBPiece::QRBPiece(ChessColor c, Square *s, Board *b, const MTexture &t) : Piece(c, s, b, t) {}
+QRBPiece::QRBPiece(ChessColor c, Board *b, const MTexture &t, Square *s) : Piece(c, b, t, s) {}
 
 QRBPiece::~QRBPiece() {}
 

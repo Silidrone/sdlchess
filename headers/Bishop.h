@@ -5,7 +5,7 @@
 
 class Bishop : public QRBPiece {
 public:
-    Bishop(ChessColor, Square *, Board *);
+    Bishop(ChessColor, Board *, Square * = nullptr);
 
     std::vector<std::pair<Direction, FDirection>> getDirections() override;
     std::string move_log(Square *, bool) override;

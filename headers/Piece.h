@@ -16,7 +16,7 @@ class Piece : public ChessColored {
 public:
     static const int DEFAULT_RENDER_PRIORITY = 0;
 
-    Piece(ChessColor, Square *, Board *, const MTexture &);
+    Piece(ChessColor, Board *, const MTexture &, Square * = nullptr);
 
     Piece(const Piece &other) = default;
 
@@ -40,7 +40,7 @@ public:
 
     bool fide39();
 
-    bool move(Square *, bool = false);
+    bool move(Square *, bool = false, std::function<Piece*(Pawn*)> = {});
 
     virtual void post_move_f(Square *);
 

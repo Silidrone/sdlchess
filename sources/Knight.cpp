@@ -2,11 +2,11 @@
 #include "../headers/HelperFunctions.h"
 #include "../headers/Square.h"
 
-Knight::Knight(ChessColor c, Square *square, Board *b) : Piece(c, square, b,
+Knight::Knight(ChessColor c, Board *b, Square *square) : Piece(c, b,
                                                                MTexture(SharedData::instance().getRenderer(),
                                                                         c == ChessColor::WHITE
                                                                         ? "../resources/w_knight.png"
-                                                                        : "../resources/b_knight.png")) {}
+                                                                        : "../resources/b_knight.png"), square) {}
 
 std::vector<Square *> Knight::attacked_squares() {
     return m_board->get_squares_in_fdirections(

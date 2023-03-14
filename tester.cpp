@@ -47,6 +47,23 @@ struct InvalidPieceNotation : ChessGameException {
     }
 };
 
+Piece *promotion_method(Pawn *selected_pawn, Board *board, std::string move) {
+    if(selected_pawn && move.find('=') != std::string::npos) {
+        char promoted_piece_letter = move.back();
+        if(promoted_piece_letter == 'Q') {
+            return new Queen(selected_pawn->getColor(), board);
+        } else if(promoted_piece_letter == 'B') {
+            return new Bishop(selected_pawn->getColor(), board);
+        } else if(promoted_piece_letter == 'N') {
+            return new Knight(selected_pawn->getColor(), board);
+        } else if(promoted_piece_letter == 'R') {
+            return new Rook(selected_pawn->getColor(), board);
+        }
+    }
+
+    return nullptr;
+}
+
 void test_game(const PGNGameDetails &game) {
     MoveLogger moveLogger;
     Board board(moveLogger);
@@ -58,6 +75,7 @@ void test_game(const PGNGameDetails &game) {
         std::string move = game.getMove(j);
 
         Piece *selected_piece = nullptr;
+        Piece *promoted_piece = nullptr;
         std::string target_square_coordinate = "";
 
         const auto check_index = move.find('+');
@@ -68,7 +86,7 @@ void test_game(const PGNGameDetails &game) {
         if (move.find('-') != std::string::npos) { // i.e.: O-O or O-O-O
             selected_piece = board.getKing(turn_color);
             auto fDirector = selected_piece->getFDirector();
-            if (move.length() == 3) { // i.e. 0-0 (king-side)
+            if (move.length() == 3) { // i.e. 0-0 (king-side) 
                 target_square_coordinate = fDirector.right(
                         fDirector.right(selected_piece->getSquare()->getCoordinate()));
             } else if (move.length() == 5) { // i.e. 0-0-0 (queen-side)
@@ -111,8 +129,20 @@ void test_game(const PGNGameDetails &game) {
                         }
                     }
                 }
-
-                if (move.find('x') != std::string::npos) {
+                
+                if(move.find('=') != std::string::npos) {
+                    column = move[0];
+                    if (move.find('x') != std::string::npos) {
+                        target_square_coordinate = HelperFunctions::split(HelperFunctions::split(move, '=')[0], 'x')[1];
+                    } else {
+                        target_square_coordinate = move.substr(0, 2);
+                    }
+                    if(move[1] == '8') {
+                        row = '7';
+                    } else if (move[1] == '1') {
+                        row = '2';
+                    }
+                } else if (move.find('x') != std::string::npos) {
                     auto capture_move_arr = HelperFunctions::split(move, 'x');
                     target_square_coordinate = capture_move_arr.at(1);
                     if (capture_move_arr.at(0).size() == 1) {
@@ -145,7 +175,7 @@ void test_game(const PGNGameDetails &game) {
         }
 
         if (selected_piece && !target_square_coordinate.empty()) {
-            if (!selected_piece->move(board.get_square_by_coordinate(target_square_coordinate))) {
+            if (!selected_piece->move(board.get_square_by_coordinate(target_square_coordinate), false, [&board, &move](Pawn *selected_pawn) {return promotion_method(selected_pawn, &board, move); })) {
                 throw InvalidMove(move, game);
             } else {
                 if (board.isGameOver(turn_color, previous_turn_color)) {

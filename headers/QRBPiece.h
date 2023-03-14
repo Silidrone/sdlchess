@@ -8,7 +8,7 @@ private:
     std::vector<Square *> squaresBeforeNextPieceInDirection(const DirectionalSquares &);
     std::vector<Square *> squaresBeforeNextPieceInDirections(const std::vector<DirectionalSquares>&);
 public:
-    QRBPiece(ChessColor, Square *, Board *, const MTexture &);
+    QRBPiece(ChessColor, Board *, const MTexture &, Square * = nullptr);
     virtual ~QRBPiece();
     virtual std::vector<std::pair<Direction, FDirection>> getDirections() = 0;
     std::vector<Square *> attacked_squares() override;

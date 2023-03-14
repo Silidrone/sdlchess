@@ -7,10 +7,10 @@
 #include "../headers/Bishop.h"
 #include "../headers/Knight.h"
 
-Pawn::Pawn(ChessColor c, Square *square, Board *b) : Piece(c, square, b, MTexture(SharedData::instance().getRenderer(),
+Pawn::Pawn(ChessColor c, Board *b, Square *square) : Piece(c, b, MTexture(SharedData::instance().getRenderer(),
                                                                                   c == ChessColor::WHITE
                                                                                   ? "../resources/w_pawn.png"
-                                                                                  : "../resources/b_pawn.png")),
+                                                                                  : "../resources/b_pawn.png"), square),
                                                      m_en_passed_square(nullptr), m_promoted_piece(nullptr) {
 }
 

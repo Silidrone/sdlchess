@@ -5,7 +5,7 @@
 
 class Rook : public QRBPiece {
 public:
-    Rook(ChessColor, Square *, Board *);
+    Rook(ChessColor, Board *, Square * = nullptr);
 
     std::vector<std::pair<Direction, FDirection>> getDirections() override;
     std::string move_log(Square *, bool) override;

@@ -17,10 +17,9 @@ HelperFunctions::get_algebraic_notation(char piece_letter, const std::string &cu
     }
 }
 
-Piece *HelperFunctions::getChosenPromotedPieceWithModal(ChessColor color, Square *current_square, Board *m_board) {
+Piece *HelperFunctions::getChosenPromotedPieceWithModal(ChessColor color, SDL_Rect square_rect, Board *board) {
     auto renderer = SharedData::instance().getRenderer();
     SDL_Event e;
-    SDL_Rect square_rect = current_square->getDestination();
     std::string path_prefix = std::string("../resources/");
     std::string piece_name_prefix = (color == ChessColor::WHITE ? "w_" : "b_");
     SDL_Rect modal_rect = {square_rect.x, square_rect.y, square_rect.w, square_rect.h * 4};
@@ -49,16 +48,16 @@ Piece *HelperFunctions::getChosenPromotedPieceWithModal(ChessColor color, Square
                     return nullptr;
                 }
                 if (SDL_PointInRect(&point, &queen_rect) == SDL_TRUE) {
-                    return new Queen(color, current_square, m_board);
+                    return new Queen(color, board);
                 }
                 if (SDL_PointInRect(&point, &rook_rect) == SDL_TRUE) {
-                    return new Rook(color, current_square, m_board);
+                    return new Rook(color, board);
                 }
                 if (SDL_PointInRect(&point, &bishop_rect) == SDL_TRUE) {
-                    return new Bishop(color, current_square, m_board);
+                    return new Bishop(color, board);
                 }
                 if (SDL_PointInRect(&point, &knight_rect) == SDL_TRUE) {
-                    return new Knight(color, current_square, m_board);
+                    return new Knight(color, board);
                 }
             }
         }

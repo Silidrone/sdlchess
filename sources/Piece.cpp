@@ -5,11 +5,14 @@
 #include "../headers/Pawn.h"
 #include "../headers/MoveLogger.h"
 #include "../headers/HelperFunctions.h"
+#include <functional>
 
-Piece::Piece(ChessColor c, Square *square, Board *board, const MTexture &texture)
-        : ChessColored(c), m_square(nullptr), m_board(board), m_texture(texture), m_fDirector(c), m_moved(false) {
-    square->putPiece(this);
-    setSquare(square);
+Piece::Piece(ChessColor c, Board *board, const MTexture &texture, Square *square)
+        : ChessColored(c), m_board(board), m_texture(texture), m_fDirector(c), m_moved(false) {
+    if(square) {
+        square->putPiece(this);
+        setSquare(square);
+    }
 }
 
 Piece::~Piece() {}
@@ -55,7 +58,7 @@ void Piece::unattack_squares() {
     m_squares_attacked.clear();
 }
 
-bool Piece::move(Square *target, bool test_move) {
+bool Piece::move(Square *target, bool test_move, std::function<Piece*(Pawn *)> promotion_method) {
     if (!fide12(target) || !fide31(target)) return false;
     auto squares_attacked = attacked_squares();
     auto legal_squares = moveable_squares(squares_attacked);
@@ -70,20 +73,19 @@ bool Piece::move(Square *target, bool test_move) {
     auto rp = move_without_rules(target);
     Square *previous_square = rp.first;
     bool target_piece_removed = rp.second;
-
     bool bfide39 = fide39();
-    bool promotion_cancelled = false;
 
     Pawn *pawn = dynamic_cast<Pawn *>(this);
-    if (!test_move && bfide39) {
-        char target_square_row = target->getCoordinate()[1];
-        if (pawn && (target_square_row == '8' || target_square_row == '1')) {
-            Piece *chosen_promoted_piece = HelperFunctions::getChosenPromotedPieceWithModal(m_color, m_square, m_board);
-            if (chosen_promoted_piece) {
-                pawn->setPromotedPiece(chosen_promoted_piece);
-            } else {
-                promotion_cancelled = true;
-            }
+    bool promotion_cancelled = false;
+    char target_square_row = target->getCoordinate()[1];
+    if(bfide39 && pawn && promotion_method && (target_square_row == '8' || target_square_row == '1')) {
+        Piece *chosen_promoted_piece = promotion_method(pawn);
+        if(chosen_promoted_piece) {
+            m_square->putPiece(chosen_promoted_piece);
+            chosen_promoted_piece->setSquare(m_square);
+            pawn->setPromotedPiece(chosen_promoted_piece);
+        } else {
+            promotion_cancelled = true;
         }
     }
 
