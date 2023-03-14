@@ -9,3 +9,8 @@ Aside TODOs mentioned in code I'll list some here whenever I want to mark an imp
     -Import/Export PGN file
 
     -Tester
+
+
+Bugs to fix:
+    -Games with multiple queens on the same color tend to have a problem because the program assumes there can only be a single queen per player
+    -Some specific en passant games fail, check the problem (one of the problems is when a pawn check with en passant, it always fails)
