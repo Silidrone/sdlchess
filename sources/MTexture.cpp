@@ -44,6 +44,7 @@ MTexture &MTexture::operator=(const MTexture &other) {
     m_renderer = other.m_renderer;
     m_instance_count = other.m_instance_count;
     (*m_instance_count)++;
+    return *this;
 }
 
 MTexture::~MTexture() {

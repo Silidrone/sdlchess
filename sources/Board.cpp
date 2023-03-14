@@ -10,6 +10,7 @@
 #include "../headers/Pawn.h"
 #include "../headers/MoveLogger.h"
 #include <algorithm>
+#include <stdexcept>
 
 Board::Board(MoveLogger &moveLogger) : m_squares(), m_pieces(), m_moveLogger(moveLogger) {}
 
