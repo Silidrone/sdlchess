@@ -291,10 +291,8 @@ King *Board::getKing(ChessColor c) {
     return nullptr;
 }
 
-Queen *Board::getQueen(ChessColor c) {
-    auto queens = getPieces<Queen>(c);
-    if (queens.size() > 0) return queens[0];
-    return nullptr;
+std::vector<Queen *> Board::getQueens(ChessColor c) {
+   return getPieces<Queen>(c);
 }
 
 std::vector<Pawn *> Board::getPawns(ChessColor c) {

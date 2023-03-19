@@ -69,7 +69,7 @@ public:
     void updateAttackedSquares();
 
     King *getKing(ChessColor);
-    Queen *getQueen(ChessColor);
+    std::vector<Queen *> getQueens(ChessColor);
     std::vector<Pawn*> getPawns(ChessColor);
     std::vector<Bishop*> getBishops(ChessColor);
     std::vector<Knight*> getKnights(ChessColor);

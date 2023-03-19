@@ -114,7 +114,9 @@ void test_game(const PGNGameDetails &game) {
                     if (piece_letter == 'K') {
                         possible_pieces.push_back(board.getKing(turn_color));
                     } else if (piece_letter == 'Q') {
-                        possible_pieces.push_back(board.getQueen(turn_color));
+                        for (auto &queen: board.getQueens(turn_color)) {
+                            possible_pieces.push_back(queen);
+                        }
                     } else if (piece_letter == 'B') {
                         for (auto &bishop: board.getBishops(turn_color)) {
                             possible_pieces.push_back(bishop);
