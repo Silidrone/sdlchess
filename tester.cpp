@@ -176,16 +176,16 @@ void test_game(const PGNGameDetails &game) {
 
         if (selected_piece && !target_square_coordinate.empty()) {
             if (!selected_piece->move(board.get_square_by_coordinate(target_square_coordinate), false, [&board, &move](Pawn *selected_pawn) {return promotion_method(selected_pawn, &board, move); })) {
-                throw InvalidMove(move, (j + 1) / 2, game);
+                throw InvalidMove(move, ((j + 1) / 2) + 1, game);
             } else {
                 if (board.isGameOver(turn_color, previous_turn_color)) {
                     if (j != game.getMoveCount() - 1) {
-                        throw PrematureCheckmate(move, (j + 1) / 2, game);
+                        throw PrematureCheckmate(move, ((j + 1) / 2) + 1, game);
                     }
                 }
             }
         } else {
-            throw InvalidPieceNotation(move, (j + 1) / 2, game);
+            throw InvalidPieceNotation(move, ((j + 1) / 2) + 1, game);
         }
     }
 }
@@ -195,7 +195,7 @@ int main(int argc, char *args[]) {
     std::cout << "tester.cpp: start test" << std::endl;
     auto games = HelperFunctions::parsePGN("../pgn_games/Adams.pgn");
     unsigned long long succeeded_game_count = 0;
-    for (int i = 439; i < games.size(); i++) {
+    for (int i = 0; i < games.size(); i++) {
         PGNGameDetails &game = games[i];
         try {
             test_game(game);

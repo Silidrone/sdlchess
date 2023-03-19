@@ -60,6 +60,11 @@ void Piece::unattack_squares() {
 
 bool Piece::move(Square *target, bool test_move, std::function<Piece*(Pawn *)> promotion_method) {
     if (!fide12(target) || !fide31(target)) return false;
+
+    Pawn *pawn = dynamic_cast<Pawn *>(this);
+    if(pawn) {
+        pawn->setEnPassedSquare(nullptr);
+    }
     auto squares_attacked = attacked_squares();
     auto legal_squares = moveable_squares(squares_attacked);
 
@@ -69,13 +74,11 @@ bool Piece::move(Square *target, bool test_move, std::function<Piece*(Pawn *)> p
         return false;
     }
 
+    Square *previous_square = m_square;
     Piece *target_piece = target->getPiece();
-    auto rp = move_without_rules(target);
-    Square *previous_square = rp.first;
-    bool target_piece_removed = rp.second;
+    auto undo_f = move_without_rules(target);
     bool bfide39 = fide39();
 
-    Pawn *pawn = dynamic_cast<Pawn *>(this);
     bool promotion_cancelled = false;
     char target_square_row = target->getCoordinate()[1];
     if(bfide39 && pawn && promotion_method && (target_square_row == '8' || target_square_row == '1')) {
@@ -96,19 +99,7 @@ bool Piece::move(Square *target, bool test_move, std::function<Piece*(Pawn *)> p
         m_moved = true;
         return true;
     } else {
-        this->setSquare(previous_square);
-        previous_square->putPiece(this);
-        if (target_piece) {
-            target->putPiece(target_piece);
-            if (target_piece_removed) m_board->unRemoveLastPiece();
-        } else {
-            target->removePiece();
-        }
-        m_board->updateAttackedSquares();
-    }
-
-    if (pawn) {
-        pawn->setPromotedPiece(nullptr);
+        undo_f();
     }
 
     return bfide39 && !promotion_cancelled;
@@ -118,24 +109,33 @@ void Piece::post_move_f(Square *) {}
 
 std::string Piece::move_log(Square *, bool) { return ""; }
 
-std::pair<Square *, bool> Piece::move_without_rules(Square *target) {
-    bool target_piece_removed = false;
-    if (m_square) {
-        m_square->removePiece();
-    }
+std::function<void()> Piece::move_without_rules(Square *target) {
+    Piece *removed_piece = nullptr;
     Piece *target_piece = target->getPiece();
+    Square *previous_square = m_square;
+
     if (target_piece) {
+        removed_piece = target_piece;
         target_piece->unattack_squares();
         target_piece->removeFromBoard();
-        target->removePiece();
-        target_piece_removed = true;
     }
-    target->putPiece(this);
-    Square *previous_square = m_square;
-    this->setSquare(target);
 
+    m_square->removePiece();
+    target->putPiece(this);
+    this->setSquare(target);
     m_board->updateAttackedSquares();
-    return {previous_square, target_piece_removed};
+    
+    return [=]() {
+        this->setSquare(previous_square);
+        previous_square->putPiece(this);
+        if (removed_piece) {
+            target->putPiece(removed_piece);
+            m_board->unRemoveLastPiece();
+        } else {
+            target->removePiece();
+        }
+        m_board->updateAttackedSquares();
+    };
 }
 
 void Piece::setSquare(Square *square) {

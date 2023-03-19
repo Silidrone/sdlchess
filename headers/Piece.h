@@ -46,7 +46,7 @@ public:
 
     virtual std::string move_log(Square *, bool);
 
-    std::pair<Square *, bool> move_without_rules(Square *);
+    virtual std::function<void()> move_without_rules(Square *);
 
     void setSquare(Square *);
 
