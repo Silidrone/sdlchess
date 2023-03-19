@@ -9,6 +9,7 @@
 #include "../headers/Queen.h"
 #include "../headers/Pawn.h"
 #include "../headers/MoveLogger.h"
+#include "../headers/HelperFunctions.h"
 #include <algorithm>
 #include <stdexcept>
 
@@ -166,7 +167,8 @@ bool Board::coordinateIsValid(std::string coordinate) {
 }
 
 bool Board::legalMoveExists(ChessColor c) {
-    for (auto &piece: m_pieces) {
+    std::vector<Piece *> pieces = m_pieces;
+    for (auto &piece: pieces) {
         if (piece->getColor() == c) {
             auto attacked_squares = piece->attacked_squares();
             auto moveable_squares = piece->moveable_squares(attacked_squares);
@@ -311,7 +313,9 @@ std::vector<Rook *> Board::getRooks(ChessColor c) {
     return getPieces<Rook>(c);
 }
 
-bool Board::isGameOver(ChessColor turn_color, ChessColor previous_turn_color) {
+bool Board::isGameOver() {
+    auto turn_color = m_moveLogger.getCurrentMoveColor();
+    auto previous_turn_color = HelperFunctions::oppositeColor(turn_color);
     auto king = getKing(turn_color);
     auto king_attacked_squares = king->attacked_squares();
     return king->getSquare()->isAttacked(previous_turn_color) &&

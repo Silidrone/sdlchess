@@ -10,6 +10,10 @@ int MoveLogger::getCurrentMoveCount() const {
     return m_logs.size() + 1;
 }
 
+ChessColor MoveLogger::getCurrentMoveColor() {
+    return (getCurrentMoveCount() % 2 != 0) ? ChessColor::WHITE : ChessColor::BLACK;
+}
+
 std::vector<Log> MoveLogger::getLogs(Piece *p) {
     std::vector<Log> result;
     for (auto &log: m_logs) {

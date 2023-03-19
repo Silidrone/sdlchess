@@ -23,6 +23,8 @@ public:
 
     int getCurrentMoveCount() const;
 
+    ChessColor getCurrentMoveColor();
+
     std::vector<Log> getLogs(Piece *);
 
     void render() const;

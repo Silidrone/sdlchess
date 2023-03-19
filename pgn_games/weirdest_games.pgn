@@ -1,0 +1,347 @@
+[Event "FIN-ch U18"]
+[Site "Vammala FIN"]
+[Date "1995.??.??"]
+[EventDate "?"]
+[Round "?"]
+[Result "1-0"]
+[White "Antti Lehtinen"]
+[Black "Tuomas Simola"]
+[ECO "B24"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[PlyCount "81"]
+
+1.Nh3 Na6 2.Na3 Nh6 3.Ng5 Nb4 4.Nb5 Ng4 5.Ne4 Nd5 6.Nd4 Ne5
+7.Nc3 Nf6 8.Nf3 Nc6 9.Nb1 Ng8 10.Ng1 Nb8 11.e4 c5 12.Nc3 Nc6
+13.g3 g6 14.Bg2 Bg7 15.d3 e6 16.Be3 d6 17.Qd2 a6 18.h4 h6
+19.f4 Nf6 20.e5 dxe5 21.Bxc5 exf4 22.Qxf4 Nh5 23.Qe3 Qa5
+24.Nge2 Nb4 25.Bxb4 Qxb4 26.O-O-O O-O 27.a3 Qd6 28.Ne4 Qe7
+29.g4 Nf6 30.g5 Nd5 31.Qf2 h5 32.Nf4 Nxf4 33.Qxf4 Ra7 34.Nf6+ Kh8 
+35.Bf3 b5 36.Bxh5 gxh5 37.Qf3 Bxf6 38.gxf6 Qc5 39.Qf4 Qf5
+40.Qh6+ Kg8 41.Rdg1+ 1-0
+
+[Event "Simul, 51b"]
+[Site "Cleveland, OH USA"]
+[Date "1964.03.18"]
+[EventDate "1964.03.18"]
+[Round "?"]
+[Result "1-0"]
+[White "Robert James Fischer"]
+[Black "J Gloger"]
+[ECO "A00"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[PlyCount "33"]
+
+1.b4 e5 2.Bb2 f6 3.e4 Bxb4 4.Bc4 Ne7 5.Qh5+ Ng6 6.f4 exf4 
+7.Nf3 Nc6 8.Nc3 Bxc3 9.Bxc3 d6 10.Nh4 Nce7 11.Nf5 Kf8 
+12.O-O Qe8 13.Bxf6 Bxf5 14.exf5 d5 15.fxg6 gxf6
+16.Qh6+ Kg8 17.g7 1-0
+
+[Event "Palma de Mallorca"]
+[Site "Palma ESP"]
+[Date "1968.12.12"]
+[EventDate "1968.11.24"]
+[Round "16"]
+[Result "0-1"]
+[White "Antonio Angel Medina Garcia"]
+[Black "Svetozar Gligoric"]
+[ECO "C93"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[PlyCount "58"]
+
+1.e4 e5 2.Nf3 Nc6 3.Bb5 a6 4.Ba4 Nf6 5.O-O Be7 6.Re1 b5 7.Bb3 d6 
+8.c3 O-O 9.h3 h6 10.d4 Re8 11.Nbd2 Bf8 12.Nf1 Bb7 13.Ng3 Na5 
+14.Bc2 Nc4 15.Bd3 Nb6 16.Bd2 c5 17.d5 Bc8 18.b3 c4 19.Bf1 Bd7 
+20.Nh2 Rc8 21.b4 Na4 22.Qf3 g6 23.Be2 Bg7 24.h4 Nh7 25.h5 Ng5 
+26.Qe3 f5 27.Qa7 f4 28.Ngf1 Ra8 29.Qb7 Re7 0-1
+
+[Event "Moscow"]
+[Site "Moscow RUE"]
+[Date "1915.??.??"]
+[EventDate "?"]
+[Round "?"]
+[Result "1-0"]
+[White "Alexander Alekhine"]
+[Black "NN"]
+[ECO "C12"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[PlyCount "57"]
+
+1.e4 e6 2.d4 d5 3.Nc3 Nf6 4.Bg5 Bb4 5.e5 h6 6.exf6 hxg5 7.fxg7 Rg8 
+8.h4 gxh4 9.Qg4 Be7 10.g3 c5 11.gxh4 cxd4 12.h5 dxc3 13.h6 cxb2 
+14.Rb1 Qa5+ 15.Ke2 Qxa2 16.h7 Qxb1 17.hxg8=Q+ Kd7 18.Qxf7 Qxc2+ 
+19.Kf3 Nc6 20.Qgxe6+ Kc7 21.Qf4+ Kb6 22.Qee3+ Bc5
+23.g8=Q b1=Q 24.Rh6 Qxf1 25.Qb4+ Qb5 26.Qd8+ Ka6 27.Qea3+ Qca4 
+28.Qaxa4 Qxa4 29.Qxa4# 1-0
+
+[Event "Belgrade"]
+[Site "Belgrade YUG"]
+[Date "1989.02.17"]
+[EventDate "?"]
+[Round "?"]
+[Result "1/2-1/2"]
+[White "Ivan Nikolic"]
+[Black "Goran Arsovic"]
+[ECO "E95"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[PlyCount "538"]
+
+1.d4 Nf6 2.c4 g6 3.Nc3 Bg7 4.e4 d6 5.Nf3 O-O 6.Be2 Nbd7 7.O-O e5 
+8.Re1 Re8 9.Bf1 h6 10.d5 Nh7 11.Rb1 f5 12.Nd2 f4 13.b4 g5
+14.Nb3 Bf8 15.Be2 Ndf6 16.c5 g4 17.cxd6 cxd6 18.a3 Ng5 19.Bf1 Re7 
+20.Qd3 Rg7 21.Kh1 Qe8 22.Nd2 g3 23.fxg3 fxg3 24.Qxg3 Nh3
+25.Qf3 Qg6 26.Nc4 Bd7 27.Bd3 Ng5 28.Bxg5 Qxg5 29.Ne3 Re8
+30.Ne2 Be7 31.Rbd1 Rf8 32.Nf5 Ng4 33.Neg3 h5 34.Kg1 h4 35.Qxg4 Qxg4 
+36.Nh6+ Kh7 37.Nxg4 hxg3 38.Ne3 gxh2+ 39.Kxh2 Rh8 40.Rh1 Kg6+ 
+41.Kg1 Rc8 42.Be2 Rc3 43.Rd3 Rc1+ 44.Nf1 Bd8 45.Rh8 Bb6+
+46.Kh2 Rh7+ 47.Rxh7 Kxh7 48.Nd2 Bg1+ 49.Kh1 Bd4+ 50.Nf1 Bg4
+51.Bxg4 Rxf1+ 52.Kh2 Bg1+ 53.Kh3 Re1 54.Bf5+ Kh6 55.Kg4 Re3
+56.Rd1 Bh2 57.Rh1 Rg3+ 58.Kh4 Rxg2 59.Kh3 Rg3+ 60.Kxh2 Rxa3
+61.Rg1 Ra6 62.Rg6+ Kh5 63.Kg3 Rb6 64.Rg7 Rxb4 65.Bc8 a5
+66.Bxb7 a4 67.Bc6 a3 68.Ra7 Rb3+ 69.Kf2 Kg5 70.Ke2 Kf4 71.Ra4 Rh3 
+72.Kd2 a2 73.Bb5 Rh1 74.Rxa2 Rh2+ 75.Be2 Kxe4 76.Ra5 Kd4
+77.Ke1 Rh1+ 78.Kf2 Rc1 79.Bg4 Rc2+ 80.Ke1 e4 81.Be6 Ke5 82.Bg8 Rc8 
+83.Bf7 Rc7 84.Be6 Rc2 85.Ra8 Rb2 86.Ra6 Rg2 87.Kd1 Rb2
+88.Ra5 Rg2 89.Bd7 Rh2 90.Bc6 Kf4 91.Ra8 e3 92.Re8 Kf3 93.Rf8+ Ke4 
+94.Rf6 Kd3 95.Bb5+ Kd4 96.Rf5 Rh1+ 97.Ke2 Rh2+ 98.Kd1 Rh1+
+99.Kc2 Rh2+ 100.Kc1 Rh1+ 101.Kc2 Rh2+ 102.Kd1 Rh1+ 103.Ke2 Rh2+ 
+104.Kf1 Rb2 105.Be2 Ke4 106.Rh5 Rb1+ 107.Kg2 Rb2 108.Rh4+ Kxd5 
+109.Kf3 Kc5 110.Kxe3 Rb3+ 111.Bd3 d5 112.Rh8 Ra3 113.Re8 Kd6 
+114.Kd4 Ra4+ 115.Kc3 Ra3+ 116.Kd4 Ra4+ 117.Ke3 Ra3 118.Rh8 Ke5 
+119.Rh5+ Kd6 120.Rg5 Rb3 121.Kd2 Rb8 122.Bf1 Re8 123.Kd3 Re5 
+124.Rg8 Rh5 125.Bg2 Kc5 126.Rf8 Rh6 127.Bf3 Rd6 128.Re8 Rc6 
+129.Ra8 Rb6 130.Rd8 Rd6 131.Rf8 Ra6 132.Rf5 Rd6 133.Kc3 Rd8 
+134.Rg5 Rd6 135.Rh5 Rd8 136.Rf5 Rd6 137.Rf8 Ra6 138.Re8 Rc6 
+139.Ra8 Rb6 140.Ra5+ Rb5 141.Ra1 Rb8 142.Rd1 Rd8 143.Rd2 Rd7 
+144.Bg2 Rd8 145.Kd3 Ra8 146.Ke3 Re8+ 147.Kd3 Ra8 148.Kc3 Rd8 
+149.Bf3 Rd7 150.Kd3 Ra7 151.Bg2 Ra8 152.Rc2+ Kd6 153.Rc3 Ra2 
+154.Bf3 Ra8 155.Rb3 Ra5 156.Ke3 Ke5 157.Rd3 Rb5 158.Kd2 Rc5 
+159.Bg2 Ra5 160.Bf3 Rc5 161.Bd1 Rc8 162.Bb3 Rc5 163.Rh3 Kf4 
+164.Kd3 Ke5 165.Rh5+ Kf4 166.Kd4 Rb5 167.Bxd5 Rb4+ 168.Bc4 Ra4 
+169.Rh7 Kg5 170.Rf7 Kg6 171.Rf1 Kg5 172.Kc5 Ra5+ 173.Kc6 Ra4 
+174.Bd5 Rf4 175.Re1 Rf6+ 176.Kc5 Rf5 177.Kd4 Kf6 178.Re6+ Kg5 
+179.Be4 Rf6 180.Re8 Kf4 181.Rh8 Rd6+ 182.Bd5 Rf6 183.Rh1 Kf5 
+184.Be4+ Ke6 185.Ra1 Kd6 186.Ra5 Re6 187.Bf5 Re1 188.Ra6+ Ke7 
+189.Be4 Rc1 190.Ke5 Rc5+ 191.Bd5 Rc7 192.Rg6 Rd7 193.Rh6 Kd8 
+194.Be6 Rd2 195.Rh7 Ke8 196.Kf6 Kd8 197.Ke5 Rd1 198.Bd5 Ke8 
+199.Kd6 Kf8 200.Rf7+ Ke8 201.Rg7 Rf1 202.Rg8+ Rf8 203.Rg7 Rf6+ 
+204.Be6 Rf2 205.Bd5 Rf6+ 206.Ke5 Rf1 207.Kd6 Rf6+ 208.Be6 Rf2 
+209.Ra7 Kf8 210.Rc7 Rd2+ 211.Ke5 Ke8 212.Kf6 Rf2+ 213.Bf5 Rd2 
+214.Rc1 Rd6+ 215.Be6 Rd2 216.Rh1 Kd8 217.Rh7 Rd1 218.Rg7 Rd2 
+219.Rg8+ Kc7 220.Rc8+ Kb6 221.Ke5 Kb7 222.Rc3 Kb6 223.Bd5 Rh2 
+224.Kd6 Rh6+ 225.Be6 Rh5 226.Ra3 Ra5 227.Rg3 Rh5 228.Rg2 Ka5 
+229.Rg3 Kb6 230.Rg4 Rb5 231.Bd5 Rc5 232.Rg8 Rc2 233.Rb8+ Ka5 
+234.Bb3 Rc3 235.Kd5 Rc7 236.Kd4 Rd7+ 237.Bd5 Re7 238.Rb2 Re8 
+239.Rb7 Ka6 240.Rb1 Ka5 241.Bc4 Rd8+ 242.Kc3 Rh8 243.Rb5+ Ka4 
+244.Rb6 Rh3+ 245.Bd3 Rh5 246.Re6 Rg5 247.Rh6 Rc5+ 248.Bc4 Rg5 
+249.Ra6+ Ra5 250.Rh6 Rg5 251.Rh4 Ka5 252.Rh2 Rg3+ 253.Kd4 Rg5 
+254.Bd5 Ka4 255.Kc5 Rg3 256.Ra2+ Ra3 257.Rb2 Rg3 258.Rh2 Rc3+ 
+259.Bc4 Rg3 260.Rb2 Rg5+ 261.Bd5 Rg3 262.Rh2 Rc3+ 263.Bc4 Rg3 
+264.Rh8 Ka3 265.Ra8+ Kb2 266.Ra2+ Kb1 267.Rf2 Kc1 268.Kd4 Kd1 269.Bd3 Rg7 1/2-1/2
+
+[Event "Moscow Club Autumn"]
+[Site "Moscow RUE"]
+[Date "1907.??.??"]
+[EventDate "?"]
+[Round "?"]
+[Result "0-1"]
+[White "Alexander Alekhine"]
+[Black "Vladimir Nenarokov"]
+[ECO "D02"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[PlyCount "86"]
+
+1.d4 d5 2.Nf3 e6 3.e3 c6 4.Bd3 f5 5.Ne5 Qf6 6.Nd2 Nd7
+7.f4 Nxe5 8.fxe5 Qf7 9.O-O Qc7 10.c4 Nh6 11.b3 Bd7 12.a4 Be7 
+13.cxd5 cxd5 14.Ba3 Bxa3 15.Rxa3 O-O 16.Ra2 Rac8
+17.Qe2 Qb6 18.Rc2 Rxc2 19.Bxc2 Rc8 20.Bd3 Qb4 21.h3 Nf7
+22.Rb1 Rc3 23.Kh2 a6 24.Qf1 Qa3 25.Rd1 Qb2 26.Qe2 Nd8
+27.Rb1 Qa3 28.Rf1 Qb4 29.Bb1 b5 30.g4 bxa4 31.gxf5 Bb5
+32.Nc4 Rxb3 33.fxe6 dxc4 34.Qf3 Rxb1 35.Rxb1 Qxb1 36.e7 Ne6 
+37.d5 Qg6 38.dxe6 Qe8 39.Qd5 h6 40.Qc5 c3 41.Qxc3 Qxe7 42.Qc8+ Qe8 43.Qc7 Qxe6 0-1
+
+[Event "Leningrad Championship"]
+[Site "Leningrad"]
+[Date "1972.??.??"]
+[EventDate "?"]
+[Round "?"]
+[Result "1-0"]
+[White "Aron G Reshko"]
+[Black "Oleg Kaminsky"]
+[ECO "A29"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[PlyCount "141"]
+
+1.c4 Nf6 2.Nc3 e5 3.Nf3 Nc6 4.g3 d5 5.cxd5 Nxd5 6.Bg2 Nb6
+7.O-O Be7 8.a4 a5 9.b3 O-O 10.Bb2 Be6 11.Nb5 Bf6 12.Rc1 Qc8
+13.d4 Rd8 14.e4 exd4 15.e5 Be7 16.Nfxd4 Nxd4 17.Bxd4 c6 18.Qe2 Nd5 
+19.Bb2 Nc7 20.Nd4 Bd5 21.f4 Bxg2 22.Kxg2 Bb4 23.f5 c5
+24.e6 cxd4 25.Qe5 Bc3 26.Bxc3 f6 27.Qe2 dxc3 28.Rxc3 Rd6
+29.Rd1 Rc6 30.Rcd3 Ne8 31.Qh5 Rc7 32.Rd7 Rxd7 33.exd7 Qd8
+34.Qf3 Nc7 35.Qxb7 Kf8 36.Rc1 Qxd7 37.Rxc7 Qd2+ 38.Kf3 Qd1+
+39.Kf4 Qd4+ 40.Qe4 Qd6+ 41.Kg4 Re8 42.Qc4 Re4+ 43.Qxe4 Qxc7
+44.b4 axb4 45.Qxb4+ Kg8 46.a5 h6 47.a6 Kh7 48.Qd4 Qa5 49.a7 Qa6 
+50.Kh4 Qa2 51.h3 Qa5 52.Qd7 Qb4+ 53.Kh5 Qa3 54.Kg4 Qe3
+55.h4 Qe4+ 56.Kh5 Qf3+ 57.g4 Qe4 58.Qf7 Qc6 59.Qe7 Qd5 60.Qe8 Qb7 
+61.a8=B Qb3 62.Qd7 Qg8 63.Bd5 Qf8 64.Bf7 Kh8 65.Qe8 Qxe8
+66.Bxe8 Kh7 67.Bf7 Kh8 68.Kg6 h5 69.Kxh5 Kh7 70.Be8 Kg8 71.Kg6 1-0
+
+[Event "BGN Computer Qualifier"]
+[Site "Cadaques ESP"]
+[Date "2001.04.25"]
+[EventDate "2001.04.24"]
+[Round "4"]
+[Result "1-0"]
+[White "Deep Junior (Computer)"]
+[Black "Deep Fritz (Computer)"]
+[ECO "C42"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[PlyCount "217"]
+
+1.e4 e5 2.Nf3 Nf6 3.Nxe5 d6 4.Nf3 Nxe4 5.d4 d5 6.Bd3 Nc6
+7.O-O Be7 8.c4 Nb4 9.Be2 O-O 10.Nc3 Be6 11.Ne5 f6 12.Nf3 c5 
+13.Be3 Rc8 14.dxc5 Bxc5 15.Bxc5 Rxc5 16.Qb3 Nxc3
+17.Qxc3 Nc6 18.b4 d4 19.Qd2 Rxc4 20.Bxc4 Bxc4 21.Rfe1 Qd5
+22.a4 a6 23.Qf4 Rd8 24.h4 Qd6 25.Qxd6 Rxd6 26.Nd2 Bd3
+27.Re8+ Kf7 28.Rc8 Kg6 29.Rc7 Nxb4 30.Rxb7 Nd5 31.Rc1 Nc3
+32.Kh2 Ne4 33.Nb3 Nxf2 34.Rcc7 Ng4+ 35.Kg3 Ne5 36.Rxg7+ Kf5 
+37.Rxh7 Bc2 38.Nd2 Bxa4 39.h5 Rd8 40.Rhg7 Bc6 41.Rb1 a5 
+42.Nb3 Ke4 43.Nxa5 Bd5 44.h6 d3 45.Kf2 Kd4 46.h7 Rh8
+47.Rb4+ Kc5 48.Rh4 Kb6 49.Nb3 Bxb3 50.Rb4+ Kc6 51.Rxb3 d2
+52.Rc3+ Kd5 53.Ke2 Nc4 54.Rg8 Rxh7 55.Rd8+ Kc5 56.Rc8+ Kd5 
+57.R8xc4 Rh2 58.Rg4 d1=R 59.Kxd1 Rh1+ 60.Ke2 Ra1
+61.Rg6 Ke4 62.Re3+ Kf5 63.Rg8 Kf4 64.Rf3+ Ke5 65.Re8+ Kd6
+66.Rd3+ Kc6 67.Re6+ Kc5 68.Rxf6 Ra2+ 69.Kf3 Ra8 70.Rc6+ Kb5 
+71.Rc5+ Kb4 72.Rb5+ Kc4 73.Rd4+ Kc3 74.Rc5+ Kxd4
+75.Rf5 Ra1 76.Kf4 Rf1+ 77.Kg5 Ra1 78.g4 Ke4 79.Rb5 Kd3
+80.Kg6 Ra6+ 81.Kh5 Kc4 82.Rf5 Ra8 83.g5 Rh8+ 84.Kg4 Rg8
+85.Rf6 Rd8 86.g6 Rd7 87.Rf5 Kd3 88.Rg5 Rd4+ 89.Kh5 Rd8
+90.g7 Rg8 91.Kh6 Ke3 92.Kh7 Re8 93.g8=Q Rxg8 94.Kxg8 Kf4
+95.Rd5 Ke4 96.Rd7 Ke3 97.Kf7 Kf4 98.Re7 Kf5 99.Re6 Kg4
+100.Rf6 Kg5 101.Kg7 Kg4 102.Kg6 Kh3 103.Kf5 Kg3 104.Kg5 Kh2 
+105.Kf4 Kg2 106.Kg4 Kh1 107.Rf2 Kg1 108.Kg3 Kh1
+109.Rf1# 1-0
+
+[Event "Casual game"]
+[Site "London ENG"]
+[Date "1858.??.??"]
+[EventDate "?"]
+[Round "?"]
+[Result "0-1"]
+[White "Paul Morphy"]
+[Black "Thomas Wilson Barnes"]
+[ECO "B00"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[Source "The Era, 1858.07.04, p.5"]
+[PlyCount "100"]
+
+1.e4 f6 2.d4 e6 3.Bd3 Ne7 4.Be3 d5 5.Nc3 dxe4 6.Nxe4 Nd5 7.Nh3 Be7 
+8.Qh5+ g6 9.Qh6 Bf8 10.Qh4 Bg7 11.O-O O-O 12.c4 Nxe3
+13.fxe3 f5 14.Neg5 h6 15.Nf3 e5 16.Qxd8 Rxd8 17.Bc2 exd4
+18.exd4 Bxd4+ 19.Nxd4 Rxd4 20.Rfe1 Kf7 21.c5 Be6 22.Rad1 Nc6
+23.Rxd4 Nxd4 24.Ba4 g5 25.Rd1 Rd8 26.a3 f4 27.Nf2 Ne2+ 28.Kf1 Rxd1+ 
+29.Bxd1 Nd4 30.Ke1 Kf6 31.Kd2 Nb3+ 32.Bxb3 Bxb3 33.Ng4+ Kg6 
+34.g3 h5 35.Nf2 Kf5 36.Kc3 Bd5 37.Kd4 c6 38.b4 Bg2 39.gxf4 Kxf4 
+40.a4 Bf1 41.Ne4 h4 42.Nd2 Be2 43.Ne4 g4 44.Nf2 Kf3
+45.Ne4 Bf1 46.Ke5 Bd3 47.Ng5+ Kg2 48.Kd6 Kxh2 49.Kc7 Kg3
+50.Kxb7 h3 0-1
+
+[Event "Bela Crkva"]
+[Site "Bela Crkva"]
+[Date "1984.??.??"]
+[EventDate "?"]
+[Round "?"]
+[Result "0-1"]
+[White "Zoran Djordjevic"]
+[Black "Milorad Kovacevic"]
+[ECO "A45"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[PlyCount "6"]
+
+1.d4 Nf6 2.Bg5 c6 3.e3 Qa5+ 0-1
+
+[Event "Odds Game"]
+[Site "?"]
+[Date "1884.??.??"]
+[EventDate "?"]
+[Round "?"]
+[Result "1-0"]
+[White "William Robert Ballard"]
+[Black "Joseph George Fagan"]
+[ECO "000"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[PlyCount "59"]
+[SetUp "1"]
+[FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/R1BQKBNR w KQkq - 0 1"]
+
+1.e4 e5 2.f4 exf4 3.Nf3 Be7 4.Bc4 Bh4+ 5.g3 fxg3
+6.O-O Nh6 7.d4 O-O 8.hxg3 Bxg3 9.Kg2 Bd6 10.Rh1 Qf6
+11.e5 Qg6+ 12.Kf1 Nf5 13.Rg1 Ng3+ 14.Kf2 Ne4+ 15.Ke1 Bb4+
+16.c3 Nxc3 17.bxc3 Bxc3+ 18.Kf2 Qc6 19.Bd3 Bxa1 20.d5 Qb6+ 
+21.Be3 Qb2+ 22.Kf1 f5 23.Bd4 Qxa2 24.Bxa1 Qxd5 25.e6 g6 
+26.e7 Re8 27.Qe2 Qc5 28.Qb2 Rxe7 29.Qh8+ Kf7 30.Ng5# 1-0
+
+[Event "Computer Match"]
+[Site "Cambridge, MA USA"]
+[Date "1977.??.??"]
+[EventDate "?"]
+[Round "?"]
+[Result "1-0"]
+[White "Robert James Fischer"]
+[Black "Greenblatt (Computer)"]
+[ECO "C33"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[PlyCount "41"]
+
+1.e4 e5 2.f4 exf4 3.Bc4 d5 4.Bxd5 Nf6 5.Nc3 Bb4 6.Nf3 O-O 
+7.O-O Nxd5 8.Nxd5 Bd6 9.d4 g5 10.Nxg5 Qxg5 11.e5 Bh3
+12.Rf2 Bxe5 13.dxe5 c6 14.Bxf4 Qg7 15.Nf6+ Kh8 16.Qh5 Rd8
+17.Qxh3 Na6 18.Rf3 Qg6 19.Rc1 Kg7 20.Rg3 Rh8 21.Qh6# 1-0
+
+[Event "Kaissa Open"]
+[Site "Kharkov UKR"]
+[Date "2002.01.26"]
+[EventDate "2002.01.22"]
+[Round "5"]
+[Result "0-1"]
+[White "Alexsander Onishko"]
+[Black "Mikhail Leonov"]
+[ECO "A00"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[PlyCount "26"]
+
+1.a3 e5 2.b3 d5 3.Bb2 Nc6 4.c3 Bf5 5.d3 Nf6 6.e3 Bd6
+7.Bc1 Qd7 8.Nh3 a6 9.f3 e4 10.Rg1 Rg8 11.Ra2 h6 12.d4 exf3 13.gxf3 Bxb1 0-1
+
+[Event "La Bourdonnais - McDonnell 4th Casual Match"]
+[Site "London ENG"]
+[Date "1834.??.??"]
+[EventDate "?"]
+[Round "16"]
+[Result "0-1"]
+[White "Alexander McDonnell"]
+[Black "Louis Charles Mahe De La Bourdonnais"]
+[ECO "B32"]
+[WhiteElo "?"]
+[BlackElo "?"]
+[PlyCount "74"]
+
+1.e4 c5 2.Nf3 Nc6 3.d4 cxd4 4.Nxd4 e5 5.Nxc6 bxc6 6.Bc4 Nf6
+7.Bg5 Be7 8.Qe2 d5 9.Bxf6 Bxf6 10.Bb3 O-O 11.O-O a5 12.exd5 cxd5 
+13.Rd1 d4 14.c4 Qb6 15.Bc2 Bb7 16.Nd2 Rae8 17.Ne4 Bd8
+18.c5 Qc6 19.f3 Be7 20.Rac1 f5 21.Qc4+ Kh8 22.Ba4 Qh6 23.Bxe8 fxe4 
+24.c6 exf3 25.Rc2 Qe3+ 26.Kh1 Bc8 27.Bd7 f2 28.Rf1 d3
+29.Rc3 Bxd7 30.cxd7 e4 31.Qc8 Bd8 32.Qc4 Qe1 33.Rc1 d2 34.Qc5 Rg8 
+35.Rd1 e3 36.Qc3 Qxd1 37.Rxd1 e2 0-1

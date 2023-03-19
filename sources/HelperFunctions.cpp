@@ -102,6 +102,11 @@ std::vector<std::string> HelperFunctions::split(const std::string &s, char delim
     return result;
 }
 
+std::string HelperFunctions::without(std::string str, char c) {
+    str.erase(std::remove(str.begin(), str.end(), c), str.end());
+    return str;
+}
+
 Piece *HelperFunctions::matchingPiece(const std::string &target, std::vector<Piece *> &possible_pieces,
                                       char column, char row) {
     for (auto &possible_piece: possible_pieces) {
@@ -130,6 +135,8 @@ std::vector<PGNGameDetails> HelperFunctions::parsePGN(std::string &&file_path) {
     std::string event, site, date, round, white_name, black_name, result, whiteElo, blackElo, eco, time_control, termination;
     std::vector<std::string> moves;
     auto reset_to_default = [&]() {
+        if(moves.empty()) return;
+        
         games.push_back(
                 PGNGameDetails{moves, event, site, date, round, white_name, black_name, result, whiteElo,
                                blackElo, eco, time_control, termination});
@@ -141,7 +148,7 @@ std::vector<PGNGameDetails> HelperFunctions::parsePGN(std::string &&file_path) {
         std::getline(file, line);
         if (line.empty()) {
             reset_to_default();
-            break;
+            continue;
         };
         char first_char = line.at(0);
         if (isspace(first_char)) continue;
@@ -153,7 +160,6 @@ std::vector<PGNGameDetails> HelperFunctions::parsePGN(std::string &&file_path) {
                 prev_header = true;
                 auto separator_pos = line.find_first_of(' ');
                 std::string header_key = line.substr(1, separator_pos - 1);
-                int a = line.find_last_of('"');
                 std::string header_value = line.substr(separator_pos + 2, line.find_last_of('"') - (separator_pos + 2));
                 if (header_key == "Event") {
                     event = header_value;
@@ -184,10 +190,13 @@ std::vector<PGNGameDetails> HelperFunctions::parsePGN(std::string &&file_path) {
                 prev_header = false;
                 auto parsed_moves = HelperFunctions::split(line, ' ');
                 for (auto parsed_move: parsed_moves) {
+                    parsed_move = HelperFunctions::without(trim(parsed_move), '#');
                     if (parsed_move == "") continue;
-                    parsed_move = trim(parsed_move);
                     if (parsed_move.find('.') != std::string::npos) {
-                        moves.push_back(HelperFunctions::split(parsed_move, '.').at(1));
+                        auto move = HelperFunctions::split(parsed_move, '.').at(1);
+                        if(move.empty()) continue;
+
+                        moves.push_back(move);
                     } else if (parsed_move.find('-') != std::string::npos && std::isdigit(parsed_move.at(0))) continue;
                     else {
                         moves.push_back(parsed_move);
@@ -199,4 +208,8 @@ std::vector<PGNGameDetails> HelperFunctions::parsePGN(std::string &&file_path) {
     file.close();
 
     return games;
+}
+
+ChessColor HelperFunctions::oppositeColor(ChessColor c) {
+    return (c == ChessColor::WHITE) ? ChessColor::BLACK : ChessColor::WHITE; 
 }

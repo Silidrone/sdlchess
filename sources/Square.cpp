@@ -63,4 +63,4 @@ bool Square::isAttacked(ChessColor c) const {
 
 int Square::getAttackCount(ChessColor c) const {
     return c == ChessColor::WHITE ? m_white_attack_count : m_black_attack_count;
-}
+}   

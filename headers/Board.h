@@ -75,7 +75,7 @@ public:
     std::vector<Knight*> getKnights(ChessColor);
     std::vector<Rook*> getRooks(ChessColor);
 
-    bool isGameOver(ChessColor, ChessColor);
+    bool isGameOver();
 
     MoveLogger &getMoveLogger() const;
 protected:

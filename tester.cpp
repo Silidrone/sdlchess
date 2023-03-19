@@ -30,20 +30,20 @@ public:
 struct InvalidMove : ChessGameException {
 public:
     InvalidMove(const std::string &move, int move_number, const PGNGameDetails &game) : ChessGameException(game) {
-        m_msg = "Invalid move: " + move + "(" + std::to_string(move_number) + ")\n" + m_msg;
+        m_msg = "Invalid move: " + move + "(j=" + std::to_string(move_number) + ")\n" + m_msg;
     }
 };
 
 struct PrematureCheckmate : ChessGameException {
 public:
     PrematureCheckmate(const std::string &move, int move_number, const PGNGameDetails &game) : ChessGameException(game) {
-        m_msg = "Premature checkmate: " + move + "(" + std::to_string(move_number) + ")\n" + m_msg;
+        m_msg = "Premature checkmate: " + move + "(j=" + std::to_string(move_number) + ")\n" + m_msg;
     }
 };
 
 struct InvalidPieceNotation : ChessGameException {
     InvalidPieceNotation(const std::string &move, int move_number, const PGNGameDetails &game) : ChessGameException(game) {
-        m_msg = "Invalid piece notation: " + move + "(" + std::to_string(move_number) + ".)\n" + m_msg;
+        m_msg = "Invalid piece notation: " + move + "(j=" + std::to_string(move_number) + ")\n" + m_msg;
     }
 };
 
@@ -70,8 +70,8 @@ void test_game(const PGNGameDetails &game) {
     board.init("../resources/w_square_gray.png", "../resources/b_square_gray.png");
 
     for (int j = 0; j < game.getMoveCount(); j++) {
-        const auto turn_color = static_cast<ChessColor>(static_cast<bool>(j % 2 == 0));
-        const auto previous_turn_color = static_cast<ChessColor>(static_cast<bool>(j % 2 != 0));
+        const auto turn_color = moveLogger.getCurrentMoveColor();
+        const auto previous_turn_color = HelperFunctions::oppositeColor(turn_color);
         std::string move = game.getMove(j);
 
         Piece *selected_piece = nullptr;
@@ -178,16 +178,16 @@ void test_game(const PGNGameDetails &game) {
 
         if (selected_piece && !target_square_coordinate.empty()) {
             if (!selected_piece->move(board.get_square_by_coordinate(target_square_coordinate), false, [&board, &move](Pawn *selected_pawn) {return promotion_method(selected_pawn, &board, move); })) {
-                throw InvalidMove(move, ((j + 1) / 2) + 1, game);
+                throw InvalidMove(move, j, game);
             } else {
-                if (board.isGameOver(turn_color, previous_turn_color)) {
+                if (board.isGameOver()) {
                     if (j != game.getMoveCount() - 1) {
-                        throw PrematureCheckmate(move, ((j + 1) / 2) + 1, game);
+                        throw PrematureCheckmate(move, j, game);
                     }
                 }
             }
         } else {
-            throw InvalidPieceNotation(move, ((j + 1) / 2) + 1, game);
+            throw InvalidPieceNotation(move, j, game);
         }
     }
 }
@@ -195,7 +195,7 @@ void test_game(const PGNGameDetails &game) {
 int main(int argc, char *args[]) {
     SharedData::instance().init();
     std::cout << "tester.cpp: start test" << std::endl;
-    auto games = HelperFunctions::parsePGN("../pgn_games/mix.pgn");
+    auto games = HelperFunctions::parsePGN("../pgn_games/weirdest_games.pgn");
     unsigned long long succeeded_game_count = 0;
     for (int i = 0; i < games.size(); i++) {
         PGNGameDetails &game = games[i];

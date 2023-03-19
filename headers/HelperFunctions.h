@@ -12,6 +12,8 @@ namespace HelperFunctions {
 
     std::vector<std::string> split(const std::string &, char);
 
+    std::string without(std::string, char);
+
     std::string &rtrim(std::string &s);
 
     std::string &ltrim(std::string &s);
@@ -22,6 +24,8 @@ namespace HelperFunctions {
                          char column = '\0', char row = '\0');
 
     std::vector<PGNGameDetails> parsePGN(std::string &&);
+
+    ChessColor oppositeColor(ChessColor c);
 };
 
 #endif //CHESS_HELPERFUNCTIONS_H

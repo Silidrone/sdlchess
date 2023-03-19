@@ -5,8 +5,7 @@
 #include "../headers/HelperFunctions.h"
 #include "../headers/Pawn.h"
 
-Game::Game() : m_moveLogger(), m_board(m_moveLogger),
-               m_turn_color(ChessColor::WHITE), m_game_over(false) {}
+Game::Game() : m_moveLogger(), m_board(m_moveLogger), m_game_over(false) {}
 
 Game::~Game() {
     //Destroy window
@@ -24,7 +23,7 @@ void Game::over() {
     SDL_RenderClear(renderer);
 
     MTexture game_over(renderer,
-                       std::string() + "Game over " + (m_turn_color == ChessColor::WHITE ? "black" : "white") +
+                       std::string() + "Game over " + (m_moveLogger.getCurrentMoveColor() == ChessColor::WHITE ? "black" : "white") +
                        " won!", {255, 255, 255});
     auto screen_width = SharedData::instance().SCREEN_WIDTH;
     auto screen_height = SharedData::instance().SCREEN_HEIGHT;
@@ -58,7 +57,7 @@ void Game::run() {
                 if (e.type == SDL_MOUSEBUTTONDOWN) {
                     SDL_GetMouseState(&mouse_x, &mouse_y);
                     Piece *tmp_piece = m_board.get_square_by_screen_position(mouse_x, mouse_y)->getPiece();
-                    if (tmp_piece && m_turn_color == tmp_piece->getColor()) {
+                    if (tmp_piece && m_moveLogger.getCurrentMoveColor() == tmp_piece->getColor()) {
                         selected_piece = tmp_piece;
                         selected_piece->setRenderPriority(-1);
                     }
@@ -70,10 +69,8 @@ void Game::run() {
                                                 [this](Pawn *selected_pawn) {return HelperFunctions::getChosenPromotedPieceWithModal(selected_pawn->getColor(), selected_pawn->getSquare()->getDestination(), &m_board); })) {
                         selected_piece->resetPosition();
                     } else {
-                        auto previous_turn_color = m_turn_color;
-                        m_turn_color = static_cast<ChessColor>(!static_cast<bool>(m_turn_color));
                         m_board.rotate180();
-                        if (m_board.isGameOver(m_turn_color, previous_turn_color)) {
+                        if (m_board.isGameOver()) {
                             m_game_over = true;
                         }
                     }
