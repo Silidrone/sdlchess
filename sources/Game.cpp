@@ -2,25 +2,19 @@
 #include <SDL2/SDL_image.h>
 #include "../headers/Square.h"
 #include "../headers/King.h"
-#include <iostream>
-#include "../headers/Pawn.h"
 #include "../headers/HelperFunctions.h"
+#include "../headers/Pawn.h"
 
-Game::Game() : sharedData(SharedData::instance()), m_board(nullptr), m_game_over(false),
-               m_turn_color(ChessColor::WHITE) {
-    SharedData::instance().init();
-}
+Game::Game() : m_moveLogger(), m_board(m_moveLogger), m_game_over(false) {}
 
 Game::~Game() {
     //Destroy window
-    SDL_DestroyRenderer(sharedData.getRenderer());
-    SDL_DestroyWindow(sharedData.getWindow());
+    SDL_DestroyRenderer(SharedData::instance().getRenderer());
+    SDL_DestroyWindow(SharedData::instance().getWindow());
 
     //Quit SDL subsystems
     IMG_Quit();
     SDL_Quit();
-
-    delete m_board;
 }
 
 void Game::over() {
@@ -29,7 +23,7 @@ void Game::over() {
     SDL_RenderClear(renderer);
 
     MTexture game_over(renderer,
-                       std::string() + "Game over " + (m_turn_color == ChessColor::WHITE ? "black" : "white") +
+                       std::string() + "Game over " + (m_moveLogger.getCurrentMoveColor() == ChessColor::WHITE ? "black" : "white") +
                        " won!", {255, 255, 255});
     auto screen_width = SharedData::instance().SCREEN_WIDTH;
     auto screen_height = SharedData::instance().SCREEN_HEIGHT;
@@ -40,11 +34,12 @@ void Game::over() {
 }
 
 void Game::init() {
-    m_board = new Board("../resources/w_square_gray.png", "../resources/b_square_gray.png");
+    SharedData::instance().init();
+    m_board.init("../resources/w_square_gray.png", "../resources/b_square_gray.png");
 }
 
 void Game::run() {
-    SDL_Renderer *renderer = sharedData.getRenderer();
+    SDL_Renderer *renderer = SharedData::instance().getRenderer();
     bool quit = false;
 
     SDL_Event e;
@@ -57,12 +52,12 @@ void Game::run() {
                     quit = true;
                 }
                 if (e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_m) {
-                    MoveLogger::instance().toggle();
+                    m_moveLogger.toggle();
                 }
                 if (e.type == SDL_MOUSEBUTTONDOWN) {
                     SDL_GetMouseState(&mouse_x, &mouse_y);
-                    Piece *tmp_piece = m_board->get_square_by_screen_position(mouse_x, mouse_y)->getPiece();
-                    if (tmp_piece && m_turn_color == tmp_piece->getColor()) {
+                    Piece *tmp_piece = m_board.get_square_by_screen_position(mouse_x, mouse_y)->getPiece();
+                    if (tmp_piece && m_moveLogger.getCurrentMoveColor() == tmp_piece->getColor()) {
                         selected_piece = tmp_piece;
                         selected_piece->setRenderPriority(-1);
                     }
@@ -70,18 +65,12 @@ void Game::run() {
                 if (e.type == SDL_MOUSEBUTTONUP && selected_piece) {
                     SDL_GetMouseState(&mouse_x, &mouse_y);
 
-                    if (!selected_piece->move(m_board->get_square_by_screen_position(mouse_x, mouse_y))) {
+                    if (!selected_piece->move(m_board.get_square_by_screen_position(mouse_x, mouse_y), false, 
+                                                [this](Pawn *selected_pawn) {return HelperFunctions::getChosenPromotedPieceWithModal(selected_pawn->getColor(), selected_pawn->getSquare()->getDestination(), &m_board); })) {
                         selected_piece->resetPosition();
                     } else {
-                        auto previous_turn_color = m_turn_color;
-                        m_turn_color = static_cast<ChessColor>(!static_cast<bool>(m_turn_color));
-                        m_board->rotate180();
-
-                        auto king = m_board->getKing(m_turn_color);
-                        auto king_attacked_squares = king->attacked_squares();
-                        if (king->getSquare()->isAttacked(previous_turn_color) &&
-                            king->moveable_squares(king_attacked_squares).empty() &&
-                            !m_board->legalMoveExists(m_turn_color)) {
+                        m_board.rotate180();
+                        if (m_board.isGameOver()) {
                             m_game_over = true;
                         }
                     }
@@ -99,8 +88,8 @@ void Game::run() {
             SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
             SDL_RenderClear(renderer);
 
-            m_board->render();
-            MoveLogger::instance().render();
+            m_board.render();
+            m_moveLogger.render();
 
             //Update screen
             SDL_RenderPresent(renderer);

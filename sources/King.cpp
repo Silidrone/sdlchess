@@ -1,6 +1,7 @@
 #include "../headers/King.h"
 #include "../headers/Rook.h"
 #include "../headers/HelperFunctions.h"
+#include <stdexcept>
 
 std::vector<Square *> King::attacked_squares() {
     return m_board->get_squares_in_fdirections(
@@ -97,4 +98,6 @@ std::string King::move_log(Square *prev, bool captured) {
     } else {
         return HelperFunctions::get_algebraic_notation('K', m_square->getCoordinate(), captured);
     }
+
+    throw std::logic_error("");
 }

@@ -8,10 +8,14 @@
 #include "../headers/Bishop.h"
 #include "../headers/Queen.h"
 #include "../headers/Pawn.h"
+#include "../headers/MoveLogger.h"
+#include "../headers/HelperFunctions.h"
 #include <algorithm>
+#include <stdexcept>
 
-Board::Board(const std::string &w_texture_path, const std::string &b_texture_path)
-        : m_squares(), m_pieces() {
+Board::Board(MoveLogger &moveLogger) : m_squares(), m_pieces(), m_moveLogger(moveLogger) {}
+
+void Board::init(const std::string &w_texture_path, const std::string &b_texture_path) {
     const int square_width = SharedData::instance().SCREEN_WIDTH / ROW_SQUARE_COUNT;
     const int square_height = SharedData::instance().SCREEN_HEIGHT / COLUMN_SQUARE_COUNT;
     const SDL_Color text_color = SDL_Color({255, 255, 255});
@@ -42,50 +46,49 @@ Board::Board(const std::string &w_texture_path, const std::string &b_texture_pat
                 square_texture = square_white ? w_square_texture : b_square_texture;
             }
 
-            Square *new_square = new Square(std::string() + static_cast<char>(j + 'a') + static_cast<char>('1' + i),
-                                            static_cast<ChessColor>(square_white),
-                                            square_texture,
-                                            SDL_Rect{j * square_width, square_height * (ROW_SQUARE_COUNT - i - 1),
-                                                     square_width, square_height});
-            m_squares.push_back(new_square);
+            m_squares.push_back(new Square(std::string() + static_cast<char>(j + 'a') + static_cast<char>('1' + i),
+                                           static_cast<ChessColor>(square_white),
+                                           square_texture,
+                                           SDL_Rect{j * square_width, square_height * (ROW_SQUARE_COUNT - i - 1),
+                                                    square_width, square_height}));
         }
     }
     m_pieces = {
             //white pieces
-            new Rook(ChessColor::WHITE, m_squares[0], this),
-            new Knight(ChessColor::WHITE, m_squares[1], this),
-            new Bishop(ChessColor::WHITE, m_squares[2], this),
-            new Queen(ChessColor::WHITE, m_squares[3], this),
-            new King(ChessColor::WHITE, m_squares[4], this),
-            new Bishop(ChessColor::WHITE, m_squares[5], this),
-            new Knight(ChessColor::WHITE, m_squares[6], this),
-            new Rook(ChessColor::WHITE, m_squares[7], this),
-            new Pawn(ChessColor::WHITE, m_squares[8], this),
-            new Pawn(ChessColor::WHITE, m_squares[9], this),
-            new Pawn(ChessColor::WHITE, m_squares[10], this),
-            new Pawn(ChessColor::WHITE, m_squares[11], this),
-            new Pawn(ChessColor::WHITE, m_squares[12], this),
-            new Pawn(ChessColor::WHITE, m_squares[13], this),
-            new Pawn(ChessColor::WHITE, m_squares[14], this),
-            new Pawn(ChessColor::WHITE, m_squares[15], this),
+            new Rook(ChessColor::WHITE, this, m_squares[0]),
+            new Knight(ChessColor::WHITE, this, m_squares[1]),
+            new Bishop(ChessColor::WHITE, this, m_squares[2]),
+            new Queen(ChessColor::WHITE, this, m_squares[3]),
+            new King(ChessColor::WHITE, this, m_squares[4]),
+            new Bishop(ChessColor::WHITE, this, m_squares[5]),
+            new Knight(ChessColor::WHITE, this, m_squares[6]),
+            new Rook(ChessColor::WHITE, this, m_squares[7]),
+            new Pawn(ChessColor::WHITE, this, m_squares[8]),
+            new Pawn(ChessColor::WHITE, this, m_squares[9]),
+            new Pawn(ChessColor::WHITE, this, m_squares[10]),
+            new Pawn(ChessColor::WHITE, this, m_squares[11]),
+            new Pawn(ChessColor::WHITE, this, m_squares[12]),
+            new Pawn(ChessColor::WHITE, this, m_squares[13]),
+            new Pawn(ChessColor::WHITE, this, m_squares[14]),
+            new Pawn(ChessColor::WHITE, this, m_squares[15]),
 
             //black pieces
-            new Rook(ChessColor::BLACK, m_squares[63], this),
-            new Knight(ChessColor::BLACK, m_squares[62], this),
-            new Bishop(ChessColor::BLACK, m_squares[61], this),
-            new King(ChessColor::BLACK, m_squares[60], this),
-            new Queen(ChessColor::BLACK, m_squares[59], this),
-            new Bishop(ChessColor::BLACK, m_squares[58], this),
-            new Knight(ChessColor::BLACK, m_squares[57], this),
-            new Rook(ChessColor::BLACK, m_squares[56], this),
-            new Pawn(ChessColor::BLACK, m_squares[55], this),
-            new Pawn(ChessColor::BLACK, m_squares[54], this),
-            new Pawn(ChessColor::BLACK, m_squares[53], this),
-            new Pawn(ChessColor::BLACK, m_squares[52], this),
-            new Pawn(ChessColor::BLACK, m_squares[51], this),
-            new Pawn(ChessColor::BLACK, m_squares[50], this),
-            new Pawn(ChessColor::BLACK, m_squares[49], this),
-            new Pawn(ChessColor::BLACK, m_squares[48], this),
+            new Rook(ChessColor::BLACK, this, m_squares[63]),
+            new Knight(ChessColor::BLACK, this, m_squares[62]),
+            new Bishop(ChessColor::BLACK, this, m_squares[61]),
+            new King(ChessColor::BLACK, this, m_squares[60]),
+            new Queen(ChessColor::BLACK, this, m_squares[59]),
+            new Bishop(ChessColor::BLACK, this, m_squares[58]),
+            new Knight(ChessColor::BLACK, this, m_squares[57]),
+            new Rook(ChessColor::BLACK, this, m_squares[56]),
+            new Pawn(ChessColor::BLACK, this, m_squares[55]),
+            new Pawn(ChessColor::BLACK, this, m_squares[54]),
+            new Pawn(ChessColor::BLACK, this, m_squares[53]),
+            new Pawn(ChessColor::BLACK, this, m_squares[52]),
+            new Pawn(ChessColor::BLACK, this, m_squares[51]),
+            new Pawn(ChessColor::BLACK, this, m_squares[50]),
+            new Pawn(ChessColor::BLACK, this, m_squares[49]),
+            new Pawn(ChessColor::BLACK, this, m_squares[48]),
     };
 
     updateAttackedSquares();
@@ -164,7 +167,8 @@ bool Board::coordinateIsValid(std::string coordinate) {
 }
 
 bool Board::legalMoveExists(ChessColor c) {
-    for (auto &piece: m_pieces) {
+    std::vector<Piece *> pieces = m_pieces;
+    for (auto &piece: pieces) {
         if (piece->getColor() == c) {
             auto attacked_squares = piece->attacked_squares();
             auto moveable_squares = piece->moveable_squares(attacked_squares);
@@ -255,19 +259,70 @@ void Board::removePiece(Piece *p) {
             m_removed_pieces.push_back(*it);
             it = m_pieces.erase(it);
             --it;
+            break;
         }
     }
+}
+
+void Board::unRemoveLastPiece() {
+    if (m_removed_pieces.empty())
+        throw std::logic_error("Trying to unremove the last removed piece when there is none!");
+    auto last = std::prev(m_removed_pieces.end());
+    m_pieces.push_back(*last);
+    m_removed_pieces.erase(last);
 }
 
 void Board::addPiece(Piece *p) {
     m_pieces.push_back(p);
 }
 
-King *Board::getKing(ChessColor c) {
+template<class T>
+std::vector<T *> Board::getPieces(ChessColor c) {
+    std::vector<T *> result;
     for (auto &piece: m_pieces) {
-        King *king = dynamic_cast<King *>(piece);
-        if (king != nullptr && king->getColor() == c) return king;
+        T *t_piece = dynamic_cast<T *>(piece);
+        if (t_piece != nullptr && t_piece->getColor() == c) result.push_back(t_piece);
     }
 
+    return result;
+}
+
+King *Board::getKing(ChessColor c) {
+    auto kings = getPieces<King>(c);
+    if (kings.size() > 0) return kings[0];
     return nullptr;
+}
+
+std::vector<Queen *> Board::getQueens(ChessColor c) {
+   return getPieces<Queen>(c);
+}
+
+std::vector<Pawn *> Board::getPawns(ChessColor c) {
+    return getPieces<Pawn>(c);
+}
+
+std::vector<Bishop *> Board::getBishops(ChessColor c) {
+    return getPieces<Bishop>(c);
+}
+
+std::vector<Knight *> Board::getKnights(ChessColor c) {
+    return getPieces<Knight>(c);
+}
+
+std::vector<Rook *> Board::getRooks(ChessColor c) {
+    return getPieces<Rook>(c);
+}
+
+bool Board::isGameOver() {
+    auto turn_color = m_moveLogger.getCurrentMoveColor();
+    auto previous_turn_color = HelperFunctions::oppositeColor(turn_color);
+    auto king = getKing(turn_color);
+    auto king_attacked_squares = king->attacked_squares();
+    return king->getSquare()->isAttacked(previous_turn_color) &&
+           king->moveable_squares(king_attacked_squares).empty() &&
+           !legalMoveExists(turn_color);
+}
+
+MoveLogger &Board::getMoveLogger() const {
+    return m_moveLogger;
 }

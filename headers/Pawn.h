@@ -5,13 +5,15 @@
 
 class Pawn : public Piece {
 public:
-    Pawn(ChessColor, Square *, Board *);
+    Pawn(ChessColor, Board *, Square * = nullptr);
 
     std::vector<Square *> attacked_squares() override;
 
     bool can_move_to_attacked(Square *) override;
+    void setEnPassedSquare(Square *);
 
     std::vector<Square *> moveable_squares(std::vector<Square *> &) override;
+    std::function<void()> move_without_rules(Square *) override;
 
     void post_move_f(Square *) override;
 

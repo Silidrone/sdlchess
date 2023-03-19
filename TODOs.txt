@@ -4,4 +4,13 @@ Aside TODOs mentioned in code I'll list some here whenever I want to mark an imp
     should be able to have a rendering_priority setting, and no matter the order in which all textures' render functions
     are called, they should always obey the rendering_priority.
 
+    -Localize all code (no globals, everything should be instantiable)
+
+    -Import/Export PGN file
+
     -Tester
+
+
+Bugs to fix:
+    -Games with multiple queens on the same color tend to have a problem because the program assumes there can only be a single queen per player
+    -Some specific en passant games fail, check the problem (one of the problems is when a pawn check with en passant, it always fails)

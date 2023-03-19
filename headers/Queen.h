@@ -5,7 +5,7 @@
 
 class Queen : public QRBPiece {
 public:
-    Queen(ChessColor, Square *, Board *);
+    Queen(ChessColor, Board *, Square * = nullptr);
 
     std::vector<std::pair<Direction, FDirection>> getDirections() override;
     std::string move_log(Square *, bool) override;

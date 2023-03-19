@@ -9,24 +9,19 @@
 #include "MoveLogger.h"
 
 class Game {
-private:
+public:
     Game();
     ~Game();
 
-public:
-    static Game &instance() {
-        static Game INSTANCE;
-        return INSTANCE;
-    }
-
     void init();
     void run();
+private:
     void over();
-protected:
-    SharedData& sharedData;
-    Board *m_board;
-    bool m_game_over;
+
+    MoveLogger m_moveLogger;
+    Board m_board;
     ChessColor m_turn_color;
+    bool m_game_over;
 };
 
 #endif //CHESS_GAME_H

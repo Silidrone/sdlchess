@@ -2,10 +2,10 @@
 #include "../headers/HelperFunctions.h"
 #include "../headers/Square.h"
 
-Bishop::Bishop(ChessColor c, Square *square, Board *b) :
-        QRBPiece(c, square, b,
+Bishop::Bishop(ChessColor c, Board *b, Square *square) :
+        QRBPiece(c, b,
                  MTexture(SharedData::instance().getRenderer(), c == ChessColor::WHITE ? "../resources/w_bishop.png"
-                                                                                       : "../resources/b_bishop.png")) {
+                                                                                       : "../resources/b_bishop.png"), square) {
 }
 
 std::vector<std::pair<Direction, FDirection>> Bishop::getDirections() {

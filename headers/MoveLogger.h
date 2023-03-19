@@ -14,16 +14,16 @@ struct Log {
 
 class MoveLogger {
 private:
-    MoveLogger();
-
     std::vector<Log> m_logs{};
     bool m_renderActive;
 public:
-    static MoveLogger &instance();
+    MoveLogger();
 
     void addLog(Piece *, const std::string &, const std::string &, const std::string &);
 
     int getCurrentMoveCount() const;
+
+    ChessColor getCurrentMoveColor();
 
     std::vector<Log> getLogs(Piece *);
 

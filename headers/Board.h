@@ -15,15 +15,32 @@ class King;
 
 class Rook;
 
+class MoveLogger;
+
+class Queen;
+
+class Pawn;
+
+class Bishop;
+
+class Knight;
+
+class Rook;
+
 class Board {
+protected:
+    template <class T>
+    std::vector<T *> getPieces(ChessColor);
 public:
     static const int ROW_SQUARE_COUNT = 8;
     static const int COLUMN_SQUARE_COUNT = 8;
     static constexpr float PIECES_SCALE = 1.0f;
 
-    Board(const std::string &w_texture_path, const std::string &b_texture_path);
+    explicit Board(MoveLogger &);
 
     ~Board();
+
+    void init(const std::string &, const std::string &);
 
     void render();
 
@@ -45,18 +62,28 @@ public:
     Square *get_square_by_screen_position(int, int);
 
     void removePiece(Piece *);
+    void unRemoveLastPiece();
 
     void addPiece(Piece *);
 
     void updateAttackedSquares();
 
     King *getKing(ChessColor);
+    std::vector<Queen *> getQueens(ChessColor);
+    std::vector<Pawn*> getPawns(ChessColor);
+    std::vector<Bishop*> getBishops(ChessColor);
+    std::vector<Knight*> getKnights(ChessColor);
+    std::vector<Rook*> getRooks(ChessColor);
 
+    bool isGameOver();
+
+    MoveLogger &getMoveLogger() const;
 protected:
     std::vector<Square *> m_squares{};
     std::vector<Piece *> m_pieces{};
     std::vector<Piece *> m_removed_pieces{};
-    std::array<std::vector<std::pair<SDL_Rect, MTexture>>, 2> m_coordinate_textures;
+    std::array<std::vector<std::pair<SDL_Rect, MTexture>>, 2> m_coordinate_textures{};
+    MoveLogger &m_moveLogger;
 };
 
 #endif //CHESS_BOARD_H

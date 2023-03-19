@@ -2,17 +2,16 @@
 
 MoveLogger::MoveLogger() : m_logs({}), m_renderActive(false) {}
 
-MoveLogger &MoveLogger::instance() {
-    static MoveLogger INSTANCE;
-    return INSTANCE;
-}
-
 void MoveLogger::addLog(Piece *piece, const std::string &disp, const std::string &prev, const std::string &current) {
     m_logs.push_back({getCurrentMoveCount(), piece, disp, prev, current});
 }
 
 int MoveLogger::getCurrentMoveCount() const {
-    return (m_logs.size() + 2) / 2;
+    return m_logs.size() + 1;
+}
+
+ChessColor MoveLogger::getCurrentMoveColor() {
+    return (getCurrentMoveCount() % 2 != 0) ? ChessColor::WHITE : ChessColor::BLACK;
 }
 
 std::vector<Log> MoveLogger::getLogs(Piece *p) {
