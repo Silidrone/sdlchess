@@ -56,7 +56,7 @@ std::vector<Square *> Pawn::moveable_squares(std::vector<Square *> &attacked_squ
             Pawn *neighbour_pawn = dynamic_cast<Pawn *>(neighbour_square->getPiece());
             if (neighbour_pawn && neighbour_pawn->getColor() != m_color) {
                 auto logs = m_board->getMoveLogger().getLogs(neighbour_pawn);
-                if (logs.size() > 0 && m_board->getMoveLogger().getCurrentMoveCount() - logs.back().move_count <= 1 &&
+                if (logs.size() > 0 && m_board->getMoveLogger().getCurrentMoveCount() - logs.back().move_count == 1 &&
                     abs(logs.back().prev[1] - logs.back().current[1]) == 2) {
                     result.push_back(m_board->get_square_by_coordinate(m_fDirector.up(logs.back().current)));
                     m_en_passed_square = neighbour_square;

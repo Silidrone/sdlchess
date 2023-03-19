@@ -195,7 +195,7 @@ void test_game(const PGNGameDetails &game) {
 int main(int argc, char *args[]) {
     SharedData::instance().init();
     std::cout << "tester.cpp: start test" << std::endl;
-    auto games = HelperFunctions::parsePGN("../pgn_games/Adams.pgn");
+    auto games = HelperFunctions::parsePGN("../pgn_games/mix.pgn");
     unsigned long long succeeded_game_count = 0;
     for (int i = 0; i < games.size(); i++) {
         PGNGameDetails &game = games[i];

@@ -7,7 +7,7 @@ void MoveLogger::addLog(Piece *piece, const std::string &disp, const std::string
 }
 
 int MoveLogger::getCurrentMoveCount() const {
-    return (m_logs.size() + 2) / 2;
+    return m_logs.size() + 1;
 }
 
 std::vector<Log> MoveLogger::getLogs(Piece *p) {
