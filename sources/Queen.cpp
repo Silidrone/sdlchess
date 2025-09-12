@@ -4,8 +4,8 @@
 
 Queen::Queen(ChessColor c, Board *b, Square *square) :
         QRBPiece(c, b, MTexture(SharedData::instance().getRenderer(), c == ChessColor::WHITE
-                                                                              ? "../resources/w_queen.png"
-                                                                              : "../resources/b_queen.png"), square) {
+                                                                              ? "resources/w_queen.png"
+                                                                              : "resources/b_queen.png"), square) {
 }
 
 std::vector<std::pair<Direction, FDirection>> Queen::getDirections() {

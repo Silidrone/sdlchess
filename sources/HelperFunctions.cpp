@@ -1,6 +1,7 @@
 #include <sstream>
 #include <fstream>
 #include <cctype>
+#include <algorithm>
 #include "../headers/HelperFunctions.h"
 #include "../headers/Queen.h"
 #include "../headers/Square.h"
@@ -20,7 +21,7 @@ HelperFunctions::get_algebraic_notation(char piece_letter, const std::string &cu
 Piece *HelperFunctions::getChosenPromotedPieceWithModal(ChessColor color, SDL_Rect square_rect, Board *board) {
     auto renderer = SharedData::instance().getRenderer();
     SDL_Event e;
-    std::string path_prefix = std::string("../resources/");
+    std::string path_prefix = std::string("resources/");
     std::string piece_name_prefix = (color == ChessColor::WHITE ? "w_" : "b_");
     SDL_Rect modal_rect = {square_rect.x, square_rect.y, square_rect.w, square_rect.h * 4};
     SDL_Rect cancel_sign_rect = {modal_rect.x + modal_rect.w - modal_rect.w / 8 - 1, modal_rect.y + 1,

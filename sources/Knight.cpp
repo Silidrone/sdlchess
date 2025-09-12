@@ -5,8 +5,8 @@
 Knight::Knight(ChessColor c, Board *b, Square *square) : Piece(c, b,
                                                                MTexture(SharedData::instance().getRenderer(),
                                                                         c == ChessColor::WHITE
-                                                                        ? "../resources/w_knight.png"
-                                                                        : "../resources/b_knight.png"), square) {}
+                                                                        ? "resources/w_knight.png"
+                                                                        : "resources/b_knight.png"), square) {}
 
 std::vector<Square *> Knight::attacked_squares() {
     return m_board->get_squares_in_fdirections(

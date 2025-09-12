@@ -2,6 +2,15 @@
 
 A chess game implemented in C++ using SDL 2.0 with a chess engine and PGN testing framework. Chess rules obeyed following the FIDE Laws of Chess article: https://www.fide.com/FIDE/handbook/LawsOfChess.pdf
 
+# How to Run
+Please run the following in order:
+- `./setup.sh`
+- `cmake .`
+- `make chess.out` (or `make tester.out`)
+- `./chess.out`(or `./tester.out`)
+
+# Info
+
 ### Features
 
 - Full chess game with all standard rules (castling, en passant, promotion)

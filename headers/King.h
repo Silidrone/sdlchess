@@ -8,8 +8,8 @@ class King : public Piece {
 public:
     King(ChessColor c, Board *b, Square *square = nullptr) : Piece(c, b, MTexture(SharedData::instance().getRenderer(),
                                                                                 c == ChessColor::WHITE
-                                                                                ? "../resources/w_king.png"
-                                                                                : "../resources/b_king.png"), square) {}
+                                                                                ? "./resources/w_king.png"
+                                                                                : "./resources/b_king.png"), square) {}
 
     std::vector<Square *> attacked_squares() override;
 

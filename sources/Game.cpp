@@ -35,7 +35,7 @@ void Game::over() {
 
 void Game::init() {
     SharedData::instance().init();
-    m_board.init("../resources/w_square_gray.png", "../resources/b_square_gray.png");
+    m_board.init("resources/w_square_gray.png", "resources/b_square_gray.png");
 }
 
 void Game::run() {

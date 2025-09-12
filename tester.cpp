@@ -67,7 +67,7 @@ Piece *promotion_method(Pawn *selected_pawn, Board *board, std::string move) {
 void test_game(const PGNGameDetails &game) {
     MoveLogger moveLogger;
     Board board(moveLogger);
-    board.init("../resources/w_square_gray.png", "../resources/b_square_gray.png");
+    board.init("./resources/w_square_gray.png", "./resources/b_square_gray.png");
 
     for (int j = 0; j < game.getMoveCount(); j++) {
         const auto turn_color = moveLogger.getCurrentMoveColor();

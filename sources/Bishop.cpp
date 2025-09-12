@@ -4,8 +4,8 @@
 
 Bishop::Bishop(ChessColor c, Board *b, Square *square) :
         QRBPiece(c, b,
-                 MTexture(SharedData::instance().getRenderer(), c == ChessColor::WHITE ? "../resources/w_bishop.png"
-                                                                                       : "../resources/b_bishop.png"), square) {
+                 MTexture(SharedData::instance().getRenderer(), c == ChessColor::WHITE ? "resources/w_bishop.png"
+                                                                                       : "resources/b_bishop.png"), square) {
 }
 
 std::vector<std::pair<Direction, FDirection>> Bishop::getDirections() {
