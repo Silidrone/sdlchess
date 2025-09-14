@@ -1,0 +1,8 @@
+Bugs:
+- Dragging a piece out of the borders and then clicking LMB causes a
+segfault.
+- When you play the notation at bug.png, the game doesn't recognize a
+checkmate but it should be checkmate.
+- The game does not automatically conclude a draw in specific situations
+like endgame with insufficient material to checkmate or repetitions by FIDE
+rules.

@@ -9,6 +9,9 @@
 #include "headers/Queen.h"
 #include "headers/Pawn.h"
 #include <SDL2/SDL.h>
+#include <filesystem>
+#include <vector>
+#include <string>
 
 struct ChessGameException : public std::exception {
 protected:
@@ -196,19 +199,44 @@ void test_game(const PGNGameDetails &game) {
 int main(int argc, char *args[]) {
     SharedData::instance().init();
     std::cout << "tester.cpp: start test" << std::endl;
-    auto games = HelperFunctions::parsePGN("../pgn_games/weirdest_games.pgn");
-    unsigned long long succeeded_game_count = 0;
-    for (int i = 0; i < games.size(); i++) {
-        PGNGameDetails &game = games[i];
-        try {
-            test_game(game);
-            succeeded_game_count++;
-        } catch (ChessGameException &exception) {
-            std::cout << "Game No. " << i + 1 << " failed. Reason: " << exception.what() << std::endl;
+
+    auto& resources_path = SharedData::instance().getResourcesPath();
+    std::string pgn_directory = resources_path + "pgn_games/";
+
+    std::vector<std::string> pgn_files;
+    for (const auto& entry : std::filesystem::directory_iterator(pgn_directory)) {
+        if (entry.path().extension() == ".pgn") {
+            pgn_files.push_back(entry.path().filename().string());
         }
     }
 
-    std::cout << (float) succeeded_game_count / games.size() * 100 << "% games succeeded" << std::endl;
+    unsigned long long total_succeeded_game_count = 0;
+    unsigned long long total_game_count = 0;
+
+    for (const auto& pgn_file : pgn_files) {
+        std::cout << "Testing " << pgn_file << "..." << std::endl;
+        auto games = HelperFunctions::parsePGN(pgn_directory + pgn_file);
+        unsigned long long succeeded_game_count = 0;
+
+        for (int i = 0; i < games.size(); i++) {
+            PGNGameDetails &game = games[i];
+            try {
+                test_game(game);
+                succeeded_game_count++;
+            } catch (ChessGameException &exception) {
+                std::cout << "Game No. " << i + 1 << " from " << pgn_file << " failed. Reason: " << exception.what() << std::endl;
+            }
+        }
+
+        total_succeeded_game_count += succeeded_game_count;
+        total_game_count += games.size();
+
+        std::cout << pgn_file << ": " << (float) succeeded_game_count / games.size() * 100 << "% games succeeded ("
+                  << succeeded_game_count << "/" << games.size() << ")" << std::endl;
+    }
+
+    std::cout << "Overall: " << (float) total_succeeded_game_count / total_game_count * 100 << "% games succeeded ("
+              << total_succeeded_game_count << "/" << total_game_count << ")" << std::endl;
 
     //Destroy window
     SDL_DestroyRenderer(SharedData::instance().getRenderer());
