@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
+#include <string>
 #include "ChessColored.h"
 
 class SharedData {
@@ -12,8 +13,9 @@ private:
     SDL_Renderer *m_renderer;
     TTF_Font *m_font;
     bool initialized;
+    std::string m_resources_path;
 
-    SharedData() : m_window(nullptr), m_renderer(nullptr), m_font(nullptr), initialized(false) {}
+    SharedData() : m_window(nullptr), m_renderer(nullptr), m_font(nullptr), initialized(false), m_resources_path("resources/") {}
 public:
     static SharedData &instance() {
         static SharedData INSTANCE;
@@ -56,7 +58,7 @@ public:
                         printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
                         success = false;
                     } else {
-                        m_font = TTF_OpenFont("./resources/sans.ttf", 14);
+                        m_font = TTF_OpenFont((m_resources_path + "sans.ttf").c_str(), 14);
                         if (m_font == nullptr) {
                             printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
                             success = false;
@@ -70,14 +72,17 @@ public:
         return success;
     }
 
-    const int SCREEN_WIDTH = 640 * 3;
-    const int SCREEN_HEIGHT = 512 * 3;
+    const int SCREEN_WIDTH = 640;
+    const int SCREEN_HEIGHT = 640;
 
     SDL_Window *getWindow() const { return m_window; }
 
     SDL_Renderer *getRenderer() const { return m_renderer; }
 
     TTF_Font *getFont() const { return m_font; }
+
+    void setResourcesPath(const std::string& path) { m_resources_path = path; }
+    const std::string& getResourcesPath() const { return m_resources_path; }
 };
 
 #endif //CHESS_SHAREDDATA_H

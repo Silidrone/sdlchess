@@ -5,8 +5,8 @@
 Rook::Rook(ChessColor c, Board *b, Square *square) : QRBPiece(c, b,
                                                               MTexture(SharedData::instance().getRenderer(),
                                                                        c == ChessColor::WHITE
-                                                                       ? "resources/w_rook.png"
-                                                                       : "resources/b_rook.png"), square) {}
+                                                                       ? (SharedData::instance().getResourcesPath() + "w_rook.png").c_str()
+                                                                       : (SharedData::instance().getResourcesPath() + "b_rook.png").c_str()), square) {}
 
 std::vector<std::pair<Direction, FDirection>> Rook::getDirections() {
     return {

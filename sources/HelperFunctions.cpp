@@ -21,7 +21,7 @@ HelperFunctions::get_algebraic_notation(char piece_letter, const std::string &cu
 Piece *HelperFunctions::getChosenPromotedPieceWithModal(ChessColor color, SDL_Rect square_rect, Board *board) {
     auto renderer = SharedData::instance().getRenderer();
     SDL_Event e;
-    std::string path_prefix = std::string("resources/");
+    const std::string& path_prefix = SharedData::instance().getResourcesPath();
     std::string piece_name_prefix = (color == ChessColor::WHITE ? "w_" : "b_");
     SDL_Rect modal_rect = {square_rect.x, square_rect.y, square_rect.w, square_rect.h * 4};
     SDL_Rect cancel_sign_rect = {modal_rect.x + modal_rect.w - modal_rect.w / 8 - 1, modal_rect.y + 1,
@@ -34,11 +34,11 @@ Piece *HelperFunctions::getChosenPromotedPieceWithModal(ChessColor color, SDL_Re
     SDL_Rect knight_rect = {modal_rect.x + 15, modal_rect.y + 3 * modal_rect.h / 4 + 10, modal_rect.w - 30,
                             modal_rect.h / 4 - 20};
 
-    MTexture queen_texture(renderer, path_prefix + piece_name_prefix + "queen.png");
-    MTexture rook_texture(renderer, path_prefix + piece_name_prefix + "rook.png");
-    MTexture bishop_texture(renderer, path_prefix + piece_name_prefix + "bishop.png");
-    MTexture knight_texture(renderer, path_prefix + piece_name_prefix + "knight.png");
-    MTexture cancel_sign_texture(renderer, path_prefix + "cancel_sign.png");
+    MTexture queen_texture(renderer, (path_prefix + piece_name_prefix + "queen.png").c_str());
+    MTexture rook_texture(renderer, (path_prefix + piece_name_prefix + "rook.png").c_str());
+    MTexture bishop_texture(renderer, (path_prefix + piece_name_prefix + "bishop.png").c_str());
+    MTexture knight_texture(renderer, (path_prefix + piece_name_prefix + "knight.png").c_str());
+    MTexture cancel_sign_texture(renderer, (path_prefix + "cancel_sign.png").c_str());
     while (true) {
         while (SDL_PollEvent(&e) != 0) {
             if (e.type == SDL_MOUSEBUTTONDOWN) {

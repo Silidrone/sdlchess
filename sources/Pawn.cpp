@@ -9,8 +9,8 @@
 
 Pawn::Pawn(ChessColor c, Board *b, Square *square) : Piece(c, b, MTexture(SharedData::instance().getRenderer(),
                                                                                   c == ChessColor::WHITE
-                                                                                  ? "resources/w_pawn.png"
-                                                                                  : "resources/b_pawn.png"), square),
+                                                                                  ? (SharedData::instance().getResourcesPath() + "w_pawn.png").c_str()
+                                                                                  : (SharedData::instance().getResourcesPath() + "b_pawn.png").c_str()), square),
                                                      m_en_passed_square(nullptr), m_promoted_piece(nullptr) {
 }
 
