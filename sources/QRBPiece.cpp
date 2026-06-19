@@ -1,5 +1,6 @@
 #include "../headers/QRBPiece.h"
 #include "../headers/Square.h"
+#include "../headers/King.h"
 
 QRBPiece::QRBPiece(ChessColor c, Board *b, const MTexture &t, Square *s) : Piece(c, b, t, s) {}
 
@@ -9,7 +10,8 @@ std::vector<Square *>
 QRBPiece::squaresBeforeNextPieceInDirection(const DirectionalSquares &directional_squares) {
     auto it = directional_squares.second.begin();
     for (; it != directional_squares.second.end(); it++) {
-        if ((*it)->getPiece() != nullptr) {
+        Piece *p = (*it)->getPiece();
+        if (p != nullptr) {
             it++;
             break;
         }

@@ -10,6 +10,7 @@
 #include "../headers/Pawn.h"
 #include "../headers/MoveLogger.h"
 #include "../headers/HelperFunctions.h"
+#include "../headers/BitboardBridge.h"
 #include <algorithm>
 #include <stdexcept>
 
@@ -167,20 +168,10 @@ bool Board::coordinateIsValid(std::string coordinate) {
 }
 
 bool Board::legalMoveExists(ChessColor c) {
-    std::vector<Piece *> pieces = m_pieces;
-    for (auto &piece: pieces) {
-        if (piece->getColor() == c) {
-            auto attacked_squares = piece->attacked_squares();
-            auto moveable_squares = piece->moveable_squares(attacked_squares);
-            for (auto &moveable_square: moveable_squares) {
-                if (piece->move(moveable_square, true)) {
-                    return true;
-                }
-            }
-        }
-    }
-
-    return false;
+    // Use BitboardBridge for fast legal move check
+    auto& bridge = BitboardBridge::instance();
+    bridge.syncFromBoard(this, c);
+    return bridge.hasLegalMoves(c);
 }
 
 std::vector<Square *>
@@ -315,12 +306,12 @@ std::vector<Rook *> Board::getRooks(ChessColor c) {
 
 bool Board::isGameOver() {
     auto turn_color = m_moveLogger.getCurrentMoveColor();
-    auto previous_turn_color = HelperFunctions::oppositeColor(turn_color);
-    auto king = getKing(turn_color);
-    auto king_attacked_squares = king->attacked_squares();
-    return king->getSquare()->isAttacked(previous_turn_color) &&
-           king->moveable_squares(king_attacked_squares).empty() &&
-           !legalMoveExists(turn_color);
+
+    // Use BitboardBridge for checkmate/stalemate detection
+    auto& bridge = BitboardBridge::instance();
+    bridge.syncFromBoard(this, turn_color);
+
+    return bridge.isCheckmate() || bridge.isStalemate();
 }
 
 MoveLogger &Board::getMoveLogger() const {

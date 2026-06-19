@@ -4,6 +4,7 @@
 #include "../headers/King.h"
 #include "../headers/HelperFunctions.h"
 #include "../headers/Pawn.h"
+#include "../headers/BitboardBridge.h"
 
 Game::Game() : m_moveLogger(), m_board(m_moveLogger), m_game_over(false) {}
 
@@ -35,6 +36,10 @@ void Game::over() {
 
 void Game::init() {
     SharedData::instance().init();
+
+    // Initialize the bitboard engine
+    BitboardBridge::instance().initialize();
+
     auto& resources_path = SharedData::instance().getResourcesPath();
     m_board.init((resources_path + "w_square_gray.png").c_str(), (resources_path + "b_square_gray.png").c_str());
 }

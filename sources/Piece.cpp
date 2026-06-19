@@ -6,6 +6,7 @@
 #include "../headers/MoveLogger.h"
 #include "../headers/HelperFunctions.h"
 #include <functional>
+#include "../headers/BitboardBridge.h"
 
 Piece::Piece(ChessColor c, Board *board, const MTexture &texture, Square *square)
         : ChessColored(c), m_board(board), m_texture(texture), m_fDirector(c), m_moved(false) {
@@ -65,8 +66,11 @@ bool Piece::move(Square *target, bool test_move, std::function<Piece*(Pawn *)> p
     if(pawn) {
         pawn->setEnPassedSquare(nullptr);
     }
-    auto squares_attacked = attacked_squares();
-    auto legal_squares = moveable_squares(squares_attacked);
+
+    // Use BitboardBridge for legal move generation
+    auto& bridge = BitboardBridge::instance();
+    bridge.syncFromBoard(m_board, getColor());
+    auto legal_squares = bridge.getLegalMoveSquares(this, m_board);
 
     if (std::find_if(legal_squares.begin(), legal_squares.end(),
                      [&target](Square *s) { return s->getCoordinate() == target->getCoordinate(); }) ==

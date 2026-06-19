@@ -72,8 +72,8 @@ public:
         return success;
     }
 
-    const int SCREEN_WIDTH = 640;
-    const int SCREEN_HEIGHT = 640;
+    const int SCREEN_WIDTH = 1040;
+    const int SCREEN_HEIGHT = 1040;
 
     SDL_Window *getWindow() const { return m_window; }
 
